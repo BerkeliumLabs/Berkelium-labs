@@ -13,8 +13,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "Buddhi Ranasinghe",
-    "email": "Buddhi.Ranasinghe@cloudsolution-sa.com"
+    "name": "Buddhi Kavindra Ranasinghe",
+    "email": "info@buddhilive.com"
   },
   "license": "MIT",
   "devDependencies": {
@@ -29,7 +29,6 @@
     "@electron/fuses": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "daisyui": "^5.0.9",
     "electron": "35.1.2",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.31.0",
@@ -38,6 +37,7 @@
     "vite": "^5.4.15"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.4.1",
     "@tailwindcss/postcss": "^4.0.17",
     "electron-squirrel-startup": "^1.0.1",
     "tailwindcss": "^4.0.17"

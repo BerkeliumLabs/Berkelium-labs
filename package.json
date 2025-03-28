@@ -29,6 +29,7 @@
     "@electron/fuses": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "daisyui": "^5.0.9",
     "electron": "35.1.2",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.31.0",

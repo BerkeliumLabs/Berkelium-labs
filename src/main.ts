@@ -14,6 +14,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
     },
   });
 
@@ -26,6 +27,9 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // open maximized
+  mainWindow.maximize();
 };
 
 // This method will be called when Electron has finished

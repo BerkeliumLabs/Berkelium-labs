@@ -6,31 +6,48 @@ export class ModelDownloader {
   dialogRef: HTMLDialogElement;
   modelPanel: HTMLDivElement;
   modelId: string;
+  isDownloading: boolean = false;
 
   init() {
     const openDialogBtn = document.querySelector("#open-model-download-dialog");
     openDialogBtn.addEventListener("click", this.openDialog.bind(this));
+    window.berkelium.onDownloadEnd(() => {
+      const downloadStatus = document.querySelector("#download-status");
+      downloadStatus.classList.add("opacity-0");
+      this.isDownloading = false;
+    });
   }
 
   openDialog() {
     try {
-      this.dialogRef = document.createElement("dialog");
-      this.dialogRef.classList.add("bg-gray-900", "rounded-md", "w-8/12");
-      this.dialogRef.insertAdjacentHTML(
-        "beforeend",
-        DOWNLOAD_MODEL_DIALOG_TEMPLATE
-      );
-      const closeBtn: NodeListOf<HTMLButtonElement> =
-        this.dialogRef.querySelectorAll("#close-dialog-btn");
-      closeBtn.forEach((btn) =>
-        btn.addEventListener("click", this.closeDialog.bind(this))
-      );
-      this.modelPanel = this.dialogRef.querySelector("#model-selection-panel");
-      document.body.appendChild(this.dialogRef);
-      this.dialogRef.showModal();
-      window.berkelium
-        .getModelData()
-        .then((modelData) => this.populateModelData(modelData));
+      if (!this.isDownloading) {
+        this.dialogRef = document.createElement("dialog") as HTMLDialogElement;
+        this.dialogRef.classList.add("bg-gray-900", "rounded-md", "w-8/12");
+        this.dialogRef.insertAdjacentHTML(
+          "beforeend",
+          DOWNLOAD_MODEL_DIALOG_TEMPLATE
+        );
+        const closeBtn: NodeListOf<HTMLButtonElement> =
+          this.dialogRef.querySelectorAll("#close-dialog-btn");
+        closeBtn.forEach((btn) =>
+          btn.addEventListener("click", this.closeDialog.bind(this))
+        );
+        this.modelPanel = this.dialogRef.querySelector(
+          "#model-selection-panel"
+        );
+        const downloadBtn: HTMLButtonElement =
+          this.dialogRef.querySelector("#download-btn");
+        downloadBtn.addEventListener("click", this.downloadModel.bind(this));
+        document.body.appendChild(this.dialogRef);
+        this.dialogRef.showModal();
+        window.berkelium
+          .getModelData()
+          .then((modelData) => this.populateModelData(modelData));
+      } else {
+        alert(
+          `${this.modelId} download inprogress. Try again once current download ends.`
+        );
+      }
     } catch (error) {
       console.error(error);
       alert(error);
@@ -44,10 +61,19 @@ export class ModelDownloader {
     this.modelPanel = null;
   }
 
+  downloadModel() {
+    const downloadStatus = document.querySelector("#download-status");
+    downloadStatus.classList.remove("opacity-0");
+    this.isDownloading = true;
+    this.closeDialog();
+    window.berkelium.downloadModel(this.modelId);
+  }
+
   private populateModelData(modelData: IHuggingfaceModelData[]) {
     try {
       let selectedItem: HTMLDivElement = null;
-      const downloadBtn: HTMLButtonElement = this.dialogRef.querySelector('#download-btn');
+      const downloadBtn: HTMLButtonElement =
+        this.dialogRef.querySelector("#download-btn");
 
       modelData.forEach((model) => {
         const modelDiv = document.createElement("div");

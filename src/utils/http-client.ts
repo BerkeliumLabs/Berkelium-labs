@@ -9,7 +9,7 @@ export class BerkeliumHttpClient {
         {
           params: {
             filter: ["transformers.js", "text-generation"],
-            downloads: 200,
+            sort: "downloads",
             /* limit: 5 */
           },
         }

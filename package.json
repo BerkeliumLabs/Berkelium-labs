@@ -3,7 +3,7 @@
   "productName": "berkeliumlabs-studio",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": ".vite/build/main.js",
+  "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -13,8 +13,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "Buddhi Kavindra Ranasinghe",
-    "email": "info@buddhilive.com"
+    "name": "Buddhi Kavindra",
+    "email": "visitbudkavin@gmail.com"
   },
   "license": "MIT",
   "devDependencies": {
@@ -25,22 +25,29 @@
     "@electron-forge/maker-zip": "^7.8.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.0",
     "@electron-forge/plugin-fuses": "^7.8.0",
-    "@electron-forge/plugin-vite": "^7.8.0",
+    "@electron-forge/plugin-webpack": "^7.8.0",
     "@electron/fuses": "^1.8.0",
-    "@types/electron-squirrel-startup": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "@vercel/webpack-asset-relocator-loader": "^1.7.3",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^6.11.0",
     "electron": "35.1.2",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.31.0",
+    "fork-ts-checker-webpack-plugin": "^7.3.0",
+    "node-loader": "^2.1.0",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typescript": "~4.5.4",
-    "vite": "^5.4.15"
+    "typescript": "~4.5.4"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.4.1",
     "@tailwindcss/postcss": "^4.0.17",
     "electron-squirrel-startup": "^1.0.1",
+    "postcss": "^8.5.3",
     "tailwindcss": "^4.0.17"
   }
 }

@@ -5,7 +5,7 @@
   font-family: Material Icons;
   font-style: normal;
   font-weight: 400;
-  src: url(../assets/icons/material-icons.woff2) format("woff2");
+  src: url(../assets/icons/material-symbols-400.woff2) format("woff2");
 }
 .material-icons {
   font-family: Material Icons;
@@ -183,6 +183,17 @@
 }
 *::-webkit-scrollbar-thumb:hover {
   background-color: rgba(155, 155, 155, 0.7);
+}
+
+/* Dialog Backdrop */
+dialog {
+  align-self: center;
+  justify-self: center;
+}
+
+dialog::backdrop {
+  background-color: #fff;
+  opacity: 0.3;
 }
 
 /* Theme customizations */

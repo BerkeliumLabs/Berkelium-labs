@@ -1,6 +1,8 @@
 import { ipcMain } from "electron";
-import { pipeline } from "@huggingface/transformers";
+import { pipeline, PipelineType } from "@huggingface/transformers";
 import { ProgressStatusInfo } from "@huggingface/transformers/types/utils/core";
+import { BerkeliumHttpClient } from "../utils/http-client";
+import { IHuggingfaceModelData } from "../common/interfaces/huggingface-model-data.interface";
 
 export class BerkeliumIPCHandlers {
   init() {
@@ -23,19 +25,36 @@ export class BerkeliumIPCHandlers {
         return { error: error.message };
       }
     });
+    ipcMain.handle('get-model-data', () => this.fetchModelDataList());
   }
 
-  // Create a progress callback
   private progressCallback(progress: ProgressStatusInfo) {
-    // progress.status can be 'downloading', 'extracting', 'converting', or 'ready'
-    // progress.file is the filename being processed
-    // progress.progress is a number between 0 and 100 (percentage)
-
     console.log(`Status: ${progress.status}`);
     console.log(`File: ${progress.file}`);
     if (progress.progress) console.log(`Progress: ${progress.progress}%`);
+  }
 
-    // You could update a UI element here if needed
-    // For example, updating a progress bar
+  private async fetchModelDataList(): Promise<IHuggingfaceModelData[]> | null {
+    try {
+      const httpClient = new BerkeliumHttpClient();
+      const data = await httpClient.fetchModelData();
+      return data;      
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  private async downloadModel(
+    modelId: string,
+    pipelineType: PipelineType = "text-generation"
+  ) {
+    try {
+      await pipeline(pipelineType, modelId, {
+        progress_callback: this.progressCallback,
+      });
+    } catch (error) {
+      console.error(`Error downloading model:\n${error}`);
+    }
   }
 }

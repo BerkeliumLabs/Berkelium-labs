@@ -1,9 +1,13 @@
 import "./index.css";
+import { ChatManager } from "./ui/chat-manage";
 import { ModelDownloader } from "./ui/model-download";
 
 window.onload = () => {
   const modelDownloader = new ModelDownloader();
   modelDownloader.init();
+
+  const chatManager = new ChatManager();
+  chatManager.init();
 };
 
 window.berkelium.onDownloadProgress((_evt, progress) => {

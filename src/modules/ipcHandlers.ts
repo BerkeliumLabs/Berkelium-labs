@@ -1,5 +1,11 @@
 import { BrowserWindow, ipcMain } from "electron";
-import { pipeline, PipelineType } from "@huggingface/transformers";
+import {
+  Pipeline,
+  pipeline,
+  PipelineType,
+  TextGenerationOutput,
+  TextGenerationPipeline,
+} from "@huggingface/transformers";
 import { ProgressStatusInfo } from "@huggingface/transformers/types/utils/core";
 import { BerkeliumHttpClient } from "../utils/http-client";
 import { IHuggingfaceModelData } from "../common/interfaces/huggingface-model-data.interface";
@@ -13,30 +19,11 @@ export class BerkeliumIPCHandlers {
   }
 
   init() {
-    ipcMain.handle("run-model", async () => {
-      try {
-        const classifier = await pipeline(
-          "sentiment-analysis",
-          "Xenova/distilbert-base-uncased-finetuned-sst-2-english",
-          {
-            progress_callback: this.progressCallback,
-          }
-        );
-        const result = await classifier([
-          "I love transformers!",
-          "I hate transformers!",
-        ]);
-        return result;
-      } catch (error) {
-        console.error("Error running model:", error);
-        return { error: error.message };
-      }
-    });
+    ipcMain.handle("run-model", () => this.generateText());
     ipcMain.handle("get-model-data", () => this.fetchModelDataList());
     ipcMain.handle("download-model", (_evt, modelId) => {
       this.downloadModel(modelId);
     });
-    console.log("Main window", this.mainWindow);
   }
 
   private progressCallback(progress: ProgressStatusInfo) {
@@ -44,8 +31,6 @@ export class BerkeliumIPCHandlers {
     this.mainWindow.webContents.send("download-progress", {
       progress,
     });
-    console.clear();
-    console.log(progress);
   }
 
   private async fetchModelDataList(): Promise<IHuggingfaceModelData[]> | null {
@@ -73,7 +58,7 @@ export class BerkeliumIPCHandlers {
         body: `${modelId} model downloaded successfully.`,
       });
       this.mainWindow.webContents.send("download-status", {
-        isDownloading: false
+        isDownloading: false,
       });
     } catch (error) {
       notify.show({
@@ -82,8 +67,33 @@ export class BerkeliumIPCHandlers {
       });
       console.error(`Error downloading model:\n${error}`);
       this.mainWindow.webContents.send("download-status", {
-        isDownloading: false
+        isDownloading: false,
       });
+    }
+  }
+
+  private async generateText(): Promise<
+    TextGenerationOutput | TextGenerationOutput[]
+  > {
+    try {
+      const generator = await pipeline(
+        "text-generation",
+        "HuggingFaceTB/SmolLM2-135M-Instruct"
+      );
+      const text = "System: You are a helpful assistant.\nUser: Write JS code to calculate BMI\nAssistant: ";
+      const output = await generator(text, {
+        temperature: 2,
+        max_new_tokens: 1000,
+        repetition_penalty: 1.5,
+        no_repeat_ngram_size: 2,
+        num_beams: 2,
+        num_return_sequences: 2,
+      });
+
+      return output;
+    } catch (error) {
+      console.error("Error running model:", error);
+      return error.message;
     }
   }
 }

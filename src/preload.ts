@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld("berkelium", {
   ) => ipcRenderer.on("download-progress", callback),
   onDownloadEnd: (callback: () => void) =>
     ipcRenderer.on("download-status", callback),
+  generateText: () => ipcRenderer.invoke('run-model')
 });
 
 /* Extend Global Variables */

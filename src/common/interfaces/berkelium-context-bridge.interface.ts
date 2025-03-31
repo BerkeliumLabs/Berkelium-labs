@@ -1,5 +1,6 @@
 import { ProgressStatusInfo } from "@huggingface/transformers/types/utils/core";
 import { IHuggingfaceModelData } from "./huggingface-model-data.interface";
+import { TextGenerationOutput } from "@huggingface/transformers/types/pipelines";
 
 export interface BerkeliumContextBridge {
   getModelData(): Promise<IHuggingfaceModelData[]> | null;
@@ -11,4 +12,5 @@ export interface BerkeliumContextBridge {
     ) => void
   ) => void;
   onDownloadEnd: (callback: () => void) => void;
+  generateText(): Promise<TextGenerationOutput | TextGenerationOutput[]>;
 }

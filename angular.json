@@ -12,12 +12,12 @@
       },
       "root": "projects/berkeliumlabs",
       "sourceRoot": "projects/berkeliumlabs/src",
-      "prefix": "app",
+      "prefix": "berkeliumlabs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "public/berkeliumlabs",
+            "outputPath": "dist/berkeliumlabs",
             "index": "projects/berkeliumlabs/src/index.html",
             "browser": "projects/berkeliumlabs/src/main.ts",
             "polyfills": [

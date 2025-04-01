@@ -1,1 +1,6 @@
 @use "tailwindcss";
+
+/* Theme customizations */
+@theme {
+  --font-noto: "Noto Sans", "sans-serif";
+}

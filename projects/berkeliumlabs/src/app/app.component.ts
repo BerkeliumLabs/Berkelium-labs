@@ -1,29 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from "./layout/navbar/navbar.component";
 
 @Component({
   selector: 'berkeliumlabs-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [RouterOutlet, NavbarComponent],
+  template: `
+  <berkeliumlabs-navbar />
+  <main class="flex-grow">
+    <router-outlet />
+  </main>`,
+  styles: [],
 })
-export class AppComponent {
-  title = 'Berkeliumlabs Studio';
-
-  test() {
-    window.berkelium
-      .readAppSettings()
-      .then((settings: BkAppSettings | null) => {
-        if (settings) {
-          console.log('Settings:', settings);
-        } else {
-          const settings: BkAppSettings = {
-            version: '1',
-            cacheDir: 'D:',
-          }
-
-          window.berkelium.writeAppSettings(settings);
-        }
-      });
-  }
-}
+export class AppComponent {}

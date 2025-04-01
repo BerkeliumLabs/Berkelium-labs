@@ -7,6 +7,10 @@ if (started) {
   app.quit();
 }
 
+// Define the custom session data directory
+const customSessionDataDir = path.join(app.getPath('documents'), 'Berkeliumlabs Studio');
+app.setPath('sessionData', customSessionDataDir);
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({

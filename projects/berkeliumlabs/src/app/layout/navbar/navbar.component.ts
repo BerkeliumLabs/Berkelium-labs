@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LayoutService } from '../layout.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'berkeliumlabs-navbar',
@@ -9,16 +10,21 @@ import { LayoutService } from '../layout.service';
 })
 export class NavbarComponent {
   private _layoutService = inject(LayoutService);
+  private router = inject(Router);
 
   themeMode: 'light' | 'dark' = 'light';
   isCollapsed = false;
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  toggleTheme() {
+  toggleTheme(): void {
     this._layoutService.toggleTheme();
     this.themeMode = this._layoutService.themeMode();
+  }
+
+  navigateTo(path: string): void {
+    this.router.navigate([path]);
   }
 }

@@ -1,0 +1,33 @@
+<div
+  class="flex flex-col h-dvh w-12 py-2 px-2 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-all duration-500 ease-in-out"
+  [class.w-64]="isCollapsed"
+>
+  <button
+    class="flex justify-center items-center h-8 w-8 border-none rounded-full p-[0.03125rem] cursor-pointer bg-transparent transition-all duration-100 ease-in"
+    (click)="toggleSidebar()"
+  >
+    <span class="material-icons !text-base">menu</span>
+  </button>
+  <div class="flex-grow"></div>
+  <!-- Bottom Actions -->
+  <div class="flex flex-col justify-center items-center gap-2 border-t border-gray-400 dark:border-gray-600 pt-2">
+    <button
+      class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
+      title="Settings"
+    >
+      <span class="material-icons !text-base">settings</span>
+    </button>
+    <!-- Theme switcher -->
+    <button
+      class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
+      (click)="toggleTheme()"
+      title="Toggle theme"
+    >
+      @if (themeMode === 'light') {
+      <span class="material-icons !text-base">light_mode</span>
+      } @else {
+      <span class="material-icons !text-base">dark_mode</span>
+      }
+    </button>
+  </div>
+</div>

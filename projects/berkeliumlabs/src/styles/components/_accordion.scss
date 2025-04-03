@@ -1,0 +1,24 @@
+details {
+  &[open] {
+    @apply border border-gray-300 dark:border-gray-600 rounded-lg;
+    summary {
+      @apply rounded-t border border-gray-300 dark:border-gray-600;
+      .material-icons {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  &:not(&[open]) {
+    summary {
+      @apply rounded-lg;
+    }
+  }
+  summary {
+    @apply flex justify-between bg-gray-300 dark:bg-gray-600 px-4 py-2 cursor-pointer;
+  }
+  .solias-accordion {
+    &__content {
+      padding: 1rem;
+    }
+  }
+}

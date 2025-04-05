@@ -1,4 +1,4 @@
 interface BkAppSettings {
-  version: string;
-  cacheDir: string;
+  version?: string;
+  cacheDir?: string;
 }

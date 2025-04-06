@@ -1,7 +1,8 @@
 import { BerkeliumFileManager } from '../utils/file-manager';
 import path from 'node:path';
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, NotificationConstructorOptions } from 'electron';
 import { existsSync, mkdirSync } from 'node:fs';
+import { BerkeliumNotifications } from '../utils/notifications';
 export class BerkeliumIPCHandlers {
   private fileManager: BerkeliumFileManager;
   APP_SETTINGS_DIR = path.join(app.getPath('appData'), 'Berkeliumlabs Studio');
@@ -22,6 +23,9 @@ export class BerkeliumIPCHandlers {
     ipcMain.handle('chose-cahce-dir', async () =>
       this.fileManager.selectFolder()
     );
+    ipcMain.handle('show-notification', (_, options: NotificationConstructorOptions) =>
+      this.sendNotification(options)
+    );
   }
 
   private createCacheDir() {
@@ -39,5 +43,10 @@ export class BerkeliumIPCHandlers {
       // Define the custom session data directory
       app.setPath('sessionData', customSessionDataDir);
     });
+  }
+
+  private sendNotification(options: NotificationConstructorOptions): void {
+    const notify = new BerkeliumNotifications()
+    notify.show(options);
   }
 }

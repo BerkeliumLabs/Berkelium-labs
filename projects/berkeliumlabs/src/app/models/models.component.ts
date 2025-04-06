@@ -1,8 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ModelItemComponent } from './model-item/model-item.component';
 import { ModelManagerService } from './model-manager.service';
 import { Subscription } from 'rxjs';
+import { StateManagerService } from '../services/state-manager.service';
 
 @Component({
   selector: 'berkeliumlabs-models',
@@ -13,6 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class ModelsComponent implements OnInit, OnDestroy {
   private _modelManager = inject(ModelManagerService);
+  private router = inject(Router);
+  private _stateManager = inject(StateManagerService);
   private $modelListSubscription!: Subscription;
 
   modelList!: BkHuggingfaceModelData[];
@@ -32,6 +35,11 @@ export class ModelsComponent implements OnInit, OnDestroy {
           console.error(err);
         },
       });
+  }
+
+  goToModel(modelData: BkHuggingfaceModelData) {
+    this._stateManager.selectedModel.set(modelData);
+    this.router.navigate(['models', modelData._id]);
   }
 
   ngOnDestroy(): void {

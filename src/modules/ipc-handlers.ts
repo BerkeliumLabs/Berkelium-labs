@@ -1,19 +1,13 @@
 import { BerkeliumFileManager } from '../utils/file-manager';
 import path from 'node:path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, ipcMain } from 'electron';
 import { existsSync, mkdirSync } from 'node:fs';
-import { BerkeliumModelManager } from './model-manager';
-
 export class BerkeliumIPCHandlers {
-  private mainWindow: BrowserWindow;
   private fileManager: BerkeliumFileManager;
-  private modelManager: BerkeliumModelManager;
   APP_SETTINGS_DIR = path.join(app.getPath('appData'), 'Berkeliumlabs Studio');
 
-  constructor(appWindow: BrowserWindow) {
-    this.mainWindow = appWindow;
+  constructor() {
     this.fileManager = new BerkeliumFileManager(this.APP_SETTINGS_DIR);
-    this.modelManager = new BerkeliumModelManager(this.mainWindow);
   }
 
   init() {
@@ -28,10 +22,6 @@ export class BerkeliumIPCHandlers {
     ipcMain.handle('chose-cahce-dir', async () =>
       this.fileManager.selectFolder()
     );
-    ipcMain.handle('get-model-data', () => this.modelManager.fetchModelDataList());
-    ipcMain.handle('download-model', (_evt, modelId) => {
-      this.modelManager.downloadModel(modelId);
-    });
   }
 
   private createCacheDir() {

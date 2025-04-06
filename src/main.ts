@@ -42,7 +42,7 @@ const createWindow = () => {
    mainWindow.maximize();
 
    // Initialize IPC Handlers
-   const ipcHandlers = new BerkeliumIPCHandlers(mainWindow);
+   const ipcHandlers = new BerkeliumIPCHandlers();
    ipcHandlers.init();
 };
 

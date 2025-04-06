@@ -1,7 +1,12 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
-import './ipc-handlers';
+import { BerkeliumIPCHandlers } from './modules/ipc-handlers';
+
+// Initialize IPC Handlers
+const ipcHandlers = new BerkeliumIPCHandlers();
+ipcHandlers.init();
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();

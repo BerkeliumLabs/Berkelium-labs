@@ -84,6 +84,39 @@ export class ModelCardComponent implements OnInit {
     }
   }
 
+  deleteModel() {
+    if ('caches' in window) {
+      caches
+        .open('transformers-cache')
+        .then((cache) => {
+          return cache.keys(); // Get all cache keys
+        })
+        .then((keys) => {
+          keys.forEach((request) => {
+            const cacheKey = request.url || request;
+            if (
+              typeof cacheKey === 'string' &&
+              cacheKey.startsWith(`https://huggingface.co/${this.modelData.modelId}`)
+            ) {
+              caches
+                .open('transformers-cache')
+                .then((cacheToDeleteFrom) => {
+                  return cacheToDeleteFrom.delete(request);
+                })
+                .then((deleted) => {
+                  if (deleted) {
+                    this.deleteModelData();
+                    console.log(`Cache entry '${cacheKey}' deleted.`);
+                  } else {
+                    console.log(`Cache entry '${cacheKey}' not found.`);
+                  }
+                });
+            }
+          });
+        });
+    }
+  }
+
   roundOffProgress(value: number): number {
     if (typeof value == 'number') {
       return parseFloat(value.toFixed(2));
@@ -96,7 +129,7 @@ export class ModelCardComponent implements OnInit {
     if (typeof bytes !== 'number' || isNaN(bytes)) {
       return 'Invalid input';
     }
-  
+
     if (bytes < 1024) {
       return `${bytes} B`; // Bytes
     } else if (bytes < 1024 * 1024) {
@@ -123,6 +156,16 @@ export class ModelCardComponent implements OnInit {
     window.berkelium
       .writeAppSettings(newSettings)
       .then(() => console.log('success'))
+      .catch((reason) => console.error(reason));
+  }
+
+  private deleteModelData() {
+    const newSettings = this.settings;
+    newSettings.models = newSettings.models?.filter((id) => id != this.modelData.modelId);
+    newSettings.modelData = newSettings.modelData?.filter((model) => model.modelId != this.modelData.modelId);
+    window.berkelium
+      .writeAppSettings(newSettings)
+      .then(() => this.initModelCard())
       .catch((reason) => console.error(reason));
   }
 }

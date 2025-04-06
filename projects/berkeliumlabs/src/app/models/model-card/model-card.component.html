@@ -13,13 +13,21 @@
       <h4 class="ml-4">Model: {{ modelData.modelId }}</h4>
     </div>
 
-    <button
-      class="solias-btn solias-btn--success solias-btn--md mr-2"
-      (click)="downloadModel()"
-      [disabled]="isDownloaded"
-    >
-      Download
-    </button>
+    <div class="flex gap-2 items-center">
+      <button
+        class="solias-btn solias-btn--success solias-btn--md mr-2"
+        (click)="downloadModel()"
+        [disabled]="isDownloaded"
+      >
+        Download
+      </button>
+      <button
+        class="solias-btn solias-btn--error solias-btn--md mr-2"
+        (click)="deleteModel()"
+      >
+        Delete
+      </button>
+    </div>
   </div>
 
   <!-- Body -->
@@ -29,9 +37,7 @@
       <div class="flex justify-between items-center">
         <h5>{{ progressData[bar]["file"] ?? "Unnamed" }}</h5>
         @if(progressData[bar]["status"] == "progress") {
-        <p>
-          {{ roundOffProgress(progressData[bar]["progress"]) }}%
-        </p>
+        <p>{{ roundOffProgress(progressData[bar]["progress"]) }}%</p>
         }
       </div>
       <progress

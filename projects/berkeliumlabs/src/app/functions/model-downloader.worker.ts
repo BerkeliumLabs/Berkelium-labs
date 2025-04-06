@@ -17,7 +17,7 @@ async function downloadModel(
   pipelineType: PipelineType = 'text-generation'
 ): Promise<void> {
   try {
-    await pipeline(pipelineType, modelId, {
+    const downloadPipeline = await pipeline(pipelineType, modelId, {
       progress_callback: progressCallback,
       dtype: 'q4',
     });

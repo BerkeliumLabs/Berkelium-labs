@@ -14,9 +14,27 @@ export class ModelCardComponent implements OnInit {
   progressData: any = {};
   progressBars: any[] = [];
   isDownloaded = false;
+  settings!: BkAppSettings;
 
   ngOnInit(): void {
     this.modelData = this._stateManager.selectedModel();
+    this.initModelCard();
+  }
+
+  private initModelCard() {
+    window.berkelium
+      .readAppSettings()
+      .then((settings) => {
+        if (settings) {
+          this.settings = settings;
+          if (settings.models?.includes(this.modelData.modelId ?? '')) {
+            this.isDownloaded = true;
+          }
+        }
+      })
+      .catch((reason) => {
+        console.error(reason);
+      });
   }
 
   downloadModel() {
@@ -34,17 +52,20 @@ export class ModelCardComponent implements OnInit {
           this.progressData[data['file']] = data;
         }
 
-        if (data === true) {
-          this.isDownloaded = true;
-          window.berkelium.showNotification({
-            title: 'Model download completed!',
-            body: `${this.modelData.modelId} model downloaded successfully.`,
-          });
-        } else {
-          window.berkelium.showNotification({
-            title: 'Model download Failed!',
-            body: `${this.modelData.modelId} model download failed.`,
-          });
+        if (typeof data == 'boolean') {
+          if (data === true) {
+            this.isDownloaded = true;
+            window.berkelium.showNotification({
+              title: 'Model download completed!',
+              body: `${this.modelData.modelId} model downloaded successfully.`,
+            });
+            this.saveModelData();
+          } else {
+            window.berkelium.showNotification({
+              title: 'Model download Failed!',
+              body: `${this.modelData.modelId} model download failed.`,
+            });
+          }
         }
 
         console.log(data, this.progressData);
@@ -62,5 +83,20 @@ export class ModelCardComponent implements OnInit {
     } else {
       return 0;
     }
+  }
+
+  private saveModelData() {
+    const newSettings = this.settings;
+    if (newSettings.models && newSettings.modelData) {
+      newSettings.models.push(this.modelData.modelId ?? '');
+      newSettings.modelData.push(this.modelData);
+    } else {
+      newSettings.models = [this.modelData.modelId ?? ''];
+      newSettings.modelData = [this.modelData];
+    }
+    window.berkelium
+      .writeAppSettings(newSettings)
+      .then(() => console.log('success'))
+      .catch((reason) => console.error(reason));
   }
 }

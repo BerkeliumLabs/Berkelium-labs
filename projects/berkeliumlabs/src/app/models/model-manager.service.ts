@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { pipeline, PipelineType, ProgressCallback } from '@huggingface/transformers';
 
 @Injectable()
 export class ModelManagerService {

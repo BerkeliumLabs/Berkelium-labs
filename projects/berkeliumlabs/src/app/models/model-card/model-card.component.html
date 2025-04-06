@@ -15,6 +15,8 @@
 
     <button
       class="solias-btn solias-btn--success solias-btn--md mr-2"
+      (click)="downloadModel()"
+      [disabled]="isDownloaded"
     >
       Download
     </button>
@@ -22,6 +24,11 @@
 
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
-
+    @for (bar of progressBars; track $index) {
+    <div class="flex flex-col gap-2 bg-gray-700 rounded p-4 mb-3">
+      <h5>{{ progressData[bar]["file"] }}</h5>
+      <progress [max]="100" [value]="roundOffProgress(progressData[bar]['progress'])"></progress>
+    </div>
+    }
   </div>
 </div>

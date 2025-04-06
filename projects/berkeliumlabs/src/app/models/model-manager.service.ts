@@ -16,27 +16,4 @@ export class ModelManagerService {
       params: params,
     });
   }
-
-  async downloadModel(
-    modelId: string,
-    pipelineType: PipelineType = 'text-generation',
-    progressCallback: ProgressCallback
-  ): Promise<void> {
-    /* const notify = new BerkeliumNotifications(); */
-    try {
-      await pipeline(pipelineType, modelId, {
-        progress_callback: progressCallback,
-      });
-      /* notify.show({
-        title: 'Model download completed!',
-        body: `${modelId} model downloaded successfully.`,
-      }); */
-    } catch (error) {
-      /* notify.show({
-        title: 'Model download Failed!',
-        body: `${modelId} model download failed.\nError: ${error}`,
-      }); */
-      console.error(`Error downloading model:\n${error}`);
-    }
-  }
 }

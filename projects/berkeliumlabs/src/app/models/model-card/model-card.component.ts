@@ -34,8 +34,17 @@ export class ModelCardComponent implements OnInit {
           this.progressData[data['file']] = data;
         }
 
-        if(data === true) {
+        if (data === true) {
           this.isDownloaded = true;
+          window.berkelium.showNotification({
+            title: 'Model download completed!',
+            body: `${this.modelData.modelId} model downloaded successfully.`,
+          });
+        } else {
+          window.berkelium.showNotification({
+            title: 'Model download Failed!',
+            body: `${this.modelData.modelId} model download failed.`,
+          });
         }
 
         console.log(data, this.progressData);

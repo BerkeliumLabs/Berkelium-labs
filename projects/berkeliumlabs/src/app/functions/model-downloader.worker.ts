@@ -1,6 +1,11 @@
 /// <reference lib="webworker" />
 
-import { pipeline, PipelineType, ProgressCallback, ProgressInfo } from '@huggingface/transformers';
+import {
+  pipeline,
+  PipelineType,
+  ProgressCallback,
+  ProgressInfo,
+} from '@huggingface/transformers';
 
 addEventListener('message', ({ data }) => {
   downloadModel(data, progressCallback);
@@ -14,7 +19,7 @@ async function downloadModel(
   try {
     await pipeline(pipelineType, modelId, {
       progress_callback: progressCallback,
-      dtype: 'q4'
+      dtype: 'q4',
     });
     postMessage(true);
   } catch (error) {

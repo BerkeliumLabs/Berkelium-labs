@@ -8,32 +8,26 @@ export const routes: Routes = [
   {
     path: '',
     component: ChatComponent,
-    pathMatch: 'full',
   },
   {
     path: 'chat',
     component: ChatComponent,
-    pathMatch: 'full',
   },
   {
     path: 'chat/:chatId',
     component: ChatComponent,
-    pathMatch: 'full',
   },
   {
     path: 'models',
     component: ModelsComponent,
-    pathMatch: 'full',
   },
   {
     path: 'models/:modelId',
     component: ModelCardComponent,
-    pathMatch: 'full',
   },
   {
     path: 'settings',
     component: SettingsComponent,
-    pathMatch: 'full',
   },
   {
     path: '**',

@@ -28,6 +28,10 @@ export class BerkeliumIPCHandlers {
     ipcMain.handle('chose-cahce-dir', async () =>
       this.fileManager.selectFolder()
     );
+    ipcMain.handle('get-model-data', () => this.modelManager.fetchModelDataList());
+    ipcMain.handle('download-model', (_evt, modelId) => {
+      this.modelManager.downloadModel(modelId);
+    });
   }
 
   private createCacheDir() {

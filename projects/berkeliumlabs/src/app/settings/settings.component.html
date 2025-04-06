@@ -1,16 +1,31 @@
 <div class="flex flex-col h-dvh">
-  <div class="flex items-center px-2 w-full h-12">
-    <a
-      class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 rounded-full hover:bg-gray-100 hover:text-primary-700 bg-transparent focus:outline-none dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
-      [routerLink]="'/'"
+  <div class="flex items-center justify-between px-2 py-4 w-full h-16">
+    <div class="flex items-center">
+      <a
+        class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 rounded-full hover:bg-gray-100 hover:text-primary-700 bg-transparent focus:outline-none dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
+        [routerLink]="'/'"
+      >
+        <span
+          class="material-icons text-gray-700 dark:text-gray-400 hover:text-primary-700 dark:hover:text-white"
+          >arrow_back</span
+        >
+      </a>
+      <h4 class="ml-4">Settings</h4>
+    </div>
+    @if (formValueChanged) {
+    <button
+      class="solias-btn solias-btn--success solias-btn--md mr-2"
+      [disabled]="settingsForm.invalid"
+      (click)="saveForm()"
     >
-      <span class="material-icons text-gray-700 dark:text-gray-400 hover:text-primary-700 dark:hover:text-white">arrow_back</span>
-    </a>
-    <h4 class="ml-4">Settings</h4>
+      Save
+    </button>
+    }
   </div>
 
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
-    <form>
+    @if(settingsForm) {
+    <form [formGroup]="settingsForm">
       <div class="flex flex-col w-full">
         <label>Cache Directory</label>
         <div class="flex items-center gap-4 w-full">
@@ -19,12 +34,19 @@
             name="cache-dir-path"
             id="cache-dir-path"
             placeholder="Cache directory path"
+            formControlName="cacheDir"
           />
-          <button class="solias-btn solias-btn--primary solias-btn--md">
+          <button
+            class="solias-btn solias-btn--primary solias-btn--md"
+            (click)="choseCacheDir()"
+          >
             Browse...
           </button>
         </div>
       </div>
     </form>
+    } @else {
+    <p>Loading...</p>
+    }
   </div>
 </div>

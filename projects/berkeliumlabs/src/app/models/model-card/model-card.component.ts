@@ -22,6 +22,10 @@ export class ModelCardComponent implements OnInit {
   }
 
   private initModelCard() {
+    if (this._stateManager.isDownloading()) {
+      this.isDownloaded = true;
+    }
+
     window.berkelium
       .readAppSettings()
       .then((settings) => {
@@ -44,6 +48,8 @@ export class ModelCardComponent implements OnInit {
         new URL('../../functions/model-downloader.worker', import.meta.url)
       );
       worker.onmessage = ({ data }) => {
+        this._stateManager.isDownloading.set(true);
+
         if (data['status'] == 'initiate') {
           this.progressBars.push(data['file']);
         } else if (data['status'] == 'done') {
@@ -52,7 +58,7 @@ export class ModelCardComponent implements OnInit {
           this.progressData[data['file']] = data;
         }
 
-        if (typeof data == 'boolean') {
+        if (typeof data === 'boolean') {
           if (data === true) {
             this.isDownloaded = true;
             window.berkelium.showNotification({
@@ -66,6 +72,7 @@ export class ModelCardComponent implements OnInit {
               body: `${this.modelData.modelId} model download failed.`,
             });
           }
+          this._stateManager.isDownloading.set(false);
         }
 
         console.log(data, this.progressData);
@@ -82,6 +89,25 @@ export class ModelCardComponent implements OnInit {
       return parseFloat(value.toFixed(2));
     } else {
       return 0;
+    }
+  }
+
+  formatBytes(bytes: number): string {
+    if (typeof bytes !== 'number' || isNaN(bytes)) {
+      return 'Invalid input';
+    }
+  
+    if (bytes < 1024) {
+      return `${bytes} B`; // Bytes
+    } else if (bytes < 1024 * 1024) {
+      const kb = (bytes / 1024).toFixed(2);
+      return `${kb} KB`; // Kilobytes
+    } else if (bytes < 1024 * 1024 * 1024) {
+      const mb = (bytes / (1024 * 1024)).toFixed(2);
+      return `${mb} MB`; // Megabytes
+    } else {
+      const gb = (bytes / (1024 * 1024 * 1024)).toFixed(2);
+      return `${gb} GB`; // Gigabytes
     }
   }
 

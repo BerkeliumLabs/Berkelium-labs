@@ -24,11 +24,27 @@
 
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
-    @for (bar of progressBars; track $index) {
+    @for (bar of progressBars; track $index) { @if (progressData[bar]) {
     <div class="flex flex-col gap-2 bg-gray-700 rounded p-4 mb-3">
-      <h5>{{ progressData[bar]["file"] }}</h5>
-      <progress [max]="100" [value]="roundOffProgress(progressData[bar]['progress'])"></progress>
+      <div class="flex justify-between items-center">
+        <h5>{{ progressData[bar]["file"] ?? "Unnamed" }}</h5>
+        @if(progressData[bar]["status"] == "progress") {
+        <p>
+          {{ roundOffProgress(progressData[bar]["progress"]) }}%
+        </p>
+        }
+      </div>
+      <progress
+        [max]="100"
+        [value]="roundOffProgress(progressData[bar]['progress'])"
+      ></progress>
+      @if(progressData[bar]["status"] == "progress") {
+      <p class="text-sm">
+        {{ formatBytes(progressData[bar]["loaded"]) }} /
+        {{ formatBytes(progressData[bar]["total"]) }}
+      </p>
+      }
     </div>
-    }
+    } }
   </div>
 </div>

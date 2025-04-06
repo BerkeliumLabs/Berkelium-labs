@@ -7,4 +7,5 @@ import { contextBridge, ipcRenderer } from "electron";
 contextBridge.exposeInMainWorld("berkelium", {
     readAppSettings: () => ipcRenderer.invoke('read-app-settings'),
     writeAppSettings: (settings: BkAppSettings) => ipcRenderer.invoke('write-app-settings', settings),
+    setCacheDir: () => ipcRenderer.invoke('chose-cahce-dir')
 });

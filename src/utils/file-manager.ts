@@ -1,3 +1,4 @@
+import { dialog, OpenDialogReturnValue } from 'electron';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 export class BerkeliumFileManager {
@@ -24,6 +25,18 @@ export class BerkeliumFileManager {
       await writeFileSync(settingsFilePath, JSON.stringify(settings));
     } catch (error) {
       console.error('Error writing app settings:', error);
+    }
+  }
+  
+  async selectFolder(): Promise<OpenDialogReturnValue | null> {
+    try {
+      const result = await dialog.showOpenDialog({
+        properties: ['openDirectory'],
+      });
+      return result;
+    } catch (error) {
+      console.error('Error chosing folder.', error);
+      return null;
     }
   }
 }

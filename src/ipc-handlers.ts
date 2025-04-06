@@ -13,6 +13,7 @@ ipcMain.handle('read-app-settings', async () => fileManager.readAppSettings());
 ipcMain.handle('write-app-settings', async (_, settings: BkAppSettings) =>
   fileManager.writeAppSettings(settings)
 );
+ipcMain.handle('chose-cahce-dir', async () => fileManager.selectFolder());
 
 function createCacheDir() {
   fileManager.readAppSettings().then((settings) => {
@@ -21,7 +22,7 @@ function createCacheDir() {
       app.getPath('documents'),
       cacheDir
     );
-    if (settings) {
+    if (settings && settings.cacheDir) {
       const cacheDirPath = settings.cacheDir;
       if (!existsSync(cacheDirPath)) {
         mkdirSync(cacheDirPath, { recursive: true });

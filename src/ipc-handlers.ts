@@ -22,7 +22,7 @@ function createCacheDir() {
       app.getPath('documents'),
       cacheDir
     );
-    if (settings) {
+    if (settings && settings.cacheDir) {
       const cacheDirPath = settings.cacheDir;
       if (!existsSync(cacheDirPath)) {
         mkdirSync(cacheDirPath, { recursive: true });

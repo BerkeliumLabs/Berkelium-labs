@@ -1,0 +1,74 @@
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .berkelium {
+    &__row {
+      grid-template-columns: repeat(4, 1fr);
+      @for $i from 1 through 4 {
+        .cell-xs-#{$i} {
+          justify-self: stretch;
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .berkelium {
+    &__row {
+      grid-template-columns: repeat(8, 1fr);
+      @for $i from 1 through 8 {
+        .cell-sm-#{$i} {
+          justify-self: stretch;
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .berkelium {
+    &__row {
+      grid-template-columns: repeat(12, 1fr);
+      @for $i from 1 through 12 {
+        .cell-md-#{$i} {
+          justify-self: stretch;
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .berkelium {
+    &__row {
+      grid-template-columns: repeat(12, 1fr);
+      @for $i from 1 through 12 {
+        .cell-lg-#{$i} {
+          justify-self: stretch;
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .berkelium {
+    &__row {
+      grid-template-columns: repeat(12, 1fr);
+      @for $i from 1 through 12 {
+        .cell-xl-#{$i} {
+          justify-self: stretch;
+          grid-column: span #{$i};
+        }
+      }
+    }
+  }
+}

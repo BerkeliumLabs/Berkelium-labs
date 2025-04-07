@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { StateManagerService } from '../../services/state-manager.service';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'berkeliumlabs-model-card',
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe, DatePipe],
   templateUrl: './model-card.component.html',
-  styleUrl: './model-card.component.scss',
+  styleUrl: './model-card.component.scss'
 })
 export class ModelCardComponent implements OnInit {
   private _stateManager = inject(StateManagerService);

@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { StateManagerService } from '../../services/state-manager.service';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'berkeliumlabs-model-card',
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe, DatePipe],
   templateUrl: './model-card.component.html',
   styleUrl: './model-card.component.scss',
 })
@@ -14,6 +15,7 @@ export class ModelCardComponent implements OnInit {
   progressData: any = {};
   progressBars: any[] = [];
   isDownloaded = false;
+  isDownloading = false;
   settings!: BkAppSettings;
 
   ngOnInit(): void {
@@ -23,7 +25,12 @@ export class ModelCardComponent implements OnInit {
 
   private initModelCard() {
     if (this._stateManager.isDownloading()) {
-      this.isDownloaded = true;
+      this.isDownloading = true;
+    }
+
+    if (this._stateManager.downloadingModelId() == this.modelData.modelId) {
+      this.progressBars = this._stateManager.progressBars();
+      this.progressData = this._stateManager.progressData();
     }
 
     window.berkelium
@@ -33,6 +40,16 @@ export class ModelCardComponent implements OnInit {
           this.settings = settings;
           if (settings.models?.includes(this.modelData.modelId ?? '')) {
             this.isDownloaded = true;
+            if (this.modelData.modelId && settings.modelFiles) {
+              if (settings.modelFiles[this.modelData.modelId]) {
+                this.progressBars =
+                  settings.modelFiles[this.modelData.modelId]?.progressBars ??
+                  this.progressBars;
+                this.progressData =
+                  settings.modelFiles[this.modelData.modelId]?.progressData ??
+                  this.progressData;
+              }
+            }
           }
         }
       })
@@ -43,20 +60,23 @@ export class ModelCardComponent implements OnInit {
 
   downloadModel() {
     if (typeof Worker !== 'undefined') {
-      // Create a new
       const worker = new Worker(
         new URL('../../functions/model-downloader.worker', import.meta.url)
       );
       worker.onmessage = ({ data }) => {
         this._stateManager.isDownloading.set(true);
+        this._stateManager.downloadingModelId.set(this.modelData.modelId ?? '');
 
         if (data['status'] == 'initiate') {
           this.progressBars.push(data['file']);
+          this._stateManager.progressBars.set(this.progressBars);
         } else if (data['status'] == 'done') {
           this.progressData[data['file']]['progress'] = 100;
         } else {
           this.progressData[data['file']] = data;
         }
+
+        this._stateManager.progressData.set(this.progressData);
 
         if (typeof data === 'boolean') {
           if (data === true) {
@@ -73,6 +93,9 @@ export class ModelCardComponent implements OnInit {
             });
           }
           this._stateManager.isDownloading.set(false);
+          this._stateManager.progressBars.set([]);
+          this._stateManager.progressData.set({});
+          this._stateManager.downloadingModelId.set('');
         }
 
         console.log(data, this.progressData);
@@ -96,7 +119,9 @@ export class ModelCardComponent implements OnInit {
             const cacheKey = request.url || request;
             if (
               typeof cacheKey === 'string' &&
-              cacheKey.startsWith(`https://huggingface.co/${this.modelData.modelId}`)
+              cacheKey.startsWith(
+                `https://huggingface.co/${this.modelData.modelId}`
+              )
             ) {
               caches
                 .open('transformers-cache')
@@ -153,19 +178,46 @@ export class ModelCardComponent implements OnInit {
       newSettings.models = [this.modelData.modelId ?? ''];
       newSettings.modelData = [this.modelData];
     }
+
+    const modelFiles = {
+      progressBars: this.progressBars,
+      progressData: this.progressData,
+    };
+
+    if (this.modelData.modelId) {
+      if (newSettings.modelFiles) {
+        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
+      } else {
+        newSettings.modelFiles = {};
+        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
+      }
+    }
+
     window.berkelium
       .writeAppSettings(newSettings)
-      .then(() => console.log('success'))
+      .then(() => {
+        this.isDownloaded = true;
+        this.isDownloading = false;
+        console.log('success', this.isDownloaded, this.isDownloading);
+      })
       .catch((reason) => console.error(reason));
   }
 
   private deleteModelData() {
     const newSettings = this.settings;
-    newSettings.models = newSettings.models?.filter((id) => id != this.modelData.modelId);
-    newSettings.modelData = newSettings.modelData?.filter((model) => model.modelId != this.modelData.modelId);
+    newSettings.models = newSettings.models?.filter(
+      (id) => id != this.modelData.modelId
+    );
+    newSettings.modelData = newSettings.modelData?.filter(
+      (model) => model.modelId != this.modelData.modelId
+    );
     window.berkelium
       .writeAppSettings(newSettings)
-      .then(() => this.initModelCard())
+      .then(() => {
+        this.isDownloaded = false;
+        this.progressBars = [];
+        this.progressData = {};
+      })
       .catch((reason) => console.error(reason));
   }
 }

@@ -1,8 +1,9 @@
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'berkeliumlabs-model-item',
-  imports: [],
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './model-item.component.html',
   styleUrl: './model-item.component.scss'
 })

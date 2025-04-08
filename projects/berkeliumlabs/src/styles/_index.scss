@@ -1,3 +1,4 @@
+/* Components */
 @use "./components/form-controls";
 @use "./components/button";
 @use "./components/typography";
@@ -6,3 +7,7 @@
 @use "./components/dialog";
 @use "./components/progress";
 @use "./components/accordion";
+
+/* Layout */
+@use "./layout/responsive";
+@use "./layout/grid";

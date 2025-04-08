@@ -28,8 +28,10 @@ export class ModelCardComponent implements OnInit {
       this.isDownloading = true;
     }
 
-    this.progressBars = this._stateManager.progressBars();
-    this.progressData = this._stateManager.progressData();
+    if (this._stateManager.downloadingModelId() == this.modelData.modelId) {
+      this.progressBars = this._stateManager.progressBars();
+      this.progressData = this._stateManager.progressData();
+    }
 
     window.berkelium
       .readAppSettings()
@@ -38,6 +40,16 @@ export class ModelCardComponent implements OnInit {
           this.settings = settings;
           if (settings.models?.includes(this.modelData.modelId ?? '')) {
             this.isDownloaded = true;
+            if (this.modelData.modelId && settings.modelFiles) {
+              if (settings.modelFiles[this.modelData.modelId]) {
+                this.progressBars =
+                  settings.modelFiles[this.modelData.modelId]?.progressBars ??
+                  this.progressBars;
+                this.progressData =
+                  settings.modelFiles[this.modelData.modelId]?.progressData ??
+                  this.progressData;
+              }
+            }
           }
         }
       })
@@ -53,6 +65,7 @@ export class ModelCardComponent implements OnInit {
       );
       worker.onmessage = ({ data }) => {
         this._stateManager.isDownloading.set(true);
+        this._stateManager.downloadingModelId.set(this.modelData.modelId ?? '');
 
         if (data['status'] == 'initiate') {
           this.progressBars.push(data['file']);
@@ -82,6 +95,7 @@ export class ModelCardComponent implements OnInit {
           this._stateManager.isDownloading.set(false);
           this._stateManager.progressBars.set([]);
           this._stateManager.progressData.set({});
+          this._stateManager.downloadingModelId.set('');
         }
 
         console.log(data, this.progressData);
@@ -164,11 +178,27 @@ export class ModelCardComponent implements OnInit {
       newSettings.models = [this.modelData.modelId ?? ''];
       newSettings.modelData = [this.modelData];
     }
+
+    const modelFiles = {
+      progressBars: this.progressBars,
+      progressData: this.progressData,
+    };
+
+    if (this.modelData.modelId) {
+      if (newSettings.modelFiles) {
+        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
+      } else {
+        newSettings.modelFiles = {};
+        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
+      }
+    }
+
     window.berkelium
       .writeAppSettings(newSettings)
       .then(() => {
         this.isDownloaded = true;
         this.isDownloading = false;
+        console.log('success', this.isDownloaded, this.isDownloading);
       })
       .catch((reason) => console.error(reason));
   }
@@ -183,7 +213,11 @@ export class ModelCardComponent implements OnInit {
     );
     window.berkelium
       .writeAppSettings(newSettings)
-      .then(() => (this.isDownloaded = false))
+      .then(() => {
+        this.isDownloaded = false;
+        this.progressBars = [];
+        this.progressData = {};
+      })
       .catch((reason) => console.error(reason));
   }
 }

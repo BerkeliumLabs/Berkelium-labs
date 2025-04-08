@@ -8,4 +8,5 @@ export class StateManagerService {
   isDownloading = signal<boolean>(false);
   progressBars = signal<string[]>([]);
   progressData = signal<any>({});
+  downloadingModelId = signal<string>('');
 }

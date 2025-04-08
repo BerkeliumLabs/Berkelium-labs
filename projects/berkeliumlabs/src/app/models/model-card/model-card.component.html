@@ -14,19 +14,22 @@
     </div>
 
     <div class="flex gap-2 items-center">
-      <button
-        class="solias-btn solias-btn--success solias-btn--md mr-2"
-        (click)="downloadModel()"
-        [disabled]="isDownloaded"
-      >
-        Download
-      </button>
-      <button
-        class="solias-btn solias-btn--error solias-btn--md mr-2"
-        (click)="deleteModel()"
-      >
-        Delete
-      </button>
+      @if (isDownloaded) {
+        <button
+          class="solias-btn solias-btn--error solias-btn--md mr-2"
+          (click)="deleteModel()"
+        >
+          Delete
+        </button>
+      } @else {
+        <button
+          class="solias-btn solias-btn--success solias-btn--md mr-2"
+          (click)="downloadModel()"
+          [disabled]="isDownloading"
+        >
+          Download
+        </button>
+      }
     </div>
   </div>
 
@@ -63,25 +66,27 @@
         }
       </div>
     </div>
-    @for (bar of progressBars; track $index) { @if (progressData[bar]) {
-    <div class="flex flex-col gap-2 bg-gray-700 rounded p-4 mb-3">
-      <div class="flex justify-between items-center">
-        <h5>{{ progressData[bar]["file"] ?? "Unnamed" }}</h5>
+    <div class="mt-4">
+      @for (bar of progressBars; track $index) { @if (progressData[bar]) {
+      <div class="flex flex-col gap-2 bg-gray-700 rounded p-4 mb-3">
+        <div class="flex justify-between items-center">
+          <h5>{{ progressData[bar]["file"] ?? "Unnamed" }}</h5>
+          @if(progressData[bar]["status"] == "progress") {
+          <p>{{ roundOffProgress(progressData[bar]["progress"]) }}%</p>
+          }
+        </div>
+        <progress
+          [max]="100"
+          [value]="roundOffProgress(progressData[bar]['progress'])"
+        ></progress>
         @if(progressData[bar]["status"] == "progress") {
-        <p>{{ roundOffProgress(progressData[bar]["progress"]) }}%</p>
+        <p class="text-sm">
+          {{ formatBytes(progressData[bar]["loaded"]) }} /
+          {{ formatBytes(progressData[bar]["total"]) }}
+        </p>
         }
       </div>
-      <progress
-        [max]="100"
-        [value]="roundOffProgress(progressData[bar]['progress'])"
-      ></progress>
-      @if(progressData[bar]["status"] == "progress") {
-      <p class="text-sm">
-        {{ formatBytes(progressData[bar]["loaded"]) }} /
-        {{ formatBytes(progressData[bar]["total"]) }}
-      </p>
-      }
+      } }
     </div>
-    } }
   </div>
 </div>

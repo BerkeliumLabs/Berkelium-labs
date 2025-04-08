@@ -6,4 +6,6 @@ import { Injectable, Signal, signal } from '@angular/core';
 export class StateManagerService {
   selectedModel = signal<BkHuggingfaceModelData>({});
   isDownloading = signal<boolean>(false);
+  progressBars = signal<string[]>([]);
+  progressData = signal<any>({});
 }

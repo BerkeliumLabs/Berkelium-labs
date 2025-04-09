@@ -15,7 +15,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
     }
   ],
   templateUrl: './dropdown.component.html',
-  styles: []
+  styleUrls: ['./dropdown.component.scss']
 })
 export class DropdownComponent implements OnInit, ControlValueAccessor {
   @Input() options: BkDropdownOptions[] = [];

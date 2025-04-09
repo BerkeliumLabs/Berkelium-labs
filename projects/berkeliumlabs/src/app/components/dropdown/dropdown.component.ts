@@ -14,72 +14,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
       multi: true
     }
   ],
-  template: `
-    <div class="relative w-full">
-      <!-- Selected Value Display -->
-      <div 
-        #selectTrigger
-        class="flex items-center justify-between w-full px-4 py-2 bg-white border rounded-md shadow-sm cursor-pointer hover:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        [class.border-gray-300]="!disabled"
-        [class.border-gray-200]="disabled"
-        [class.bg-gray-50]="disabled"
-        [class.cursor-not-allowed]="disabled"
-        (click)="togglePopover()"
-        [attr.aria-expanded]="isOpen"
-        [attr.aria-controls]="'popover-' + id"
-        [attr.aria-disabled]="disabled"
-        role="combobox">
-        <span class="block truncate" [class.text-gray-500]="disabled">
-          {{ selectedValue ? selectedValue.label : placeholder }}
-        </span>
-        <span class="material-icons" [class.text-gray-400]="!disabled" [class.text-gray-300]="disabled">
-          {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
-        </span>
-      </div>
-
-      <!-- Popover Dropdown -->
-      <div
-        #popoverElement
-        id="popover-{{ id }}"
-        popover
-        [attr.anchor]="selectTrigger"
-        class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg"
-        [class.hidden]="!isOpen">
-        
-        <!-- Search Box -->
-        <div class="sticky top-0 p-2 bg-white border-b border-gray-200">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <span class="material-icons text-gray-400 text-sm">search</span>
-            </span>
-            <input
-              type="text"
-              class="w-full py-2 pl-10 pr-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Search options..."
-              [(ngModel)]="searchTerm"
-              (input)="filterOptions()"
-              (click)="$event.stopPropagation()"
-              [attr.aria-label]="'Search ' + placeholder">
-          </div>
-        </div>
-        
-        <!-- Options List -->
-        <div class="max-h-60 overflow-auto py-1">
-          <div
-            *ngFor="let option of filteredOptions"
-            class="px-4 py-2 cursor-pointer hover:bg-indigo-100"
-            [class.bg-indigo-100]="isSelected(option)"
-            (click)="BkDropdownOptions(option)"
-            [attr.aria-selected]="isSelected(option)">
-            {{ option.label }}
-          </div>
-          <div *ngIf="filteredOptions.length === 0" class="px-4 py-2 text-gray-500 italic">
-            No options found
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
+  templateUrl: './dropdown.component.html',
   styles: []
 })
 export class DropdownComponent implements OnInit, ControlValueAccessor {
@@ -163,7 +98,7 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
     }
   }
   
-  BkDropdownOptions(option: BkDropdownOptions): void {
+  selectOption(option: BkDropdownOptions): void {
     this.selectedValue = option;
     this.onChange(option.id); // Notify form about value change
     this.onTouched(); // Mark as touched

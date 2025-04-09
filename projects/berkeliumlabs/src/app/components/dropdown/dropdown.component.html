@@ -1,4 +1,4 @@
-<div class="cursor-pointer w-full">
+<div class="relative cursor-pointer w-full">
   <!-- Selected Value Display -->
   <div
     #selectTrigger
@@ -38,7 +38,6 @@
           [(ngModel)]="searchTerm"
           (input)="filterOptions()"
           (click)="$event.stopPropagation()"
-          [attr.aria-label]="'Search ' + placeholder"
         />
         <span
           class="absolute inset-y-0 right-3 flex items-center pl-3 pointer-events-none"

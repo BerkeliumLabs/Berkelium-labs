@@ -5,5 +5,5 @@
 #bk_dropdown_popover {
   position-anchor: --bk_dropdown;
   top: anchor(--bk_dropdown bottom);
-  right: anchor(--bk_dropdown right);
+  left: anchor(--bk_dropdown left);
 }

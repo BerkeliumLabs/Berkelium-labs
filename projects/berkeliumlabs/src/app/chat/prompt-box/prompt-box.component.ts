@@ -24,6 +24,6 @@ export class PromptBoxComponent implements OnInit {
 
   sendPrompt(): void {
     this.promptSend.emit(this.promptBoxForm.value);
-    console.log('Message sent', this.promptBoxForm.value);
+    this.promptBoxForm.reset();
   }
 }

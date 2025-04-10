@@ -2,14 +2,21 @@
   <div class="flex-grow flex flex-col h-dvh overflow-y-auto p-2">
     <!-- Chat Area -->
     <div class="flex-grow overflow-y-auto w-full">
-      <berkeliumlabs-chat-bubble></berkeliumlabs-chat-bubble>
+      @for (message of messageThread; track $index) {
+        <berkeliumlabs-chat-bubble
+          [role]="message.role"
+          [model]="promptSettings.model"
+          [message]="message.message"
+        ></berkeliumlabs-chat-bubble>
+      }
     </div>
     <berkeliumlabs-prompt-box
       (promptSend)="onPromptChanged($event)"
     ></berkeliumlabs-prompt-box>
   </div>
+  <!-- Prompt Settings Area -->
   <div
-    class="w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
+    class="!w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
   >
     <berkeliumlabs-prompt-settings
       [availableModels]="availableModels"

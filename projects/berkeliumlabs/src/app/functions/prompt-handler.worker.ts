@@ -1,6 +1,8 @@
 /// <reference lib="webworker" />
 
-import { pipeline } from "@huggingface/transformers";
+import { env, pipeline } from "@huggingface/transformers";
+
+env.allowLocalModels = true;
 
 addEventListener('message', async ({ data }) => {
   console.log('Chat received', data);
@@ -8,7 +10,7 @@ addEventListener('message', async ({ data }) => {
     const generator = await pipeline(
       "text-generation",
       data['model'],
-      { dtype: 'q4', progress_callback: generatorProgress }
+      { dtype: 'q4', progress_callback: generatorProgress, local_files_only: true }
     );
     const text = `System: ${data['systemPrompt']}\nUser: ${data['prompt']}\nAssistant: `;
     const response = await generator(text, {

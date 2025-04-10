@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { LayoutService } from '../layout.service';
 import { Router } from '@angular/router';
 import {
@@ -8,6 +8,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { StateManagerService } from '../../services/state-manager.service';
+import { BkChat } from '../../chat/chat.component';
 
 @Component({
   selector: 'berkeliumlabs-navbar',
@@ -22,12 +24,20 @@ import {
     ]),
   ],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   private _layoutService = inject(LayoutService);
   private router = inject(Router);
+  private stateManager = inject(StateManagerService);
 
   themeMode: 'light' | 'dark' = 'light';
   isCollapsed = false;
+  chats: Signal<BkChat[]> = computed(() => {
+    return this.stateManager.chats();
+  });
+
+  ngOnInit(): void {
+    
+  }
 
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;

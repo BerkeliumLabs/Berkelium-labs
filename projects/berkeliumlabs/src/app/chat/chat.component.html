@@ -9,6 +9,14 @@
           [message]="message.message"
         ></berkeliumlabs-chat-bubble>
       }
+      @if(isLoading) {
+        <berkeliumlabs-skeleton></berkeliumlabs-skeleton>
+      }
+      @if(isError) {
+        <p class="px-4 bg-red-400 !text-white dark:bg-red-800 rounded mt-2">
+          {{ errorMsg }}
+        </p>
+      }
     </div>
     <berkeliumlabs-prompt-box
       (promptSend)="onPromptChanged($event)"

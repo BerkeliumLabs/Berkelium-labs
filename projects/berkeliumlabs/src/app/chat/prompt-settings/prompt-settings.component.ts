@@ -24,7 +24,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class PromptSettingsComponent implements OnInit {
   @Input() availableModels: BkDropdownOptions[] = [];
-  @Output() settingsChanged = new EventEmitter<any>();
+  @Output() settingsChanged = new EventEmitter<BkPromptSettings>();
 
   private formDestroyRef = inject(DestroyRef);
   private formUnsubscribe = new Subject<void>();
@@ -46,7 +46,9 @@ export class PromptSettingsComponent implements OnInit {
       model: new FormControl(defaultValue, [Validators.required]),
       temperature: new FormControl(1.0, [Validators.required]),
       topK: new FormControl(50, [Validators.required]),
-      systemPrompt: new FormControl('You are a helpful assistant.', [Validators.required]),
+      systemPrompt: new FormControl('You are a helpful assistant.', [
+        Validators.required,
+      ]),
     });
 
     this.promptSettingsForm.valueChanges
@@ -62,5 +64,14 @@ export class PromptSettingsComponent implements OnInit {
       this.formUnsubscribe.complete();
       // Any other cleanup logic here
     });
+
+    this.settingsChanged.emit(this.promptSettingsForm.value);
   }
+}
+
+export interface BkPromptSettings {
+  model: string;
+  temperature: number;
+  topK: number;
+  systemPrompt: string;
 }

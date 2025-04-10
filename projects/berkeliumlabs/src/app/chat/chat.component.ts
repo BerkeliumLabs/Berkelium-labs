@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
 import { PromptBoxComponent } from './prompt-box/prompt-box.component';
-import { PromptSettingsComponent } from './prompt-settings/prompt-settings.component';
+import { BkPromptSettings, PromptSettingsComponent } from './prompt-settings/prompt-settings.component';
 import { TextGenerationOutput } from '@huggingface/transformers';
+import { SkeletonComponent } from "../components/skeleton/skeleton.component";
 
 @Component({
   selector: 'berkeliumlabs-chat',
-  imports: [ChatBubbleComponent, PromptBoxComponent, PromptSettingsComponent],
+  imports: [ChatBubbleComponent, PromptBoxComponent, PromptSettingsComponent, SkeletonComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
 export class ChatComponent implements OnInit {
   settings!: BkAppSettings;
   availableModels: BkDropdownOptions[] = [];
-  promptSettings: any;
+  promptSettings!: BkPromptSettings;
   messageThread: BkMessage[] = [];
+  isLoading = false;
+  isError = false;
+  errorMsg = 'Error!';
 
   ngOnInit(): void {
     this.initChat();
@@ -48,33 +52,43 @@ export class ChatComponent implements OnInit {
   }
 
   onPromptChanged(event: any): void {
-    this.messageThread.push({ role: 'you', message: event['prompt'] });
-    if (typeof Worker !== 'undefined') {
-      const worker = new Worker(
-        new URL('../functions/prompt-handler.worker', import.meta.url)
-      );
-      worker.onmessage = ({ data }) => {
-        console.log('Response: ', data);
-        const response: BkAIResponse | BkAIResponse[] = data;
-        let message = '';
-        if (Array.isArray(response)) {
-          response.forEach((item) => {
-            message += item['generated_text'];
-          });
-        } else {
-          message = response['generated_text'];
-        }
-        this.messageThread.push({ role: 'assistant', message: this.refineResponse(message) });
-      };
-
-      const data = {
-        prompt: event['prompt'],
-        ...this.promptSettings,
-      };
-      worker.postMessage(data);
+    if (this.promptSettings.model) {
+      this.isError = false;
+      this.messageThread.push({ role: 'you', message: event['prompt'] });
+      if (typeof Worker !== 'undefined') {
+        const worker = new Worker(
+          new URL('../functions/prompt-handler.worker', import.meta.url)
+        );
+  
+        this.isLoading = true;
+  
+        worker.onmessage = ({ data }) => {
+          console.log('Response: ', data);
+          const response: BkAIResponse | BkAIResponse[] = data;
+          let message = '';
+          if (Array.isArray(response)) {
+            response.forEach((item) => {
+              message += item['generated_text'];
+            });
+          } else {
+            message = response['generated_text'];
+          }
+          this.messageThread.push({ role: 'assistant', message: this.refineResponse(message) });
+          this.isLoading = false;
+        };
+  
+        const data = {
+          prompt: event['prompt'],
+          ...this.promptSettings,
+        };
+        worker.postMessage(data);
+      } else {
+        this.isError = true;
+        this.errorMsg = "Web workers are not supported in this environment."
+      }
     } else {
-      // Web workers are not supported in this environment.
-      // You should add a fallback so that your program still executes correctly.
+      this.isError = true;
+      this.errorMsg = 'No model selected! Please select a model.';
     }
   }
 

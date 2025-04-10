@@ -1,6 +1,6 @@
 <form
   class="flex flex-col h-28 w-full border border-gray-400 dark:border-gray-800 rounded-lg"
-  [formGroup]="msgBoxForm"
+  [formGroup]="promptBoxForm"
 >
   <textarea
     class="flex-grow !bg-transparent resize-none border-none"
@@ -13,7 +13,7 @@
     <button
       class="solias-btn solias-btn--primary solias-btn--sm flex justify-center items-center"
       (click)="sendPrompt()"
-      [disabled]="msgBoxForm.invalid"
+      [disabled]="promptBoxForm.invalid"
     >
       <span class="material-icons !text-sm" title="send">send</span>
     </button>

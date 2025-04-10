@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
-import { MessageBoxComponent } from './message-box/message-box.component';
+import { PromptBoxComponent } from './prompt-box/prompt-box.component';
 import { PromptSettingsComponent } from './prompt-settings/prompt-settings.component';
 
 @Component({
   selector: 'berkeliumlabs-chat',
-  imports: [ChatBubbleComponent, MessageBoxComponent, PromptSettingsComponent],
+  imports: [ChatBubbleComponent, PromptBoxComponent, PromptSettingsComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })

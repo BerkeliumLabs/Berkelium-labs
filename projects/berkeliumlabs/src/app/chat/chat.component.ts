@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { DropdownComponent } from "../components/dropdown/dropdown.component";
-import { ChatBubbleComponent } from "./chat-bubble/chat-bubble.component";
-import { MessageBoxComponent } from "./message-box/message-box.component";
+import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
+import { MessageBoxComponent } from './message-box/message-box.component';
+import { PromptSettingsComponent } from './prompt-settings/prompt-settings.component';
 
 @Component({
   selector: 'berkeliumlabs-chat',
-  imports: [DropdownComponent, ChatBubbleComponent, MessageBoxComponent],
+  imports: [ChatBubbleComponent, MessageBoxComponent, PromptSettingsComponent],
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.scss'
+  styleUrl: './chat.component.scss',
 })
 export class ChatComponent implements OnInit {
   settings!: BkAppSettings;
   availableModels: BkDropdownOptions[] = [];
 
   ngOnInit(): void {
-    this.initChat()
+    this.initChat();
   }
 
   initChat(): void {
@@ -27,7 +27,7 @@ export class ChatComponent implements OnInit {
             settings.models.forEach((model) => {
               const modelOption: BkDropdownOptions = {
                 id: model,
-                label: model
+                label: model,
               };
 
               this.availableModels.push(modelOption);

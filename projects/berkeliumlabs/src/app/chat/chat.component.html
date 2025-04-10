@@ -4,11 +4,16 @@
     <div class="flex-grow overflow-y-auto w-full">
       <berkeliumlabs-chat-bubble></berkeliumlabs-chat-bubble>
     </div>
-    <berkeliumlabs-prompt-box></berkeliumlabs-prompt-box>
+    <berkeliumlabs-prompt-box
+      (promptSend)="onPromptChanged($event)"
+    ></berkeliumlabs-prompt-box>
   </div>
   <div
     class="w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
   >
-    <berkeliumlabs-prompt-settings [availableModels]="availableModels"></berkeliumlabs-prompt-settings>
+    <berkeliumlabs-prompt-settings
+      [availableModels]="availableModels"
+      (settingsChanged)="onSettingsChanged($event)"
+    ></berkeliumlabs-prompt-settings>
   </div>
 </div>

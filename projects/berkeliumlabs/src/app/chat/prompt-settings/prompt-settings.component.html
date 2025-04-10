@@ -1,7 +1,47 @@
-<form [formGroup]="promptSettingsForm">
-  <berkeliumlabs-dropdown
-    [options]="availableModels"
-    placeholder="Select a model"
-    formControlName="model"
-  ></berkeliumlabs-dropdown>
-</form>
+<div class="flex flex-col h-dvh">
+  <h6 class="pb-2 border-b border-gray-400 dark:border-gray-800">
+    Lab Settings
+  </h6>
+  <form
+    [formGroup]="promptSettingsForm"
+    class="berkelium__grid flexflex-grow overflow-y-auto mt-4"
+  >
+    <div class="cell-12">
+      <label>Model</label>
+      <berkeliumlabs-dropdown
+        [options]="availableModels"
+        placeholder="Select a model"
+        formControlName="model"
+      ></berkeliumlabs-dropdown>
+    </div>
+    <div class="cell-12">
+      <label for="temp">Temperature</label>
+      <input
+        type="number"
+        name="temperature"
+        id="temp"
+        placeholder="Temperature"
+        formControlName="temperature"
+      />
+    </div>
+    <div class="cell-12">
+      <label for="top-k">Top K</label>
+      <input
+        type="number"
+        name="top_k"
+        id="top-k"
+        placeholder="Top K"
+        formControlName="topK"
+      />
+    </div>
+    <div class="cell-12">
+      <label for="sys-prompt">System Prompt</label>
+      <textarea
+        name="system-prompt"
+        id="sys-prompt"
+        placeholder="System Prompt"
+        formControlName="systemPrompt"
+      ></textarea>
+    </div>
+  </form>
+</div>

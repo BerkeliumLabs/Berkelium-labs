@@ -10,14 +10,14 @@ addEventListener('message', async ({ data }) => {
       data['model'],
       { dtype: 'q4', progress_callback: generatorProgress }
     );
-    const text = `System: You are a helpful assistant.\nUser: ${data['prompt']}\nAssistant: `;
+    const text = `System: ${data['systemPrompt']}\nUser: ${data['prompt']}\nAssistant: `;
     const response = await generator(text, {
-      temperature: 2,
-      max_new_tokens: 1000,
+      temperature: data['temperature'],
       repetition_penalty: 1.5,
       no_repeat_ngram_size: 2,
       num_beams: 2,
       num_return_sequences: 2,
+      top_k: data['topK'],
     });
 
     postMessage(response);

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DropdownComponent } from "../components/dropdown/dropdown.component";
+import { ChatBubbleComponent } from "./chat-bubble/chat-bubble.component";
 
 @Component({
   selector: 'berkeliumlabs-chat',
-  imports: [DropdownComponent],
+  imports: [DropdownComponent, ChatBubbleComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })

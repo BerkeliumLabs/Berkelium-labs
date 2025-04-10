@@ -26,7 +26,7 @@
   <div
     #popoverElement
     popover
-    class="z-10 mt-1 bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white text-sm rounded-md"
+    class="z-10 mt-1 bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white text-sm rounded-md overflow-x-hidden"
     id="bk_dropdown_popover"
   >
     <!-- Search Box -->
@@ -48,11 +48,11 @@
     </div>
 
     <!-- Options List -->
-    <div class="max-h-60 overflow-auto py-1">
+    <div class="max-h-60 py-1 overflow-x-hidden">
       @if (filteredOptions.length > 0) { @for (option of filteredOptions; track
       $index) {
       <div
-        class="px-4 py-2 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-500"
+        class="px-4 py-2 cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-500 overflow-hidden text-ellipsis whitespace-nowrap"
         [class.bg-primary-100]="isSelected(option)"
         [class.dark:bg-primary-500]="isSelected(option)"
         (click)="selectOption(option)"
@@ -60,7 +60,7 @@
         {{ option.label }}
       </div>
       } } @else {
-      <div class="px-4 py-2 text-gray-500 italic">No models found</div>
+      <span class="px-4 py-2 text-gray-500 italic">No models found</span>
       }
     </div>
   </div>

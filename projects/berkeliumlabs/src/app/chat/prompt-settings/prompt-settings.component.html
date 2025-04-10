@@ -1,6 +1,7 @@
-<form>
+<form [formGroup]="promptSettingsForm">
   <berkeliumlabs-dropdown
     [options]="availableModels"
     placeholder="Select a model"
+    formControlName="model"
   ></berkeliumlabs-dropdown>
 </form>

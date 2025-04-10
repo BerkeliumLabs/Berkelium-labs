@@ -16,9 +16,9 @@ import {
   styleUrl: './navbar.component.scss',
   animations: [
     trigger('toggle', [
-      state('true', style({ opacity: 1, width: 'auto' })),
-      state('false', style({ opacity: 0, width: 0 })),
-      transition('false <=> true', animate('1000ms ease-in-out'))
+      state('true', style({ opacity: 1, width: 'auto', overflow: 'hidden' })),
+      state('false', style({ opacity: 0, width: 0, overflow: 'hidden' })),
+      transition('false <=> true', animate('500ms ease-in-out')),
     ]),
   ],
 })

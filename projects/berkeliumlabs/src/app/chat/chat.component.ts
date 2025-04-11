@@ -1,4 +1,10 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
 import { PromptBoxComponent } from './prompt-box/prompt-box.component';
 import {
@@ -23,7 +29,7 @@ import { IndexedDBService } from '../services/indexed-db.service';
 })
 export class ChatComponent implements OnInit {
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
-  
+
   private activatedRoute = inject(ActivatedRoute);
   private stateManager = inject(StateManagerService);
   private _dbService = inject(IndexedDBService);
@@ -46,10 +52,12 @@ export class ChatComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.chatId = params['chatId'];
       if (this.chatId && this.chatId !== 'new') {
-        this._dbService.getByKey<BkChat>('chats', this.chatId).subscribe((chat) => {
-          this.chatItem = chat;
-          this.messageThread = this.chatItem?.messages ?? [];
-        });
+        this._dbService
+          .getByKey<BkChat>('chats', this.chatId)
+          .subscribe((chat) => {
+            this.chatItem = chat;
+            this.messageThread = this.chatItem?.messages ?? [];
+          });
       } else {
         this.chatItem = {
           id: Date.now().toString(),
@@ -92,9 +100,8 @@ export class ChatComponent implements OnInit {
         const worker = new Worker(
           new URL('../functions/prompt-handler.worker', import.meta.url)
         );
-        
+
         this.isLoading = true;
-        this.scrollToBottom();
 
         worker.onmessage = ({ data }) => {
           console.log('Response: ', data);
@@ -122,7 +129,11 @@ export class ChatComponent implements OnInit {
           prompt: event['prompt'],
           ...this.promptSettings,
         };
-        worker.postMessage(data);
+
+        setTimeout(() => {
+          this.scrollToBottom();     
+          worker.postMessage(data);
+        }, 100);
       } else {
         this.isError = true;
         this.errorMsg = 'Web workers are not supported in this environment.';
@@ -152,31 +163,23 @@ export class ChatComponent implements OnInit {
       .chats()
       .findIndex((chat) => chat.id === this.chatItem?.id);
     if (index !== -1 && this.chatItem) {
-      this._dbService.update(
-        'chats',
-        this.chatItem,
-        this.chatItem?.id
-      );
+      this._dbService.update('chats', this.chatItem, this.chatItem?.id);
     } else {
       if (this.chatItem) {
         this.stateManager.addChat({
           id: this.chatItem.id,
           message: this.messageThread[0].message,
         });
-        this._dbService.add(
-          'chats',
-          this.chatItem,
-          this.chatItem?.id
-        );
+        this._dbService.add('chats', this.chatItem, this.chatItem?.id);
       }
     }
   }
 
   private scrollToBottom(): void {
+    const msgContainer = this.chatContainer.nativeElement as HTMLDivElement;
     try {
-      this.chatContainer.nativeElement.scrollTop = 
-        this.chatContainer.nativeElement.scrollHeight + 100;
-    } catch(err) { 
+      msgContainer.scrollTop = msgContainer.scrollHeight + 150;
+    } catch (err) {
       console.error(err);
     }
   }

@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { StateManagerService } from '../../services/state-manager.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { IndexedDBService } from '../../services/indexed-db.service';
 
 @Component({
   selector: 'berkeliumlabs-model-card',
@@ -11,6 +12,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 })
 export class ModelCardComponent implements OnInit {
   private _stateManager = inject(StateManagerService);
+  private _dbService = inject(IndexedDBService);
+
   modelData!: BkHuggingfaceModelData;
   progressData: any = {};
   progressBars: any[] = [];
@@ -33,29 +36,24 @@ export class ModelCardComponent implements OnInit {
       this.progressData = this._stateManager.progressData();
     }
 
-    window.berkelium
-      .readAppSettings()
-      .then((settings) => {
-        if (settings) {
-          this.settings = settings;
-          if (settings.models?.includes(this.modelData.modelId ?? '')) {
-            this.isDownloaded = true;
-            if (this.modelData.modelId && settings.modelFiles) {
-              if (settings.modelFiles[this.modelData.modelId]) {
-                this.progressBars =
-                  settings.modelFiles[this.modelData.modelId]?.progressBars ??
-                  this.progressBars;
-                this.progressData =
-                  settings.modelFiles[this.modelData.modelId]?.progressData ??
-                  this.progressData;
+    this._dbService.getAll<string>('models').subscribe((models) => {
+      if (models?.includes(this.modelData.modelId ?? '')) {
+        this.isDownloaded = true;
+
+        this._dbService
+          .getByKey('modelFiles', this.modelData.modelId ?? '')
+          .subscribe({
+            next: (data: any) => {
+              if (data) {
+                this.progressBars = data['progressBars'] ?? this.progressBars;
+                this.progressData = data['progressData'] ?? this.progressData;
               }
-            }
-          }
-        }
-      })
-      .catch((reason) => {
-        console.error(reason);
-      });
+            },
+            error: (error) => console.error(error),
+          });
+      }
+      console.log('Model data: ', models);
+    });
   }
 
   downloadModel() {
@@ -87,6 +85,7 @@ export class ModelCardComponent implements OnInit {
             });
             this.saveModelData();
           } else {
+            this.isDownloading = false;
             window.berkelium.showNotification({
               title: 'Model download Failed!',
               body: `${this.modelData.modelId} model download failed.`,
@@ -170,54 +169,88 @@ export class ModelCardComponent implements OnInit {
   }
 
   private saveModelData() {
-    const newSettings = this.settings;
-    if (newSettings.models && newSettings.modelData) {
-      newSettings.models.push(this.modelData.modelId ?? '');
-      newSettings.modelData.push(this.modelData);
-    } else {
-      newSettings.models = [this.modelData.modelId ?? ''];
-      newSettings.modelData = [this.modelData];
-    }
+    this._dbService
+      .getByKey('modelData', this.modelData.modelId ?? '')
+      .subscribe({
+        next: (modelData) => {
+          if (!modelData) {
+            this._dbService.add(
+              'modelData',
+              this.modelData,
+              this.modelData.modelId ?? ''
+            );
+          }
+        },
+        error: (error) => console.error(error),
+      });
 
-    const modelFiles = {
-      progressBars: this.progressBars,
-      progressData: this.progressData,
-    };
+    this._dbService.getByKey('models', this.modelData.modelId ?? '').subscribe({
+      next: (modelData) => {
+        if (!modelData) {
+          this._dbService.add(
+            'models',
+            this.modelData.modelId,
+            this.modelData.modelId ?? ''
+          );
+        }
+      },
+      error: (error) => console.error(error),
+    });
 
-    if (this.modelData.modelId) {
-      if (newSettings.modelFiles) {
-        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
-      } else {
-        newSettings.modelFiles = {};
-        newSettings.modelFiles[this.modelData.modelId] = modelFiles;
-      }
-    }
-
-    window.berkelium
-      .writeAppSettings(newSettings)
-      .then(() => {
-        this.isDownloaded = true;
-        this.isDownloading = false;
-        console.log('success', this.isDownloaded, this.isDownloading);
-      })
-      .catch((reason) => console.error(reason));
+    this._dbService
+      .getByKey('modelFiles', this.modelData.modelId ?? '')
+      .subscribe({
+        next: (data) => {
+          if (!data) {
+            const modelFiles = {
+              progressBars: this.progressBars,
+              progressData: this.progressData,
+            };
+            this._dbService.add(
+              'modelFiles',
+              modelFiles,
+              this.modelData.modelId ?? ''
+            );
+          }
+        },
+        error: (error) => console.error(error),
+      });
   }
 
   private deleteModelData() {
-    const newSettings = this.settings;
-    newSettings.models = newSettings.models?.filter(
-      (id) => id != this.modelData.modelId
-    );
-    newSettings.modelData = newSettings.modelData?.filter(
-      (model) => model.modelId != this.modelData.modelId
-    );
-    window.berkelium
-      .writeAppSettings(newSettings)
-      .then(() => {
-        this.isDownloaded = false;
-        this.progressBars = [];
-        this.progressData = {};
-      })
-      .catch((reason) => console.error(reason));
+    this._dbService
+      .getByKey('modelData', this.modelData.modelId ?? '')
+      .subscribe({
+        next: (modelData) => {
+          if (modelData) {
+            this._dbService.delete('modelData', this.modelData.modelId ?? '');
+          }
+        },
+        error: (error) => console.error(error),
+      });
+
+    this._dbService.getByKey('models', this.modelData.modelId ?? '').subscribe({
+      next: (modelData) => {
+        if (modelData) {
+          this._dbService.delete('models', this.modelData.modelId ?? '');
+        }
+      },
+      error: (error) => console.error(error),
+    });
+
+    this._dbService
+      .getByKey('modelFiles', this.modelData.modelId ?? '')
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            this._dbService.delete('modelFiles', this.modelData.modelId ?? '');
+          }
+        },
+        error: (error) => console.error(error),
+      });
+
+    this.isDownloaded = false;
+    this.progressBars = [];
+    this.progressData = {};
   }
 }

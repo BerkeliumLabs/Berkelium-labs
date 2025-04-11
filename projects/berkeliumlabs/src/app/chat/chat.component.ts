@@ -8,6 +8,7 @@ import {
 import { SkeletonComponent } from '../components/skeleton/skeleton.component';
 import { ActivatedRoute } from '@angular/router';
 import { StateManagerService } from '../services/state-manager.service';
+import { IndexedDBService } from '../services/indexed-db.service';
 
 @Component({
   selector: 'berkeliumlabs-chat',
@@ -23,6 +24,7 @@ import { StateManagerService } from '../services/state-manager.service';
 export class ChatComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private stateManager = inject(StateManagerService);
+  private _dbService = inject(IndexedDBService);
 
   chatId!: string;
   settings!: BkAppSettings;
@@ -55,26 +57,18 @@ export class ChatComponent implements OnInit {
       console.log('Route Parameters:', this.chatId, this.messageThread, this.chatItem);
     });
 
-    window.berkelium
-      .readAppSettings()
-      .then((settings) => {
-        if (settings) {
-          this.settings = settings;
-          if (settings.models) {
-            settings.models.forEach((model) => {
-              const modelOption: BkDropdownOptions = {
-                id: model,
-                label: model,
-              };
+    this._dbService.getAll<string>('models').subscribe((models) => {
+      if (models) {
+        models.forEach((model) => {
+          const modelOption: BkDropdownOptions = {
+            id: model,
+            label: model,
+          };
 
-              this.availableModels.push(modelOption);
-            });
-          }
-        }
-      })
-      .catch((reason) => {
-        console.error(reason);
-      });
+          this.availableModels.push(modelOption);
+        });
+      }
+    });
   }
 
   onSettingsChanged(event: any): void {

@@ -10,6 +10,7 @@ import {
 } from '@angular/animations';
 import { StateManagerService } from '../../services/state-manager.service';
 import { BkChat } from '../../chat/chat.component';
+import { IndexedDBService } from '../../services/indexed-db.service';
 
 @Component({
   selector: 'berkeliumlabs-navbar',
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit {
   private _layoutService = inject(LayoutService);
   private router = inject(Router);
   private stateManager = inject(StateManagerService);
+  private _dbService = inject(IndexedDBService);
 
   themeMode: 'light' | 'dark' = 'light';
   isCollapsed = false;
@@ -36,7 +38,15 @@ export class NavbarComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    
+    this.initNavbar();
+  }
+
+  private initNavbar(): void {
+    this._dbService.getAll<BkChat>('chats').subscribe((chats) => {
+      if (chats) {
+        this.stateManager.chats.set(chats);
+      }
+    });
   }
 
   toggleSidebar(): void {

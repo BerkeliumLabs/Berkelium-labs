@@ -5,7 +5,7 @@
       @for (message of messageThread; track $index) {
         <berkeliumlabs-chat-bubble
           [role]="message.role"
-          [model]="promptSettings.model"
+          [model]="message.model ?? ''"
           [message]="message.message"
         ></berkeliumlabs-chat-bubble>
       }

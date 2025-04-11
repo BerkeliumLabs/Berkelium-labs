@@ -54,7 +54,12 @@ export class ChatComponent implements OnInit {
           messages: [],
         };
       }
-      console.log('Route Parameters:', this.chatId, this.messageThread, this.chatItem);
+      console.log(
+        'Route Parameters:',
+        this.chatId,
+        this.messageThread,
+        this.chatItem
+      );
     });
 
     this._dbService.getAll<string>('models').subscribe((models) => {
@@ -100,6 +105,7 @@ export class ChatComponent implements OnInit {
           this.messageThread.push({
             role: 'assistant',
             message: this.refineResponse(message),
+            model: this.promptSettings.model,
           });
           this.isLoading = false;
           if (this.chatItem) this.chatItem.messages = this.messageThread;
@@ -141,8 +147,20 @@ export class ChatComponent implements OnInit {
       .findIndex((chat) => chat.id === this.chatId);
     if (index !== -1) {
       this.stateManager.chats()[index].messages = this.messageThread;
+      this._dbService.update(
+        'chats',
+        this.chatItem,
+        this.chatId
+      );
     } else {
-      if (this.chatItem) this.stateManager.chats().push(this.chatItem);
+      if (this.chatItem) {
+        this.stateManager.chats().push(this.chatItem);
+        this._dbService.add(
+          'chats',
+          this.chatItem,
+          this.chatItem?.id
+        );
+      }
     }
   }
 }
@@ -150,6 +168,7 @@ export class ChatComponent implements OnInit {
 export interface BkMessage {
   role: 'you' | 'assistant';
   message: string;
+  model?: string;
 }
 
 export interface BkChat {

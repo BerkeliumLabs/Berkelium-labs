@@ -1,7 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import { BerkeliumIPCHandlers } from './modules/ipc-handlers';
+import { createMenu } from './modules/menus';
 
 // Initialize IPC Handlers
 const ipcHandlers = new BerkeliumIPCHandlers();
@@ -45,6 +46,10 @@ const createWindow = () => {
 
    // Open full screen
    mainWindow.maximize();
+
+   // Set min menu
+  const mainMenu = Menu.buildFromTemplate(createMenu(mainWindow));
+  Menu.setApplicationMenu(mainMenu);
 };
 
 // This method will be called when Electron has finished

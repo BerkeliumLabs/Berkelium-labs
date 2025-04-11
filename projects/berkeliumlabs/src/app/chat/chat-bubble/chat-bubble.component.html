@@ -1,0 +1,15 @@
+<div class="mb-4 border-gray-700 border-b border-dashed px-2 py-4">
+  <div class="flex items-center mb-2">
+    <span class="bg-gray-700 text-white rounded-md px-2 py-1 text-sm mr-2">
+      {{ role | titlecase }}
+    </span>
+    @if (role === 'assistant') {
+    <span class="bg-primary-700 text-white rounded-md px-2 py-1 text-sm">
+      {{ model }}
+    </span>
+    }
+  </div>
+  <div class="text-gray-600 dark:text-gray-300 text-justify">
+    {{ message }}
+  </div>
+</div>

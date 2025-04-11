@@ -19,7 +19,7 @@ import { IndexedDBService } from '../../services/indexed-db.service';
   styleUrl: './navbar.component.scss',
   animations: [
     trigger('toggle', [
-      state('true', style({ opacity: 1, width: 'auto', overflow: 'hidden' })),
+      state('true', style({ opacity: 1, width: 'auto' })),
       state('false', style({ opacity: 0, width: 0, overflow: 'hidden' })),
       transition('false <=> true', animate('500ms ease-in-out')),
     ]),
@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
           const item: BkChatHistory = {
             id: chat.id,
             message: chat.messages[0].message,
-          }
+          };
           chatCodes.push(item);
         });
         this.stateManager.chats.set(chatCodes);
@@ -68,6 +68,25 @@ export class NavbarComponent implements OnInit {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+
+  deleteChat(chatId: string): void {
+    this._dbService.delete('chats', chatId);
+    this.stateManager.chats().forEach((chat, index) => {
+      if (chat.id === chatId) {
+        this.stateManager.chats().splice(index, 1);
+      }
+    });
+    if (
+      chatId === this.stateManager.activeChatId() ||
+      this.stateManager.activeChatId() === '' ||
+      this.stateManager.activeChatId() === undefined ||
+      this.stateManager.activeChatId() === 'new'
+    ) {
+      this.stateManager.activeChatId.set('');
+      this.router.navigate(['chat/new']);
+    }
+    console.log(this.stateManager.activeChatId());
   }
 }
 

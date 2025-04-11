@@ -11,5 +11,6 @@ export class StateManagerService {
   progressBars = signal<string[]>([]);
   progressData = signal<any>({});
   downloadingModelId = signal<string>('');
-  chats = signal<BkChatHistory[]>([])
+  chats = signal<BkChatHistory[]>([]);
+  activeChatId = signal<string>('');
 }

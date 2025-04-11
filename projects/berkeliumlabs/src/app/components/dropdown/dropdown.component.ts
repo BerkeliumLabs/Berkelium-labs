@@ -136,15 +136,19 @@ export class DropdownComponent implements OnInit, ControlValueAccessor {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     // Close popover when clicking outside component
-    const clickedElement = event.target as HTMLElement;
-    const insideSelect =
-      this.selectTrigger.nativeElement.contains(clickedElement);
-    const insidePopover =
-      this.popoverElement.nativeElement.contains(clickedElement);
-
-    if (!insideSelect && !insidePopover && this.isOpen) {
-      this.closePopover();
-      this.onTouched(); // Mark as touched when clicking outside
+    try {
+      const clickedElement = event.target as HTMLElement;
+      const insideSelect =
+        this.selectTrigger.nativeElement.contains(clickedElement);
+      const insidePopover =
+        this.popoverElement.nativeElement.contains(clickedElement);
+  
+      if (!insideSelect && !insidePopover && this.isOpen) {
+        this.closePopover();
+        this.onTouched(); // Mark as touched when clicking outside
+      }   
+    } catch (error) {
+      console.warn(error);
     }
   }
 }

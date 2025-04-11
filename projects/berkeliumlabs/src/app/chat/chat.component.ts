@@ -55,6 +55,7 @@ export class ChatComponent implements OnInit {
         };
         this.messageThread = [];
       }
+      this.stateManager.activeChatId.set(this.chatId);
       console.log(
         'Route Parameters:',
         this.chatId,

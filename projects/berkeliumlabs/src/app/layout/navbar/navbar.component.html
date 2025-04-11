@@ -20,15 +20,24 @@
     </div>
   </button>
   <div
-    class="flex-grow overflow-hidden flex flex-col gap-1 my-2 overflow-y-auto"
+    class="flex-grow flex flex-col gap-1 my-2 overflow-y-auto"
     [@toggle]="isCollapsed"
   >
     @for (chat of chats(); track $index) {
     <div
-      class="text-sm hover:bg-gray-100 hover:text-primary-700 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis px-2 py-1 rounded"
-      (click)="navigateTo('chat/' + chat.id)"
+      class="flex items-center justify-between gap-2 hover:bg-gray-100 hover:text-primary-700 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer px-2 py-1 rounded"
     >
-      {{ chat.message }}
+      <div
+        class="text-sm overflow-hidden whitespace-nowrap text-ellipsis"
+        (click)="navigateTo('chat/' + chat.id)"
+      >
+        {{ chat.message }}
+      </div>
+      <span
+        class="material-icons !text-base text-red-700 dark:text-red-400"
+        (click)="deleteChat(chat.id)"
+        >delete</span
+      >
     </div>
     }
   </div>

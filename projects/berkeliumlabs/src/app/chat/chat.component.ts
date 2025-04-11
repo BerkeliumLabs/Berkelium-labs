@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ChatBubbleComponent } from './chat-bubble/chat-bubble.component';
 import { PromptBoxComponent } from './prompt-box/prompt-box.component';
 import {
@@ -22,6 +22,8 @@ import { IndexedDBService } from '../services/indexed-db.service';
   styleUrl: './chat.component.scss',
 })
 export class ChatComponent implements OnInit {
+  @ViewChild('chatContainer') private chatContainer!: ElementRef;
+  
   private activatedRoute = inject(ActivatedRoute);
   private stateManager = inject(StateManagerService);
   private _dbService = inject(IndexedDBService);
@@ -90,8 +92,9 @@ export class ChatComponent implements OnInit {
         const worker = new Worker(
           new URL('../functions/prompt-handler.worker', import.meta.url)
         );
-
+        
         this.isLoading = true;
+        this.scrollToBottom();
 
         worker.onmessage = ({ data }) => {
           console.log('Response: ', data);
@@ -109,6 +112,7 @@ export class ChatComponent implements OnInit {
             message: this.refineResponse(message),
             model: this.promptSettings.model,
           });
+          this.scrollToBottom();
           this.isLoading = false;
           if (this.chatItem) this.chatItem.messages = this.messageThread;
           this.saveChat();
@@ -146,17 +150,16 @@ export class ChatComponent implements OnInit {
   private saveChat() {
     const index = this.stateManager
       .chats()
-      .findIndex((chat) => chat.id === this.chatId);
-    if (index !== -1) {
-      this.stateManager.chats()[index].message = this.messageThread[0].message;
+      .findIndex((chat) => chat.id === this.chatItem?.id);
+    if (index !== -1 && this.chatItem) {
       this._dbService.update(
         'chats',
         this.chatItem,
-        this.chatId
+        this.chatItem?.id
       );
     } else {
       if (this.chatItem) {
-        this.stateManager.chats().push({
+        this.stateManager.addChat({
           id: this.chatItem.id,
           message: this.messageThread[0].message,
         });
@@ -166,6 +169,15 @@ export class ChatComponent implements OnInit {
           this.chatItem?.id
         );
       }
+    }
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.chatContainer.nativeElement.scrollTop = 
+        this.chatContainer.nativeElement.scrollHeight + 100;
+    } catch(err) { 
+      console.error(err);
     }
   }
 }

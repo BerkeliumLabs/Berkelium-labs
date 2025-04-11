@@ -28,7 +28,7 @@
       class="flex items-center justify-between gap-2 hover:bg-gray-100 hover:text-primary-700 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer px-2 py-1 rounded"
     >
       <div
-        class="text-sm overflow-hidden whitespace-nowrap text-ellipsis"
+        class="text-sm overflow-hidden whitespace-nowrap text-ellipsis flex-grow"
         (click)="navigateTo('chat/' + chat.id)"
       >
         {{ chat.message }}

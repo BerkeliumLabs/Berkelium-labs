@@ -1,21 +1,19 @@
 <div class="flex w-full">
   <div class="flex-grow flex flex-col h-dvh overflow-y-auto p-2">
     <!-- Chat Area -->
-    <div class="flex-grow overflow-y-auto w-full">
+    <div class="flex-grow overflow-y-auto w-full" #chatContainer>
       @for (message of messageThread; track $index) {
-        <berkeliumlabs-chat-bubble
-          [role]="message.role"
-          [model]="message.model ?? ''"
-          [message]="message.message"
-        ></berkeliumlabs-chat-bubble>
-      }
-      @if(isLoading) {
-        <berkeliumlabs-skeleton></berkeliumlabs-skeleton>
-      }
-      @if(isError) {
-        <p class="px-4 bg-red-400 !text-white dark:bg-red-800 rounded mt-2">
-          {{ errorMsg }}
-        </p>
+      <berkeliumlabs-chat-bubble
+        [role]="message.role"
+        [model]="message.model ?? ''"
+        [message]="message.message"
+      ></berkeliumlabs-chat-bubble>
+      } @if(isLoading) {
+      <berkeliumlabs-skeleton></berkeliumlabs-skeleton>
+      } @if(isError) {
+      <p class="px-4 bg-red-400 !text-white dark:bg-red-800 rounded mt-2">
+        {{ errorMsg }}
+      </p>
       }
     </div>
     <berkeliumlabs-prompt-box
@@ -26,9 +24,13 @@
   <div
     class="flex-shrink-0 w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
   >
+    @defer (when availableModels.length > 0) {
     <berkeliumlabs-prompt-settings
       [availableModels]="availableModels"
       (settingsChanged)="onSettingsChanged($event)"
     ></berkeliumlabs-prompt-settings>
+    } @placeholder {
+    <p>Loading...</p>
+    }
   </div>
 </div>

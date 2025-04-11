@@ -34,7 +34,9 @@ export class NavbarComponent implements OnInit {
   themeMode: 'light' | 'dark' = 'light';
   isCollapsed = false;
   chats: Signal<BkChatHistory[]> = computed(() => {
-    return this.stateManager.chats();
+    return [...this.stateManager.chats()].sort((a, b) => {
+      return b.id.localeCompare(a.id);
+    });
   });
 
   ngOnInit(): void {
@@ -77,11 +79,7 @@ export class NavbarComponent implements OnInit {
 
   deleteChat(chatId: string): void {
     this._dbService.delete('chats', chatId);
-    this.stateManager.chats().forEach((chat, index) => {
-      if (chat.id === chatId) {
-        this.stateManager.chats().splice(index, 1);
-      }
-    });
+    this.stateManager.removeChat(chatId);
     if (
       chatId === this.stateManager.activeChatId() ||
       this.stateManager.activeChatId() === '' ||

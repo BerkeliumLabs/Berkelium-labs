@@ -13,4 +13,14 @@ export class StateManagerService {
   downloadingModelId = signal<string>('');
   chats = signal<BkChatHistory[]>([]);
   activeChatId = signal<string>('');
+
+  addChat(chat: BkChatHistory): void {
+    const updatedChats = [chat, ...this.chats()];
+    this.chats.set(updatedChats);
+  }
+
+  removeChat(chatId: string): void {
+    const updatedChats = this.chats().filter((chat) => chat.id !== chatId);
+    this.chats.set(updatedChats);
+  }
 }

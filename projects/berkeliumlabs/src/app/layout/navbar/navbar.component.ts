@@ -42,6 +42,11 @@ export class NavbarComponent implements OnInit {
   }
 
   private initNavbar(): void {
+    window.berkelium.onNavigate((route) => {
+      this.router.navigate([route]);
+      console.log(route);
+    });
+
     this._dbService.getAll<BkChat>('chats').subscribe((chats) => {
       if (chats) {
         const chatCodes: any[] = [];

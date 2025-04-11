@@ -15,4 +15,6 @@ contextBridge.exposeInMainWorld('berkelium', {
   setCacheDir: () => ipcRenderer.invoke('chose-cahce-dir'),
   showNotification: (options: NotificationConstructorOptions) =>
     ipcRenderer.invoke('show-notification', options),
+  onNavigate: (callback: (route: string) => void) =>
+    ipcRenderer.on('navigate', (_, route) => callback(route)),
 });

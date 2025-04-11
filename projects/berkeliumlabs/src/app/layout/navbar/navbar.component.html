@@ -16,12 +16,20 @@
   >
     <span class="material-icons !text-base">add_comment</span>
     <div class="overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
-      <span class="text-base">New Chat</span>
+      <span class="text-sm">New Chat</span>
     </div>
   </button>
-  <div class="flex-grow overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
+  <div
+    class="flex-grow overflow-hidden flex flex-col gap-1 my-2 overflow-y-auto"
+    [@toggle]="isCollapsed"
+  >
     @for (chat of chats(); track $index) {
-      <div class="text-base" (click)="navigateTo('chat/' + chat.id)">{{ chat.id }}</div>
+    <div
+      class="text-sm hover:bg-gray-100 hover:text-primary-700 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis px-2 py-1 rounded"
+      (click)="navigateTo('chat/' + chat.id)"
+    >
+      {{ chat.message }}
+    </div>
     }
   </div>
   <!-- Bottom Actions -->
@@ -36,7 +44,7 @@
     >
       <span class="material-icons !text-base">science</span>
       <div class="overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
-        <span class="text-base">Model Incubator</span>
+        <span class="text-sm">Model Incubator</span>
       </div>
     </button>
     <button
@@ -47,7 +55,7 @@
     >
       <span class="material-icons !text-base">settings</span>
       <div class="overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
-        <span class="text-base">Settings</span>
+        <span class="text-sm">Settings</span>
       </div>
     </button>
     <!-- Theme switcher -->
@@ -64,7 +72,7 @@
       <span class="material-icons !text-base">dark_mode</span>
       }
       <div class="overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
-        <span class="text-base">Toggle Theme</span>
+        <span class="text-sm">Toggle Theme</span>
       </div>
     </button>
   </div>

@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
 
   themeMode: 'light' | 'dark' = 'light';
   isCollapsed = false;
-  chats: Signal<BkChat[]> = computed(() => {
+  chats: Signal<BkChatHistory[]> = computed(() => {
     return this.stateManager.chats();
   });
 
@@ -44,7 +44,15 @@ export class NavbarComponent implements OnInit {
   private initNavbar(): void {
     this._dbService.getAll<BkChat>('chats').subscribe((chats) => {
       if (chats) {
-        this.stateManager.chats.set(chats);
+        const chatCodes: any[] = [];
+        chats.forEach((chat) => {
+          const item: BkChatHistory = {
+            id: chat.id,
+            message: chat.messages[0].message,
+          }
+          chatCodes.push(item);
+        });
+        this.stateManager.chats.set(chatCodes);
       }
     });
   }
@@ -61,4 +69,9 @@ export class NavbarComponent implements OnInit {
   navigateTo(path: string): void {
     this.router.navigate([path]);
   }
+}
+
+export interface BkChatHistory {
+  id: string;
+  message: string;
 }

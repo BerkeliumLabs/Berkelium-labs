@@ -44,15 +44,16 @@ export class ChatComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.chatId = params['chatId'];
       if (this.chatId && this.chatId !== 'new') {
-        this.chatItem = this.stateManager
-          .chats()
-          .find((chat) => chat.id === this.chatId);
-        this.messageThread = this.chatItem?.messages ?? [];
+        this._dbService.getByKey<BkChat>('chats', this.chatId).subscribe((chat) => {
+          this.chatItem = chat;
+          this.messageThread = this.chatItem?.messages ?? [];
+        });
       } else {
         this.chatItem = {
           id: Date.now().toString(),
           messages: [],
         };
+        this.messageThread = [];
       }
       console.log(
         'Route Parameters:',
@@ -146,7 +147,7 @@ export class ChatComponent implements OnInit {
       .chats()
       .findIndex((chat) => chat.id === this.chatId);
     if (index !== -1) {
-      this.stateManager.chats()[index].messages = this.messageThread;
+      this.stateManager.chats()[index].message = this.messageThread[0].message;
       this._dbService.update(
         'chats',
         this.chatItem,
@@ -154,7 +155,10 @@ export class ChatComponent implements OnInit {
       );
     } else {
       if (this.chatItem) {
-        this.stateManager.chats().push(this.chatItem);
+        this.stateManager.chats().push({
+          id: this.chatItem.id,
+          message: this.messageThread[0].message,
+        });
         this._dbService.add(
           'chats',
           this.chatItem,

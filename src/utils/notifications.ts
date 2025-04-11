@@ -1,5 +1,5 @@
 import { Notification, NotificationConstructorOptions } from 'electron';
-
+import path from 'node:path';
 export class BerkeliumNotifications {
   /**
    * Shows a notification with the given options
@@ -7,7 +7,7 @@ export class BerkeliumNotifications {
    *              (see https://electronjs.org/docs/api/notification#new-notificationoptions)
    */
   show(args: NotificationConstructorOptions): void {
-    args.icon = 'src/icon.png';
+    args.icon = path.join(__dirname, 'icon.png');
     const notify = new Notification(args);
     notify.show();
   }

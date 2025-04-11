@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit {
   messageThread: BkMessage[] = [];
   isLoading = false;
   isError = false;
+  isInitializing = true;
   errorMsg = 'Error!';
   chatItem: BkChat | undefined;
 
@@ -83,6 +84,7 @@ export class ChatComponent implements OnInit {
           };
 
           this.availableModels.push(modelOption);
+          this.isInitializing = false;
         });
       }
     });

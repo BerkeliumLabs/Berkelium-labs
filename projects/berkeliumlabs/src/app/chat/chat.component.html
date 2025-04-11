@@ -24,7 +24,7 @@
   <div
     class="flex-shrink-0 w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
   >
-    @defer (when availableModels.length > 0) {
+    @defer (when !isInitializing) {
     <berkeliumlabs-prompt-settings
       [availableModels]="availableModels"
       (settingsChanged)="onSettingsChanged($event)"

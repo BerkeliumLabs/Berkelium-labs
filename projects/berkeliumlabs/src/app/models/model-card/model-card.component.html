@@ -36,23 +36,23 @@
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
     <div class="flex gap-6 items-center">
-      <div class="flex gap-2 items-center px-2 py-2 rounded-lg dark:bg-slate-800 dark:text-green-200" title="Downloads">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-green-600 dark:bg-slate-800 dark:text-green-200" title="Downloads">
         <span class="material-icons !text-base">arrow_downward</span>
         <span class="text-base">{{ modelData.downloads | number }}</span>
       </div>
-      <div class="flex gap-2 items-center px-2 py-2 rounded-lg dark:bg-slate-800 dark:text-red-200" title="Likes">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-red-600 dark:bg-slate-800 dark:text-red-200" title="Likes">
         <span class="material-icons !text-base">favorite</span>
         <span class="text-base">{{ modelData.likes | number }}</span>
       </div>
-      <div class="flex gap-2 items-center px-2 py-2 rounded-lg dark:bg-slate-800 dark:text-purple-200" title="Pipeline Tag">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-purple-600 dark:bg-slate-800 dark:text-purple-200" title="Pipeline Tag">
         <span class="material-icons !text-base">valve</span>
         <span class="text-base">{{ modelData.pipeline_tag }}</span>
       </div>
-      <div class="flex gap-2 items-center px-2 py-2 rounded-lg dark:bg-slate-800 dark:text-yellow-200" title="Model ID">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-yellow-600 dark:bg-slate-800 dark:text-yellow-200" title="Model ID">
         <span class="material-icons !text-base">badge</span>
         <span class="text-base">{{ modelData._id }}</span>
       </div>
-      <div class="flex gap-2 items-center px-2 py-2 rounded-lg dark:bg-slate-800 dark:text-blue-200" title="Create at">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-blue-600 dark:bg-slate-800 dark:text-blue-200" title="Create at">
         <span class="material-icons !text-base">calendar_month</span>
         <span class="text-base">{{
           modelData.createdAt | date : "medium"
@@ -62,7 +62,7 @@
     <div class="flex flex-col gap-3 w-full mt-6">
       <div class="flex w-full items-center gap-2 flex-wrap">
         @for (tag of modelData.tags; track $index) {
-          <span class="text-base bg-primary-700 py-1 px-2 rounded">#{{ tag }}</span>
+          <span class="text-base bg-primary-200 dark:bg-primary-700 py-1 px-2 rounded">#{{ tag }}</span>
         }
       </div>
     </div>

@@ -5,7 +5,7 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { BerkeliumNotifications } from '../utils/notifications';
 export class BerkeliumIPCHandlers {
   private fileManager: BerkeliumFileManager;
-  APP_SETTINGS_DIR = path.join(app.getPath('appData'), 'Berkeliumlabs Studio');
+  APP_SETTINGS_DIR = path.join(app.getPath('appData'), 'Berkelium Labs');
 
   constructor() {
     this.fileManager = new BerkeliumFileManager(this.APP_SETTINGS_DIR);
@@ -30,7 +30,7 @@ export class BerkeliumIPCHandlers {
 
   private createCacheDir() {
     this.fileManager.readAppSettings().then((settings) => {
-      const cacheDir = 'Berkeliumlabs Studio/Cache';
+      const cacheDir = 'Berkelium Labs/Cache';
       let customSessionDataDir = path.join(app.getPath('documents'), cacheDir);
       if (settings && settings.cacheDir) {
         const cacheDirPath = settings.cacheDir;

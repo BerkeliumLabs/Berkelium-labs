@@ -1,6 +1,6 @@
 {
   "name": "berkeliumlabs",
-  "productName": "Berkeliumlabs Studio",
+  "productName": "Berkelium Labs",
   "version": "1.0.0",
   "description": "Berkelium Labs",
   "main": ".vite/build/main.js",

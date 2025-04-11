@@ -168,7 +168,7 @@ export class ChatComponent implements OnInit {
       if (this.chatItem) {
         this.stateManager.addChat({
           id: this.chatItem.id,
-          message: this.messageThread[0].message,
+          message: this.messageThread[0].message.slice(0, 50),
         });
         this._dbService.add('chats', this.chatItem, this.chatItem?.id);
       }

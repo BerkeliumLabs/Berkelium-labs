@@ -8,16 +8,6 @@ export function createMenu(mainWindow: BrowserWindow) {
       label: 'File',
       submenu: [
         {
-          label: 'New Chat',
-          click: () => {
-            mainWindow.webContents.send('navigate', 'chat/new');
-          },
-          accelerator: 'CmdOrCtrl+O',
-        },
-        {
-          type: 'separator',
-        },
-        {
           role: 'quit',
         },
       ],
@@ -28,20 +18,27 @@ export function createMenu(mainWindow: BrowserWindow) {
         {
           role: 'togglefullscreen',
           accelerator: 'F11',
+        }
+      ],
+    },
+    {
+      id: 'views',
+      label: 'Views',
+      submenu: [
+        {
+          label: 'Model Incubator',
+          click: () => {
+            mainWindow.webContents.send('navigate', 'models');
+          },
+          accelerator: 'CmdOrCtrl+M',
         },
         {
-          role: 'reload',
-          accelerator: 'CmdOrCtrl+R',
-        },
-        {
-          type: 'separator',
-        },
-        {
-          role: 'toggleDevTools',
-        },
-        {
-          role: 'close',
-        },
+          label: 'Settings',
+          click: () => {
+            mainWindow.webContents.send('navigate', 'settings');
+          },
+          accelerator: 'CmdOrCtrl+S',
+        }
       ],
     },
     {

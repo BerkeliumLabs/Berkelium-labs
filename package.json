@@ -15,7 +15,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx .",
+    "icon": "eib  -i public/icon.png -o public/icons"
   },
   "keywords": [],
   "author": {
@@ -55,6 +56,7 @@
     "@electron-forge/plugin-fuses": "^7.8.0",
     "@electron-forge/plugin-vite": "^7.8.0",
     "@electron/fuses": "^1.8.0",
+    "@hunlongyu/electron-icon-builder": "^0.1.5",
     "@types/electron-squirrel-startup": "^1.0.2",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

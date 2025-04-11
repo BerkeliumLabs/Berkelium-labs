@@ -9,10 +9,25 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 
 const config: ForgeConfig = {
   packagerConfig: {
-    asar: true
+    asar: true,
+    icon: 'public/icons/icon',
   },
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    new MakerSquirrel({
+      // An URL to an ICO file to use as the application icon (displayed in Control Panel > Programs and Features).
+      iconUrl: 'https://berkeliumlabs.com/icon.ico',
+      // The ICO file to use as the icon for the generated Setup.exe
+      setupIcon: 'public/icons/icon.ico'
+    }),
+    new MakerZIP({}, ['darwin']),
+    new MakerRpm({}),
+    new MakerDeb({
+      options: {
+        icon: 'public/icon.png',
+      },
+    }),
+  ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.

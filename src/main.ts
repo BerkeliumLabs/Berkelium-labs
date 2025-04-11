@@ -19,6 +19,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     center: true,
+    icon: path.join(__dirname, 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -44,13 +45,17 @@ const createWindow = () => {
     slashes: true
   })); */
 
-   // Open full screen
-   mainWindow.maximize();
+  // Open full screen
+  mainWindow.maximize();
 
-   // Set min menu
+  // Set min menu
   const mainMenu = Menu.buildFromTemplate(createMenu(mainWindow));
   Menu.setApplicationMenu(mainMenu);
 };
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(app.name);
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

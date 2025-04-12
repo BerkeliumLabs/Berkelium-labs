@@ -46,6 +46,7 @@ export class PromptSettingsComponent implements OnInit {
       model: new FormControl(defaultValue, [Validators.required]),
       temperature: new FormControl(1.0, [Validators.required]),
       topK: new FormControl(50, [Validators.required]),
+      maxNewTokens: new FormControl(100, [Validators.required]),
       systemPrompt: new FormControl('You are a helpful assistant.', [
         Validators.required,
       ]),

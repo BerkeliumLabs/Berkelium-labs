@@ -55,7 +55,20 @@ export class SettingsComponent implements OnInit {
   saveForm() {
     window.berkelium
       .writeAppSettings(this.settingsForm.value)
-      .then(() => console.log('success'))
-      .catch((reason) => console.error(reason));
+      .then(() => {
+        window.berkelium.showNotification({
+          title: 'Settings saved!',
+          body: `Settings saved successfully.`,
+        });
+        this.initialFormValue = this.settingsForm.value;
+        this.formValueChanged = false;
+      })
+      .catch((reason) => {
+        window.berkelium.showNotification({
+          title: 'Settings save failed!',
+          body: `Settings save failed.\n${reason}`,
+        });
+        console.error(reason);
+      });
   }
 }

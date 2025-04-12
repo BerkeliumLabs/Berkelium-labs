@@ -55,15 +55,13 @@ export class PromptSettingsComponent implements OnInit {
     this.promptSettingsForm.valueChanges
       .pipe(takeUntil(this.formUnsubscribe))
       .subscribe((value) => {
-        console.log('Form value changed:', value, defaultValue);
+        // console.log('Form value changed:', value, defaultValue);
         this.settingsChanged.emit(value);
       });
 
     this.formDestroyRef.onDestroy(() => {
-      console.log('Component destroyed - cleaning up resources.');
       this.formUnsubscribe.next();
       this.formUnsubscribe.complete();
-      // Any other cleanup logic here
     });
 
     this.settingsChanged.emit(this.promptSettingsForm.value);

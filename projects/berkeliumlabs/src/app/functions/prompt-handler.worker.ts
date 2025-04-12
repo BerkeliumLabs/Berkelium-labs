@@ -3,7 +3,7 @@
 import { pipeline } from '@huggingface/transformers';
 
 addEventListener('message', async ({ data }) => {
-  console.log('Chat received', data);
+  // console.log('Chat received', data);
   try {
     const generator = await pipeline('text-generation', data['model'], {
       dtype: 'q4',

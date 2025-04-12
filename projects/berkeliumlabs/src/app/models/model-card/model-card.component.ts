@@ -52,7 +52,7 @@ export class ModelCardComponent implements OnInit {
             error: (error) => console.error(error),
           });
       }
-      console.log('Model data: ', models);
+      // console.log('Model data: ', models);
     });
   }
 
@@ -97,7 +97,7 @@ export class ModelCardComponent implements OnInit {
           this._stateManager.downloadingModelId.set('');
         }
 
-        console.log(data, this.progressData);
+        // console.log(data, this.progressData);
       };
       worker.postMessage(this.modelData.modelId);
     } else {

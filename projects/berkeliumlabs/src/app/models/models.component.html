@@ -24,6 +24,8 @@
       [modelDate]="modelItem.createdAt"
       (click)="goToModel(modelItem)"
     ></berkeliumlabs-model-item>
+    } @empty {
+      <p class="w-full text-center text-3xl mt-24 !text-primary-500">Loading...</p>
     }
   </div>
 </div>

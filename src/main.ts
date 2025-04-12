@@ -3,6 +3,7 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import { BerkeliumIPCHandlers } from './modules/ipc-handlers';
 import { createMenu } from './modules/menus';
+import { BkAutoUpdater } from './utils/auto-updater';
 
 // Initialize IPC Handlers
 const ipcHandlers = new BerkeliumIPCHandlers();
@@ -25,12 +26,17 @@ const createWindow = () => {
     },
   });
 
+  // Open full screen
+  mainWindow.maximize();
+
+  // Set min menu
+  const mainMenu = Menu.buildFromTemplate(createMenu(mainWindow));
+  Menu.setApplicationMenu(mainMenu);
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     // mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
     mainWindow.loadURL('http://localhost:6600');
-    // Open the DevTools in dev mode.
-    mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
@@ -45,12 +51,13 @@ const createWindow = () => {
     slashes: true
   })); */
 
-  // Open full screen
-  mainWindow.maximize();
-
-  // Set min menu
-  const mainMenu = Menu.buildFromTemplate(createMenu(mainWindow));
-  Menu.setApplicationMenu(mainMenu);
+  if (app.isPackaged) {
+    // Initialize auto updater
+    new BkAutoUpdater();
+  } else {
+    // Open the DevTools in dev mode.
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 if (process.platform === 'win32') {

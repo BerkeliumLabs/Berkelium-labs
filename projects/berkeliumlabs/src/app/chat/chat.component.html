@@ -17,6 +17,7 @@
       }
     </div>
     <berkeliumlabs-prompt-box
+      [disabled]="isLoading"
       (promptSend)="onPromptChanged($event)"
     ></berkeliumlabs-prompt-box>
   </div>

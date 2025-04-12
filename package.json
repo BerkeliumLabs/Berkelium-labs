@@ -8,7 +8,7 @@
     "ng": "ng",
     "start": "concurrently --names \"Angular,Electron\" --prefix \"[{name}]\" --prefix-colors \"bgMagenta.bold,bgBlue.bold\" \"npm run start:ng\" \"npm run start:electron\"",
     "start:ng": "ng serve",
-    "build:ng": "ng build",
+    "build:ng": "ng build --base-href './'",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start:electron": "electron-forge start",

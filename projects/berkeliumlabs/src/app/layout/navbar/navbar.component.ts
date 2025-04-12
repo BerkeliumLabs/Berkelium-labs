@@ -87,9 +87,8 @@ export class NavbarComponent implements OnInit {
       this.stateManager.activeChatId() === 'new'
     ) {
       this.stateManager.activeChatId.set('');
-      this.router.navigate(['chat/new']);
+      this.router.navigate(['chat']);
     }
-    console.log(this.stateManager.activeChatId());
   }
 }
 

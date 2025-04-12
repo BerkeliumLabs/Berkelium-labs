@@ -1,20 +1,18 @@
 /// <reference lib="webworker" />
 
-import { env, pipeline } from "@huggingface/transformers";
-
-env.allowLocalModels = true;
+import { pipeline } from '@huggingface/transformers';
 
 addEventListener('message', async ({ data }) => {
   console.log('Chat received', data);
   try {
-    const generator = await pipeline(
-      "text-generation",
-      data['model'],
-      { dtype: 'q4', progress_callback: generatorProgress, local_files_only: true }
-    );
+    const generator = await pipeline('text-generation', data['model'], {
+      dtype: 'q4',
+      /* progress_callback: generatorProgress, */
+    });
     const text = `System: ${data['systemPrompt']}\nUser: ${data['prompt']}\nAssistant: `;
     const response = await generator(text, {
       temperature: data['temperature'],
+      max_new_tokens: data['maxNewTokens'],
       repetition_penalty: 1.5,
       no_repeat_ngram_size: 2,
       num_beams: 2,
@@ -24,10 +22,10 @@ addEventListener('message', async ({ data }) => {
 
     postMessage(response);
   } catch (error) {
-    console.error("Error running model:", error);
+    console.error('Error running model:', error);
   }
 });
 
-function generatorProgress(progress: any) {
+/* function generatorProgress(progress: any) {
   console.log(progress);
-}
+} */

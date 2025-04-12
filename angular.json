@@ -31,7 +31,6 @@
             ],
             "styles": ["projects/berkeliumlabs/src/styles.scss"],
             "scripts": [],
-            "baseHref": "./",
             "webWorkerTsConfig": "projects/berkeliumlabs/tsconfig.worker.json"
           },
           "configurations": {

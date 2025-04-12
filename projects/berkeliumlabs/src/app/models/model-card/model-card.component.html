@@ -58,6 +58,10 @@
           modelData.createdAt | date : "medium"
         }}</span>
       </div>
+      <a class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 !text-cyan-600 dark:bg-slate-800 !dark:text-cyan-200" title="More details..." [href]="'https://huggingface.co/' + modelData.modelId" target="_blank">
+        <span class="material-icons !text-base">visibility</span>
+        <span class="text-base">More details...</span>
+      </a>
     </div>
     <div class="flex flex-col gap-3 w-full mt-6">
       <div class="flex w-full items-center gap-2 flex-wrap">

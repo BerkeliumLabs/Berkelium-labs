@@ -15,7 +15,7 @@
     @if (formValueChanged) {
     <button
       class="solias-btn solias-btn--success solias-btn--md mr-2"
-      [disabled]="settingsForm.invalid"
+      [disabled]="settingsForm.invalid && !formValueChanged"
       (click)="saveForm()"
     >
       Save

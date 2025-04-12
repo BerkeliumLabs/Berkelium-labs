@@ -12,6 +12,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: 'public/icons/icon',
+    executableName: 'berkeliumlabs'
   },
   rebuildConfig: {},
   makers: [

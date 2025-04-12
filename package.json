@@ -1,8 +1,8 @@
 {
   "name": "berkeliumlabs",
   "productName": "Berkelium Labs",
-  "version": "1.0.0",
-  "description": "Berkelium Labs",
+  "version": "0.1.0",
+  "description": "Your personal desktop application to easily download, host, and experiment with Large Language Models (LLMs) locally.",
   "main": ".vite/build/main.js",
   "scripts": {
     "ng": "ng",
@@ -16,11 +16,24 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "icon": "eib  -i public/icon.png -o public/icons"
+    "icon": "eib  -i public/icon.png -o public/icons",
+    "release:dry": "npm run build:ng && npm run make",
+    "release": "npm run build:ng && npm run publish"
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "angular",
+    "ai",
+    "js",
+    "transformers",
+    "ts",
+    "huggingface",
+    "huggingface-transformers",
+    "llm",
+    "transformersjs"
+  ],
   "author": {
-    "name": "Buddhi Kavindra",
+    "name": "Berkelium",
     "email": "info@buddhilive.com"
   },
   "license": "MIT",

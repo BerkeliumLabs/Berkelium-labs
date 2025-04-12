@@ -67,12 +67,6 @@ export class ChatComponent implements OnInit {
         this.messageThread = [];
       }
       this.stateManager.activeChatId.set(this.chatId ?? 'new');
-      console.log(
-        'Route Parameters:',
-        this.chatId,
-        this.messageThread,
-        this.chatItem
-      );
     });
 
     this._dbService.getAll<string>('models').subscribe((models) => {
@@ -84,9 +78,9 @@ export class ChatComponent implements OnInit {
           };
 
           this.availableModels.push(modelOption);
-          this.isInitializing = false;
         });
       }
+      this.isInitializing = false;
     });
   }
 
@@ -106,7 +100,7 @@ export class ChatComponent implements OnInit {
         this.isLoading = true;
 
         worker.onmessage = ({ data }) => {
-          console.log('Response: ', data);
+          // console.log('Response: ', data);
           const response: BkAIResponse | BkAIResponse[] = data;
           let message = '';
           if (Array.isArray(response)) {

@@ -1,7 +1,7 @@
 {
   "name": "berkeliumlabs",
   "productName": "Berkelium Labs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Your personal desktop application to easily download, host, and experiment with Large Language Models (LLMs) locally.",
   "main": ".vite/build/main.js",
   "scripts": {

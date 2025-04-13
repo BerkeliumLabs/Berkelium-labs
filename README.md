@@ -1,59 +1,35 @@
-# Berkeliumlabs
+# Berkelium Labs
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+![GitHub Release](https://img.shields.io/github/v/release/BerkeliumLabs/Berkeliumlabs-studio)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/BerkeliumLabs/Berkeliumlabs-studio/total)
+![GitHub License](https://img.shields.io/github/license/BerkeliumLabs/Berkeliumlabs-studio)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/BerkeliumLabs/Berkeliumlabs-studio/release.yml)
 
-## Development server
+**Your personal desktop application to easily download, host, and experiment with Large Language Models (LLMs) locally.**
 
-To start a local development server, run:
+Berkelium Labs is an open-source desktop application designed to make the power of Large Language Models (LLMs) accessible to everyone. Built with Electron JS and an Angular frontend, it leverages the `@huggingface/transformers` library and ONNX runtime to provide a user-friendly experience for downloading, hosting, and experimenting with LLMs directly on your local machine.
 
-```bash
-ng serve
-```
+**Key Features (MVP):**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* **Effortless Downloading from Hugging Face:** Browse and download a wide range of pre-trained LLMs directly from the HuggingFace Hub.
+* **Simplified Local Hosting:** Host downloaded LLMs locally with a few clicks, abstracting away the backend complexities.
+* **Intuitive User Interface:** A clean and user-friendly Angular frontend for easy interaction with hosted LLMs.
+* **Powered by Leading Technologies:** Utilizes `@huggingface/transformers` for model interaction and ONNX runtime for optimized performance.
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+**Built With:**
 
-```bash
-ng generate component component-name
-```
+* [Electron](https://www.electronjs.org/) - Framework for building cross-platform desktop apps with JavaScript, HTML, and CSS.
+* [Angular](https://angular.devio/) - Frontend framework for building the user interface.
+* [@huggingface/transformers](https://huggingface.co/docs/transformers/index) - Provides thousands of pre-trained models and utilities for working with them.
+* [ONNX Runtime](https://onnx.ai/) - A high-performance inference engine for ONNX models, optimizing local execution.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**License:**
 
-```bash
-ng generate --help
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Building
+**Stay Connected:**
 
-To build the project run:
+* [Join our GitHub discussion.](https://github.com/BerkeliumLabs/Berkeliumlabs-studio/discussions)
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**We're excited to have you explore the world of Large Language Models with Berkelium Labs!**

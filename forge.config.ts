@@ -12,7 +12,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: 'public/icons/icon',
-    executableName: 'berkeliumlabs'
+    executableName: 'berkeliumlabs',
   },
   rebuildConfig: {},
   makers: [
@@ -20,7 +20,7 @@ const config: ForgeConfig = {
       // An URL to an ICO file to use as the application icon (displayed in Control Panel > Programs and Features).
       iconUrl: 'https://berkeliumlabs.com/icon.ico',
       // The ICO file to use as the icon for the generated Setup.exe
-      setupIcon: 'public/icons/icon.ico'
+      setupIcon: 'public/icons/icon.ico',
     }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
@@ -34,10 +34,11 @@ const config: ForgeConfig = {
     new PublisherGithub({
       repository: {
         owner: 'BerkeliumLabs',
-        name: 'Berkeliumlabs-studio'
+        name: 'Berkeliumlabs-studio',
       },
-      prerelease: false
-    })
+      prerelease: false,
+      tagPrefix: ''
+    }),
   ],
   plugins: [
     new VitePlugin({

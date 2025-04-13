@@ -28,7 +28,7 @@ export class PromptBoxComponent implements OnInit {
   @Output() promptSend = new EventEmitter<any>();
 
   promptBoxForm!: FormGroup;
-  private isDisabled = signal(false);
+  isDisabled = signal(false);
   textareaControl = computed(() => this.promptBoxForm.get('prompt'));
 
   constructor() {

@@ -13,7 +13,7 @@
     <button
       class="solias-btn solias-btn--primary solias-btn--sm flex justify-center items-center"
       (click)="sendPrompt()"
-      [disabled]="promptBoxForm.invalid"
+      [disabled]="promptBoxForm.invalid || isDisabled"
     >
       <span class="material-icons !text-sm" title="send">send</span>
     </button>

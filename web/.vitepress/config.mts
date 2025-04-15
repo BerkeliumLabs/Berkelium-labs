@@ -41,5 +41,6 @@ export default defineConfig({
   },
   sitemap: {
     hostname: 'https://berkeliumlabs.com'
-  }
+  },
+  outDir: '../dist'
 });

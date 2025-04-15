@@ -11,11 +11,11 @@ hero:
     alt: VitePress
   actions:
     - theme: brand
+      text: Launch Lab
+      link: '/lab/'
+    - theme: alt
       text: Getting Started
       link: /guide
-    - theme: alt
-      text: About
-      link: /about
 
 features:
   - title: One-Click Model Download

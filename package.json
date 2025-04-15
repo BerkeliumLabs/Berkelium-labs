@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build:ng": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:dev": "vitepress dev web",
     "docs:build": "vitepress build web",
-    "docs:preview": "vitepress preview web"
+    "docs:preview": "vitepress preview web",
+    "build": "npm run docs:build && npm run build:ng"
   },
   "private": true,
   "dependencies": {

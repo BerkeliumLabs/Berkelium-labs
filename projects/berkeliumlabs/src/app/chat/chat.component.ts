@@ -12,7 +12,7 @@ import {
   PromptSettingsComponent,
 } from './prompt-settings/prompt-settings.component';
 import { SkeletonComponent } from '../components/skeleton/skeleton.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StateManagerService } from '../services/state-manager.service';
 import { IndexedDBService } from '../services/indexed-db.service';
 
@@ -33,6 +33,7 @@ export class ChatComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private stateManager = inject(StateManagerService);
   private _dbService = inject(IndexedDBService);
+  private router = inject(Router);
 
   chatId!: string;
   settings!: BkAppSettings;
@@ -102,17 +103,17 @@ export class ChatComponent implements OnInit {
         worker.onmessage = ({ data }) => {
           // console.log('Response: ', data);
           const response: BkAIResponse | BkAIResponse[] = data;
-          let message = '';
+          /* let message = '';
           if (Array.isArray(response)) {
             response.forEach((item) => {
               message += item['generated_text'];
             });
           } else {
             message = response['generated_text'];
-          }
+          } */
           this.messageThread.push({
             role: 'assistant',
-            message: this.refineResponse(message),
+            message: this.refineResponse(response),
             model: this.promptSettings.model,
           });
           this.scrollToBottom();
@@ -127,7 +128,7 @@ export class ChatComponent implements OnInit {
         };
 
         setTimeout(() => {
-          this.scrollToBottom();     
+          this.scrollToBottom();
           worker.postMessage(data);
         }, 100);
       } else {
@@ -140,8 +141,8 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  private refineResponse(response: string): string {
-    const targetWord = 'Assistant:';
+  private refineResponse(response: BkAIResponse | BkAIResponse[]): string {
+    /* const targetWord = 'Assistant:';
     const startIndex = response.indexOf(targetWord);
 
     if (startIndex !== -1) {
@@ -151,7 +152,25 @@ export class ChatComponent implements OnInit {
       return extractedText;
     } else {
       return '';
+    } */
+    let message = '';
+    if (Array.isArray(response)) {
+      response.forEach((item) => {
+        if (Array.isArray(item['generated_text'])) {
+          const reply = item['generated_text'][2];
+          message = reply.content;
+        } else {
+          message = item['generated_text'];
+          if (message.includes('Error running model')) {
+            this.errorMsg = message;
+            this.isError = true;
+          }
+        }
+      });
     }
+    console.log(response);
+
+    return message;
   }
 
   private saveChat() {
@@ -169,6 +188,7 @@ export class ChatComponent implements OnInit {
         this._dbService.add('chats', this.chatItem, this.chatItem?.id);
       }
     }
+    this.router.navigate([`chat/${this.chatItem?.id}`]);
   }
 
   private scrollToBottom(): void {
@@ -193,5 +213,5 @@ export interface BkChat {
 }
 
 export interface BkAIResponse {
-  generated_text: string;
+  generated_text: string | Array<{ role: string; content: string }>;
 }

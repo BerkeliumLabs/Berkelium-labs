@@ -32,7 +32,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/BerkeliumLabs/berkeliumlabs",
+        link: "https://github.com/BerkeliumLabs/berkelium-labs",
       },
       { icon: "facebook", link: "https://web.facebook.com/BerKeliumLabs" },
       { icon: "linkedin", link: "https://www.linkedin.com/company/berkelium/" },

@@ -1,26 +1,16 @@
 # How to use Berkelium Labs
 
-This is a quick guide to get started with Berkelium Labs. First download the appropriate installer for your operating system from [Github Release](https://github.com/BerkeliumLabs/Berkeliumlabs-studio/releases). Then install Berkelium Labs. Once installation is completed, run Berkelium Labs.
+This is a quick guide to get started with Berkelium Labs. First [Launch Berkelium Labs](https://berkeliumlabs.com/lab/).
 
 ## Welcome Screen
 
 ![Welcome screen](/images/berkelium-labs-initial-screen.png)
 
-This is the initial screen you get. Before begin, you need to download models. However, before downloading any models, we recommend you to change the chache directory. By default the cache directory will be created in user's "My Documents". All downloaded models and your chat history will be saved in cache directory. So eventually it will take up space. So we recommend you to chose a different location with more disk space if available.
-
-## Change Cache Directory
-
-To change cache directory, go to settings. This is the "cog wheel icon" in the left navigation.
-
-![Settings screen](/images/berkelium-labs-settings-screen.png)
-
-Click "Browse" and chose the disired location you want to set up the cache directory. Once you chose a different location, a save button will appear on top right of the screen. Click it to save your choice.
-
-> Note: You need to restart the app to apply the changes.
+This is the initial screen you get. Before begin, you need to download models.
 
 ## Download Models
 
-Now it's time to download models. Go to "Model Incubator", which is the place you can download models from [HuggingFace](https://huggingface.co/models?library=transformers.js&sort=trending). You can go to Model Incubator by clicking the "Glass Flask/Beaker" icon in the left navigation.
+Go to "Model Incubator", which is the place you can download models from [HuggingFace](https://huggingface.co/models?library=transformers.js&sort=trending). You can go to Model Incubator by clicking the "Glass Flask/Beaker" icon in the left navigation.
 
 ![Model Incubator screen](/images/berkelium-labs-model-incubator-screen.png)
 

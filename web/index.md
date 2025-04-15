@@ -4,22 +4,24 @@ layout: home
 
 hero:
   name: "Berkelium Labs"
-  text: "The AI Lab, Made Simple for Everyone."
-  tagline: My great project tagline
+  text: "The AI Lab,\nMade Simple for Everyone."
+  tagline: Your personal desktop application to easily download, host, and experiment with Large Language Models (LLMs) locally.
+  image:
+    src: /images/berkelium-labs-screenshot-small.png
+    alt: VitePress
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Getting Started
+      link: /guide
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: About
+      link: /about
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: One-Click Model Download
+    details: Instantly access and download a vast library of pre-trained Large Language Models directly from the HuggingFace Hub. Explore the latest AI advancements without complex manual setup.
+  - title: Effortless Local Hosting
+    details: Run downloaded LLMs directly on your computer with just a few clicks. Berkelium Labs handles the backend, making local AI experimentation accessible to everyone, regardless of technical skill.
+  - title: Simple & Intuitive Interface
+    details: Interact with your locally hosted LLMs through a clean and user-friendly interface. Start experimenting with text generation, question answering, and more, with an experience designed for both beginners and advanced users.
 ---
-

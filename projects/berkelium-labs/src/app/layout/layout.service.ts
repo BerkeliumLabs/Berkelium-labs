@@ -1,8 +1,15 @@
 import { Injectable, signal } from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
 
 @Injectable()
 export class LayoutService {
   themeMode = signal<'light' | 'dark'>('light');
+
+  constructor(private platform: Platform) {}
+
+  get isMobile() {
+    return this.platform.ANDROID || this.platform.IOS;
+  }
 
   getSystemTheme() {
     let theme: 'light' | 'dark' = 'light';

@@ -7,7 +7,8 @@ import { IndexedDBService } from './services/indexed-db.service';
 @Component({
   selector: 'berkeliumlabs-root',
   imports: [RouterOutlet, NavbarComponent],
-  template: `@defer (when isInitialized; prefetch on viewport) {
+  template: `@if (!isMobile) { @defer (when isInitialized; prefetch on viewport)
+    {
     <berkeliumlabs-navbar />
     <main class="flex-grow">
       <router-outlet />
@@ -20,7 +21,11 @@ import { IndexedDBService } from './services/indexed-db.service';
     </div>
     } @loading {
     <p>Loading comments...</p>
-    } `,
+    } } @else {
+    <div class="h-screen flex items-center justify-center p-4">
+      <h2 class="!text-red-700 dark:!text-red-500 text-center">Mobile devices are currently unsupported.</h2>
+    </div>
+    }`,
   styles: [],
   providers: [LayoutService],
 })
@@ -29,8 +34,10 @@ export class AppComponent implements OnInit {
   private dbService = inject(IndexedDBService);
 
   isInitialized = false;
+  isMobile = false;
 
   ngOnInit(): void {
+    this.isMobile = this._layoutService.isMobile;
     this._layoutService.setSystemTheme();
     this.dbService
       .initializeDB([

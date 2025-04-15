@@ -1,0 +1,20 @@
+dialog {
+  @apply bg-white rounded-lg shadow-sm dark:bg-gray-700;
+  .solias-dialog {
+    &__header {
+      @apply flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200;
+    }
+    &__title {
+      @apply text-xl font-semibold text-gray-900 dark:text-white;
+    }
+    &__close {
+      @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600;
+    }
+    &__body {
+      @apply p-4 md:p-5 space-y-4;
+    }
+    &__footer {
+      @apply flex justify-end gap-4 p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<div class="flex w-full">
+  <div class="flex-grow flex flex-col h-dvh overflow-y-auto p-2">
+    <!-- Chat Area -->
+    <div class="flex-grow overflow-y-auto w-full" #chatContainer>
+      @for (message of messageThread; track $index) {
+      <berkeliumlabs-chat-bubble
+        [role]="message.role"
+        [model]="message.model ?? ''"
+        [message]="message.message"
+      ></berkeliumlabs-chat-bubble>
+      } @if(isLoading) {
+      <berkeliumlabs-skeleton></berkeliumlabs-skeleton>
+      } @if(isError) {
+      <p class="p-4 bg-red-400 !text-white text-sm text-justify dark:bg-red-800 rounded mt-2 mb-4">
+        {{ errorMsg }}
+      </p>
+      }
+    </div>
+    <berkeliumlabs-prompt-box
+      [disabled]="isLoading"
+      (promptSend)="onPromptChanged($event)"
+    ></berkeliumlabs-prompt-box>
+  </div>
+  <!-- Prompt Settings Area -->
+  <div
+    class="flex-shrink-0 w-64 h-dvh overflow-y-auto border-l border-gray-400 dark:border-gray-800 p-3"
+  >
+    @defer (when !isInitializing) {
+    <berkeliumlabs-prompt-settings
+      [availableModels]="availableModels"
+      (settingsChanged)="onSettingsChanged($event)"
+    ></berkeliumlabs-prompt-settings>
+    } @placeholder {
+    <p>No models found. Download models to get started.</p>
+    } @loading {
+    <p>Loading...</p>
+    }
+  </div>
+</div>

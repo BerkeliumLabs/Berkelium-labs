@@ -1,0 +1,98 @@
+<div class="flex flex-col h-dvh">
+  <div class="flex items-center justify-between px-2 py-4 w-full h-16">
+    <div class="flex items-center">
+      <a
+        class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 rounded-full hover:bg-gray-100 hover:text-primary-700 bg-transparent focus:outline-none dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
+        [routerLink]="'/models'"
+      >
+        <span
+          class="material-icons text-gray-700 dark:text-gray-400 hover:text-primary-700 dark:hover:text-white"
+          >arrow_back</span
+        >
+      </a>
+      <h4 class="ml-4">Model: {{ modelData.modelId }}</h4>
+    </div>
+
+    <div class="flex gap-2 items-center">
+      @if (isDownloaded) {
+        <button
+          class="solias-btn solias-btn--error solias-btn--md mr-2"
+          (click)="deleteModel()"
+        >
+          Delete
+        </button>
+      } @else {
+        <button
+          class="solias-btn solias-btn--success solias-btn--md mr-2"
+          (click)="downloadModel()"
+          [disabled]="isDownloading"
+        >
+          Download
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="flex-grow px-4 pt-6 overflow-y-auto">
+    <div class="flex gap-6 items-center">
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-green-600 dark:bg-slate-800 dark:text-green-200" title="Downloads">
+        <span class="material-icons !text-base">arrow_downward</span>
+        <span class="text-base">{{ modelData.downloads | number }}</span>
+      </div>
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-red-600 dark:bg-slate-800 dark:text-red-200" title="Likes">
+        <span class="material-icons !text-base">favorite</span>
+        <span class="text-base">{{ modelData.likes | number }}</span>
+      </div>
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-purple-600 dark:bg-slate-800 dark:text-purple-200" title="Pipeline Tag">
+        <span class="material-icons !text-base">valve</span>
+        <span class="text-base">{{ modelData.pipeline_tag }}</span>
+      </div>
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-yellow-600 dark:bg-slate-800 dark:text-yellow-200" title="Model ID">
+        <span class="material-icons !text-base">badge</span>
+        <span class="text-base">{{ modelData._id }}</span>
+      </div>
+      <div class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 text-blue-600 dark:bg-slate-800 dark:text-blue-200" title="Create at">
+        <span class="material-icons !text-base">calendar_month</span>
+        <span class="text-base">{{
+          modelData.createdAt | date : "medium"
+        }}</span>
+      </div>
+      <a class="flex gap-2 items-center px-2 py-2 rounded-lg bg-slate-200 !text-cyan-600 dark:bg-slate-800 !dark:text-cyan-200" title="More details..." [href]="'https://huggingface.co/' + modelData.modelId" target="_blank">
+        <span class="material-icons !text-base">visibility</span>
+        <span class="text-base">More details...</span>
+      </a>
+    </div>
+    <div class="flex flex-col gap-3 w-full mt-6">
+      <div class="flex w-full items-center gap-2 flex-wrap">
+        @for (tag of modelData.tags; track $index) {
+          <span class="text-base bg-primary-200 dark:bg-primary-700 py-1 px-2 rounded">#{{ tag }}</span>
+        }
+      </div>
+    </div>
+    <div class="mt-4">
+      @for (bar of progressBars; track $index) { @if (progressData[bar]) {
+      <div class="flex flex-col gap-2 bg-gray-200 dark:bg-gray-700 rounded p-4 mb-3">
+        <div class="flex justify-between items-center">
+          <h5>{{ progressData[bar]["file"] ?? "Unnamed" }}</h5>
+          @if(progressData[bar]["status"] == "progress") {
+          <p>{{ roundOffProgress(progressData[bar]["progress"]) }}%</p>
+          }
+        </div>
+        <progress
+          [max]="100"
+          [value]="roundOffProgress(progressData[bar]['progress'])"
+        ></progress>
+        @if(progressData[bar]["status"] == "progress") {
+        <p class="text-sm">
+          {{ formatBytes(progressData[bar]["loaded"]) }} /
+          {{ formatBytes(progressData[bar]["total"]) }}
+        </p>
+        }
+      </div>
+      } } @empty {
+        <p class="w-full text-center text-3xl mt-24">No files to show</p>
+      }
+    </div>
+  </div>
+</div>

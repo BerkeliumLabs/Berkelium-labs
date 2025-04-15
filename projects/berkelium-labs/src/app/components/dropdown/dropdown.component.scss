@@ -1,0 +1,10 @@
+#bk_dropdown {
+  anchor-name: --bk_dropdown;
+}
+
+#bk_dropdown_popover {
+  position-anchor: --bk_dropdown;
+  top: anchor(--bk_dropdown bottom);
+  left: anchor(--bk_dropdown left);
+  width: anchor-size(--bk_dropdown width);
+}

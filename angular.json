@@ -3,44 +3,52 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "berkeliumlabs": {
+    "berkelium-labs": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/berkeliumlabs",
-      "sourceRoot": "projects/berkeliumlabs/src",
-      "prefix": "berkeliumlabs",
+      "root": "projects/berkelium-labs",
+      "sourceRoot": "projects/berkelium-labs/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/berkeliumlabs",
-            "index": "projects/berkeliumlabs/src/index.html",
-            "browser": "projects/berkeliumlabs/src/main.ts",
-            "polyfills": ["zone.js"],
-            "tsConfig": "projects/berkeliumlabs/tsconfig.app.json",
+            "outputPath": {
+              "base": "dist/lab",
+              "browser": ""
+            },
+            "index": "projects/berkelium-labs/src/index.html",
+            "browser": "projects/berkelium-labs/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/berkelium-labs/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/berkeliumlabs/public"
+                "input": "projects/berkelium-labs/public"
               }
             ],
-            "styles": ["projects/berkeliumlabs/src/styles.scss"],
-            "scripts": [],
-            "baseHref": "./",
-            "webWorkerTsConfig": "projects/berkeliumlabs/tsconfig.worker.json"
+            "styles": [
+              "projects/berkelium-labs/src/styles/fonts/fonts.css",
+              "projects/berkelium-labs/src/styles/icons/icons.css",
+              "projects/berkelium-labs/src/styles.scss"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "baseHref": "/lab/",
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -48,7 +56,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "projects/berkelium-labs/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -60,13 +69,12 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": { "port": 6600 },
           "configurations": {
             "production": {
-              "buildTarget": "berkeliumlabs:build:production"
+              "buildTarget": "berkelium-labs:build:production"
             },
             "development": {
-              "buildTarget": "berkeliumlabs:build:development"
+              "buildTarget": "berkelium-labs:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,18 +85,22 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/berkeliumlabs/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/berkelium-labs/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/berkeliumlabs/public"
+                "input": "projects/berkelium-labs/public"
               }
             ],
-            "styles": ["projects/berkeliumlabs/src/styles.scss"],
-            "scripts": [],
-            "webWorkerTsConfig": "projects/berkeliumlabs/tsconfig.worker.json"
+            "styles": [
+              "projects/berkelium-labs/src/styles.scss"
+            ],
+            "scripts": []
           }
         }
       }

@@ -32,6 +32,8 @@
               }
             ],
             "styles": [
+              "projects/berkelium-labs/src/styles/fonts/fonts.css",
+              "projects/berkelium-labs/src/styles/icons/icons.css",
               "projects/berkelium-labs/src/styles.scss"
             ],
             "scripts": []
@@ -41,8 +43,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",

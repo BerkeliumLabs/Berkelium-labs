@@ -9,19 +9,25 @@ addEventListener('message', async ({ data }) => {
       dtype: 'q4',
       /* progress_callback: generatorProgress, */
     });
-    const text = `System: ${data['systemPrompt']}\nUser: ${data['prompt']}\nAssistant: `;
-    const response = await generator(text, {
+
+    const prompt = [
+      { role: "system", content: data['systemPrompt'] },
+      { role: "user", content: data['prompt'] },
+    ];
+
+    const response = await generator(prompt, {
       temperature: data['temperature'],
       max_new_tokens: data['maxNewTokens'],
       repetition_penalty: 1.5,
       no_repeat_ngram_size: 2,
       num_beams: 2,
       num_return_sequences: 2,
-      top_k: data['topK'],
+      top_k: data['topK']
     });
 
     postMessage(response);
   } catch (error) {
+    postMessage(`Error running model: ${error}`);
     console.error('Error running model:', error);
   }
 });

@@ -102,24 +102,23 @@ export class ChatComponent implements OnInit {
 
         worker.onmessage = ({ data }) => {
           // console.log('Response: ', data);
-          const response: BkAIResponse | BkAIResponse[] = data;
-          /* let message = '';
-          if (Array.isArray(response)) {
-            response.forEach((item) => {
-              message += item['generated_text'];
-            });
-          } else {
-            message = response['generated_text'];
-          } */
-          this.messageThread.push({
-            role: 'assistant',
-            message: this.refineResponse(response),
-            model: this.promptSettings.model,
-          });
-          this.scrollToBottom();
+          const response: BkAIResponse | BkAIResponse[] | string = data;
           this.isLoading = false;
-          if (this.chatItem) this.chatItem.messages = this.messageThread;
-          this.saveChat();
+          let message = this.refineResponse(response);
+          if (message.includes('Error running model')) {
+            this.errorMsg = message;
+            this.isError = true;
+          } else {
+            this.messageThread.push({
+              role: 'assistant',
+              message: message,
+              model: this.promptSettings.model,
+            });
+            if (this.chatItem) this.chatItem.messages = this.messageThread;
+            this.saveChat();
+          }
+
+          this.scrollToBottom();
         };
 
         const data = {
@@ -141,7 +140,9 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  private refineResponse(response: BkAIResponse | BkAIResponse[]): string {
+  private refineResponse(
+    response: BkAIResponse | BkAIResponse[] | string
+  ): string {
     /* const targetWord = 'Assistant:';
     const startIndex = response.indexOf(targetWord);
 
@@ -161,14 +162,11 @@ export class ChatComponent implements OnInit {
           message = reply.content;
         } else {
           message = item['generated_text'];
-          if (message.includes('Error running model')) {
-            this.errorMsg = message;
-            this.isError = true;
-          }
         }
       });
+    } else {
+      message = response as string;
     }
-    console.log(response);
 
     return message;
   }

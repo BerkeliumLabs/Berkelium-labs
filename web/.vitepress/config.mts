@@ -4,7 +4,21 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "Berkelium Labs",
   description: "The AI Lab, Made Simple for Everyone.",
-  head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+  head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    [
+      'script',
+      {
+        async: 'true',
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-61Q4F7F0RK',
+      },
+    ],
+    [
+      'script',
+      {},
+      "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-61Q4F7F0RK');",
+    ],
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: "/images/logo.png",

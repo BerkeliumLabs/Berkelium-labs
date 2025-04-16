@@ -202,18 +202,18 @@ export class ToastService {
     this.renderer.insertBefore(container, toast, container?.firstChild);
 
     // Show the toast using Popover API
-    toast.showPopover();
+    //toast.showPopover();
 
     // Set up close button event
     closeButton.addEventListener('click', () => {
-      toast.hidePopover();
+      //toast.hidePopover();
       this.removeToast(toast, container);
     });
 
     // Auto hide after duration
     setTimeout(() => {
       if (document.body.contains(toast)) {
-        toast.hidePopover();
+        //toast.hidePopover();
         this.removeToast(toast, container);
       }
     }, duration);

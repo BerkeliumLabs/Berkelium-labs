@@ -39,7 +39,8 @@
               "projects/berkelium-labs/src/styles/icons/icons.css",
               "projects/berkelium-labs/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "projects/berkelium-labs/tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -100,7 +101,8 @@
             "styles": [
               "projects/berkelium-labs/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "projects/berkelium-labs/tsconfig.worker.json"
           }
         }
       }

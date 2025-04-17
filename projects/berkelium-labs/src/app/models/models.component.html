@@ -12,11 +12,15 @@
       </a>
       <h4 class="ml-4">Model Incubator</h4>
     </div>
+    <div class="flex pr-4 w-2/5 relative">
+      <span class="material-icons absolute top-1/2 left-2 -translate-y-1/2">search</span>
+      <input type="text" placeholder="Search a model" class="!pl-10" (input)="onSearchInput($event)" />
+    </div>
   </div>
 
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
-    @for (modelItem of modelList; track $index) {
+    @for (modelItem of filteredModelList; track $index) {
     <berkeliumlabs-model-item
       [modelName]="modelItem.modelId"
       [modelDownloads]="modelItem.downloads"

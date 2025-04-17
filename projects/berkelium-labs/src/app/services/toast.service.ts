@@ -26,53 +26,11 @@ export interface ToastOptions {
 })
 export class ToastService {
   private renderer: Renderer2;
-  private toastContainers: Map<ToastPosition, HTMLElement> = new Map();
-  private defaultDuration = 1000000; // 10 seconds
+  private defaultDuration = 10000; // 10 seconds
   private defaultPosition = ToastPosition.TOP_RIGHT;
 
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
-    this.initializeContainers();
-  }
-
-  private initializeContainers(): void {
-    // Create containers for each position
-    Object.values(ToastPosition).forEach((position) => {
-      const container = this.renderer.createElement('div');
-
-      // Set positioning classes based on position
-      this.renderer.addClass(container, 'fixed');
-      this.renderer.addClass(container, 'z-50');
-      this.renderer.addClass(container, 'flex');
-      this.renderer.addClass(container, 'flex-col');
-      this.renderer.addClass(container, 'gap-2');
-      this.renderer.addClass(container, 'p-4');
-      this.renderer.addClass(container, 'pointer-events-none');
-
-      // Position-specific classes
-      switch (position) {
-        case ToastPosition.TOP_RIGHT:
-          this.renderer.addClass(container, 'top-0');
-          this.renderer.addClass(container, 'right-0');
-          break;
-        case ToastPosition.TOP_LEFT:
-          this.renderer.addClass(container, 'top-0');
-          this.renderer.addClass(container, 'left-0');
-          break;
-        case ToastPosition.BOTTOM_RIGHT:
-          this.renderer.addClass(container, 'bottom-0');
-          this.renderer.addClass(container, 'right-0');
-          break;
-        case ToastPosition.BOTTOM_LEFT:
-          this.renderer.addClass(container, 'bottom-0');
-          this.renderer.addClass(container, 'left-0');
-          break;
-      }
-
-      // Add container to the document body
-      this.renderer.appendChild(document.body, container);
-      this.toastContainers.set(position, container);
-    });
   }
 
   show(options: ToastOptions): void {
@@ -86,19 +44,52 @@ export class ToastService {
 
     // Create the toast element
     const toast = this.renderer.createElement('div');
-    //toast.popover = 'manual'; // Set as popover
+    toast.popover = 'manual'; // Set as popover
 
+    // Set positioning classes based on position
+    this.renderer.addClass(toast, 'fixed');
+    this.renderer.addClass(toast, 'z-50');
+    
     // Add styles for the toast
     this.renderer.addClass(toast, 'bg-gray-100');
     this.renderer.addClass(toast, 'dark:bg-gray-700');
     this.renderer.addClass(toast, 'rounded-lg');
     this.renderer.addClass(toast, 'shadow-lg');
     this.renderer.addClass(toast, 'p-4');
-    this.renderer.addClass(toast, 'mb-3');
+    this.renderer.addClass(toast, 'my-2');
+    this.renderer.addClass(toast, 'mx-2');
     this.renderer.addClass(toast, 'w-80');
     this.renderer.addClass(toast, 'pointer-events-auto');
     this.renderer.addClass(toast, 'flex');
     this.renderer.addClass(toast, 'flex-col');
+
+    // Position-specific classes
+    switch (position) {
+      case ToastPosition.TOP_RIGHT:
+        this.renderer.addClass(toast, 'top-0');
+        this.renderer.addClass(toast, 'right-0');
+        this.renderer.addClass(toast, 'bottom-auto');
+        this.renderer.addClass(toast, 'left-auto');
+        break;
+      case ToastPosition.TOP_LEFT:
+        this.renderer.addClass(toast, 'top-0');
+        this.renderer.addClass(toast, 'left-0');
+        this.renderer.addClass(toast, 'bottom-auto');
+        this.renderer.addClass(toast, 'right-auto');
+        break;
+      case ToastPosition.BOTTOM_RIGHT:
+        this.renderer.addClass(toast, 'bottom-0');
+        this.renderer.addClass(toast, 'right-0');
+        this.renderer.addClass(toast, 'top-auto');
+        this.renderer.addClass(toast, 'left-auto');
+        break;
+      case ToastPosition.BOTTOM_LEFT:
+        this.renderer.addClass(toast, 'bottom-0');
+        this.renderer.addClass(toast, 'left-0');
+        this.renderer.addClass(toast, 'top-auto');
+        this.renderer.addClass(toast, 'right-auto');
+        break;
+    }
 
     // Create toast content container
     const contentContainer = this.renderer.createElement('div');
@@ -195,26 +186,23 @@ export class ToastService {
     // Add content to toast
     this.renderer.appendChild(toast, contentContainer);
 
-    // Get container based on position
-    const container = this.toastContainers.get(position);
-
-    // Prepend toast to container (newest on top)
-    this.renderer.insertBefore(container, toast, container?.firstChild);
+    // Add container to the document body
+    this.renderer.appendChild(document.body, toast);
 
     // Show the toast using Popover API
-    //toast.showPopover();
+    toast.showPopover();
 
     // Set up close button event
     closeButton.addEventListener('click', () => {
-      //toast.hidePopover();
-      this.removeToast(toast, container);
+      toast.hidePopover();
+      this.removeToast(toast, document.body);
     });
 
     // Auto hide after duration
     setTimeout(() => {
       if (document.body.contains(toast)) {
-        //toast.hidePopover();
-        this.removeToast(toast, container);
+        toast.hidePopover();
+        this.removeToast(toast, document.body);
       }
     }, duration);
   }

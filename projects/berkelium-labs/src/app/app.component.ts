@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { LayoutService } from './layout/layout.service';
 import { IndexedDBService } from './services/indexed-db.service';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @Component({
   selector: 'berkeliumlabs-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, SpinnerComponent],
   template: `@if (!isMobile) { @defer (when isInitialized; prefetch on viewport)
     {
     <berkeliumlabs-navbar />
@@ -15,15 +16,19 @@ import { IndexedDBService } from './services/indexed-db.service';
     </main>
     } @placeholder {
     <div class="h-screen flex items-center justify-center">
-      <div
-        class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"
-      ></div>
+      <h2 class="text-primary-500">
+        Berkelium Labs
+      </h2>
     </div>
     } @loading {
-    <p>Loading comments...</p>
+    <div class="h-screen flex items-center justify-center">
+      <berkeliumlabs-spinner class="mt-4"></berkeliumlabs-spinner>
+    </div>
     } } @else {
     <div class="h-screen flex items-center justify-center p-4">
-      <h2 class="!text-red-700 dark:!text-red-500 text-center">Mobile devices are currently unsupported.</h2>
+      <h2 class="!text-red-700 dark:!text-red-500 text-center">
+        Mobile devices are currently unsupported.
+      </h2>
     </div>
     }`,
   styles: [],

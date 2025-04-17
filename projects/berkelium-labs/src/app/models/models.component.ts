@@ -4,10 +4,11 @@ import { ModelItemComponent } from './model-item/model-item.component';
 import { ModelManagerService } from './model-manager.service';
 import { Subscription } from 'rxjs';
 import { StateManagerService } from '../services/state-manager.service';
+import { SpinnerComponent } from "../components/spinner/spinner.component";
 
 @Component({
   selector: 'berkeliumlabs-models',
-  imports: [RouterLink, ModelItemComponent],
+  imports: [RouterLink, ModelItemComponent, SpinnerComponent],
   templateUrl: './models.component.html',
   styleUrl: './models.component.scss',
   providers: [ModelManagerService],

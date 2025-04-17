@@ -12,7 +12,7 @@
       },
       "root": "projects/berkelium-labs",
       "sourceRoot": "projects/berkelium-labs/src",
-      "prefix": "app",
+      "prefix": "berkeliumlabs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",

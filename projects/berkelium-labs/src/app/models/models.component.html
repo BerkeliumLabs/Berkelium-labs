@@ -13,14 +13,21 @@
       <h4 class="ml-4">Model Incubator</h4>
     </div>
     <div class="flex pr-4 w-2/5 relative">
-      <span class="material-icons absolute top-1/2 left-2 -translate-y-1/2">search</span>
-      <input type="text" placeholder="Search a model" class="!pl-10" (input)="onSearchInput($event)" />
+      <span class="material-icons absolute top-1/2 left-2 -translate-y-1/2"
+        >search</span
+      >
+      <input
+        type="text"
+        placeholder="Search a model"
+        class="!pl-10"
+        (input)="onSearchInput($event)"
+      />
     </div>
   </div>
 
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
-    @for (modelItem of filteredModelList; track $index) {
+    @if (isInitialized) { @for (modelItem of displayModelList; track $index) {
     <berkeliumlabs-model-item
       [modelName]="modelItem.modelId"
       [modelDownloads]="modelItem.downloads"
@@ -29,7 +36,30 @@
       (click)="goToModel(modelItem)"
     ></berkeliumlabs-model-item>
     } @empty {
-      <berkeliumlabs-spinner class="mt-4"></berkeliumlabs-spinner>
+    <p class="w-full text-center text-3xl mt-24">No models found</p>
+    } } @else {
+    <berkeliumlabs-spinner class="mt-4"></berkeliumlabs-spinner>
     }
   </div>
+  @if (isInitialized && filteredModelList.length > pageSize) {
+  <div class="flex items-center justify-center my-4 gap-3">
+    <button
+      class="solias-btn solias-btn--secondary solias-btn--sm flex justify-center items-center"
+      (click)="goToPreviousPage()"
+      [disabled]="currentPage === 1"
+      title="Previous Page"
+    >
+      <span class="material-icons">keyboard_arrow_left</span>
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button
+      class="solias-btn solias-btn--secondary solias-btn--sm flex justify-center items-center"
+      (click)="goToNextPage()"
+      [disabled]="currentPage === totalPages"
+      title="Next Page"
+    >
+      <span class="material-icons">keyboard_arrow_right</span>
+    </button>
+  </div>
+  }
 </div>

@@ -20,10 +20,15 @@ export class ModelsComponent implements OnInit, OnDestroy {
   private $modelListSubscription!: Subscription;
   private worker!: Worker;
   private destroy$ = new Subject<void>();
-
-  modelList!: BkHuggingfaceModelData[];
+  private modelList!: BkHuggingfaceModelData[];
+  
   filteredModelList!: BkHuggingfaceModelData[];
+  displayModelList!: BkHuggingfaceModelData[];
   searchTerm$ = new Subject<string>();
+  isInitialized = false;
+  pageSize = 20;
+  currentPage = 1;
+  totalPages = 1;
 
   ngOnInit(): void {
     this.initializeModelListFilter();
@@ -37,8 +42,11 @@ export class ModelsComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.modelList = data as BkHuggingfaceModelData[];
           this.filteredModelList = this.modelList;
+          this.updateDisplayedList();
+          this.isInitialized = true;
         },
         error: (err) => {
+          this.isInitialized = true;
           console.error(err);
         },
       });
@@ -58,7 +66,27 @@ export class ModelsComponent implements OnInit, OnDestroy {
   onSearchInput(evt: Event): void {
     const searchInput = evt.target as HTMLInputElement;
     this.searchTerm$.next(searchInput.value);
-    console.log(searchInput.value);
+  }
+
+  private updateDisplayedList(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.displayModelList = this.filteredModelList.slice(startIndex, endIndex);
+    this.totalPages = Math.ceil(this.filteredModelList.length / this.pageSize) || 1;
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedList();
+    }
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedList();
+    }
   }
 
   goToModel(modelData: BkHuggingfaceModelData) {
@@ -74,6 +102,8 @@ export class ModelsComponent implements OnInit, OnDestroy {
 
       this.worker.onmessage = ({ data }) => {
         this.filteredModelList = data;
+        this.currentPage = 1;
+        this.updateDisplayedList();
       };
 
       this.worker.onerror = (error) => {

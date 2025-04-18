@@ -255,5 +255,9 @@ export class ModelCardComponent implements OnInit {
     this.isDownloaded = false;
     this.progressBars = [];
     this.progressData = {};
+    this._toastService.success(
+      'Success!',
+      `${this.modelData.modelId} model deleted`
+    );
   }
 }

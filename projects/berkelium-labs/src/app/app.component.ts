@@ -27,7 +27,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     } } @else {
     <div class="h-screen flex items-center justify-center p-4">
       <h2 class="!text-red-700 dark:!text-red-500 text-center">
-        Mobile devices are currently unsupported.
+        😢<br />Mobile devices are currently unsupported.
       </h2>
     </div>
     }`,

@@ -9,10 +9,6 @@
     >
       <span class="material-icons !text-base">menu</span>
     </button>
-    <div class="flex justify-between items-center gap-1 overflow-hidden whitespace-nowrap" [@toggle]="isCollapsed">
-      <img src="assets/logo.png" alt="Logo" class="h-4" />
-      <p>Berkelium Labs</p>
-    </div>
   </div>
   <button
     class="flex items-center gap-2 h-8 px-2 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-full hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer my-2"
@@ -49,7 +45,7 @@
   </div>
   <!-- Bottom Actions -->
   <div
-    class="flex flex-col gap-2 border-t border-gray-400 dark:border-gray-600 pt-2"
+    class="flex flex-col gap-2 border-t border-b border-gray-400 dark:border-gray-600 py-2"
   >
     <button
       class="flex items-center gap-2 h-8 px-2 text-xs font-medium text-gray-700 rounded-full hover:bg-gray-100 hover:text-primary-700 bg-transparent focus:outline-none dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
@@ -79,5 +75,10 @@
         <span class="text-sm">Toggle Theme</span>
       </div>
     </button>
+  </div>
+  <!-- Branding -->
+  <div class="mt-2 flex items-center overflow-hidden whitespace-nowrap">
+    <img src="assets/png/16x16.png" alt="Logo" class="h-3 px-2.5" />
+    <p class="overflow-hidden whitespace-nowrap !text-xs" [@toggle]="isCollapsed">Berkelium Labs v{{ version }}</p>
   </div>
 </div>

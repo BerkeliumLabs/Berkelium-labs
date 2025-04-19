@@ -11,6 +11,7 @@ import {
 import { StateManagerService } from '../../services/state-manager.service';
 import { BkChat } from '../../chat/chat.component';
 import { IndexedDBService } from '../../services/indexed-db.service';
+import { version } from '../../../../../../package.json';
 
 @Component({
   selector: 'berkeliumlabs-navbar',
@@ -38,6 +39,7 @@ export class NavbarComponent implements OnInit {
       return b.id.localeCompare(a.id);
     });
   });
+  version = version;
 
   ngOnInit(): void {
     this.initNavbar();

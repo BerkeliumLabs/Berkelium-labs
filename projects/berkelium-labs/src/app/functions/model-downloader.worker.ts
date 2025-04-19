@@ -23,7 +23,7 @@ async function downloadModel(
     });
     postMessage(true);
   } catch (error) {
-    console.error(`Error downloading model:\n${error}`);
+    console.error(`Error downloading model:`, error);
     postMessage(false);
   }
 }

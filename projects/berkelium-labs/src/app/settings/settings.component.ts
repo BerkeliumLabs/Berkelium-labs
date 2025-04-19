@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UtilityService } from '../services/utility.service';
 import Chart, { ChartItem } from 'chart.js/auto';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'berkeliumlabs-settings',
-  imports: [RouterLink],
+  imports: [RouterLink, NgClass],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
@@ -15,8 +16,13 @@ export class SettingsComponent implements OnInit {
   storageEstimate!: Partial<StorageEstimate> & { usageDetails?: any };
   chart!: ChartItem;
   usageDetails: any[] = [];
+  hasWebGPU = false;
 
   ngOnInit(): void {
+    this.initSettings();
+  }
+
+  private initSettings(): void {
     const storage = navigator.storage;
     storage.estimate().then((estimate: StorageEstimate) => {
       this.storageEstimate = estimate;
@@ -28,8 +34,12 @@ export class SettingsComponent implements OnInit {
       this.createStorageChart();
       // console.log(estimate);
     });
-  }
 
+    if ((navigator as any).gpu) {
+      this.hasWebGPU = true;
+    }
+  }
+ 
   private createStorageChart() {
     this.chart = new Chart('bk-lab-storage', {
       type: 'doughnut',

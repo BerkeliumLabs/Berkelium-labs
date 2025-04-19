@@ -15,12 +15,24 @@
   </div>
 
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
+    <div class="mb-4 w-fit cursor-help" title="Your browser supports WebGPU">
+        <span
+        class="py-1 px-3 text-white rounded-lg flex items-center justify-center gap-2"
+        [ngClass]="hasWebGPU ? 'bg-primary-600' : 'bg-slate-600'"
+        >
+        <span class="material-icons !text-base">memory</span>
+        WebGPU {{ hasWebGPU ? "Available" : "Unavailable" }}
+      </span>
+    </div>
+
     <div class="overflow-hidden w-72">
       <h6 class="mb-2">Lab Storage</h6>
       <canvas id="bk-lab-storage">{{ chart }}</canvas>
       <ul class="mt-4">
         @for (item of usageDetails; track $index) {
-            <li>{{ item['key'] }}: {{ _utilityService.formatBytes(item['value']) }}</li>
+        <li>
+          {{ item["key"] }}: {{ _utilityService.formatBytes(item["value"]) }}
+        </li>
         }
       </ul>
     </div>

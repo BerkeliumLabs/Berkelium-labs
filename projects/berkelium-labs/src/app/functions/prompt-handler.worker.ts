@@ -2,6 +2,8 @@
 
 import { pipeline } from '@huggingface/transformers';
 
+const CHAT_TEMPLATE = `{{ bos_token }}\n{%- if messages[0]['role'] == 'system' -%}\n    {%- if messages[0]['content'] is string -%}\n        {%- set first_user_prefix = messages[0]['content'] + '\n\n' -%}\n    {%- else -%}\n        {%- set first_user_prefix = messages[0]['content'][0]['text'] + '\n\n' -%}\n    {%- endif -%}\n    {%- set loop_messages = messages[1:] -%}\n{%- else -%}\n    {%- set first_user_prefix = \"\" -%}\n    {%- set loop_messages = messages -%}\n{%- endif -%}\n{%- for message in loop_messages -%}\n    {%- if (message['role'] == 'user') != (loop.index0 % 2 == 0) -%}\n        {{ raise_exception(\"Conversation roles must alternate user/assistant/user/assistant/...\") }}\n    {%- endif -%}\n    {%- if (message['role'] == 'assistant') -%}\n        {%- set role = \"model\" -%}\n    {%- else -%}\n        {%- set role = message['role'] -%}\n    {%- endif -%}\n    {{ '<start_of_turn>' + role + '\n' + (first_user_prefix if loop.first else \"\") }}\n    {%- if message['content'] is string -%}\n        {{ message['content'] | trim }}\n    {%- elif message['content'] is iterable -%}\n        {%- for item in message['content'] -%}\n            {%- if item['type'] == 'image' -%}\n                {{ '<start_of_image>' }}\n            {%- elif item['type'] == 'text' -%}\n                {{ item['text'] | trim }}\n            {%- endif -%}\n        {%- endfor -%}\n    {%- else -%}\n        {{ raise_exception(\"Invalid content type\") }}\n    {%- endif -%}\n    {{ '<end_of_turn>\n' }}\n{%- endfor -%}\n{%- if add_generation_prompt -%}\n    {{'<start_of_turn>model\n'}}\n{%- endif -%}\n`;
+
 addEventListener('message', async ({ data }) => {
   // console.log('Chat received', data);
   try {
@@ -11,9 +13,17 @@ addEventListener('message', async ({ data }) => {
     });
 
     const prompt = [
-      { role: "system", content: data['systemPrompt'] },
-      { role: "user", content: data['prompt'] },
+      { role: 'system', content: data['systemPrompt'] },
+      { role: 'user', content: data['prompt'] },
     ];
+
+    if (!generator.tokenizer.chat_template) {
+      generator.tokenizer.chat_template = CHAT_TEMPLATE;
+      generator.tokenizer.apply_chat_template(prompt, {
+        tokenize: false,
+      });
+      // console.log('Chat template: ', generator.tokenizer.chat_template);
+    }
 
     const response = await generator(prompt, {
       temperature: data['temperature'],
@@ -22,7 +32,7 @@ addEventListener('message', async ({ data }) => {
       no_repeat_ngram_size: 2,
       num_beams: 2,
       num_return_sequences: 2,
-      top_k: data['topK']
+      top_k: data['topK'],
     });
 
     postMessage(response);

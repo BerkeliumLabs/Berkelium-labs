@@ -11,7 +11,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
   template: `@if (!isMobile) { @defer (when isInitialized; prefetch on viewport)
     {
     <berkeliumlabs-navbar />
-    <main class="flex-grow">
+    <main class="flex-grow overflow-hidden">
       <router-outlet />
     </main>
     } @placeholder {

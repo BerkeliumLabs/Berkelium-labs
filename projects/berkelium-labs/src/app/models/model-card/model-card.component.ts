@@ -4,6 +4,7 @@ import { StateManagerService } from '../../services/state-manager.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { IndexedDBService } from '../../services/indexed-db.service';
 import { ToastService } from '../../services/toast.service';
+import { UtilityService } from '../../services/utility.service';
 
 @Component({
   selector: 'berkeliumlabs-model-card',
@@ -15,6 +16,7 @@ export class ModelCardComponent implements OnInit {
   private _stateManager = inject(StateManagerService);
   private _dbService = inject(IndexedDBService);
   private _toastService = inject(ToastService);
+  public _utilityService = inject(UtilityService);
 
   modelData!: BkHuggingfaceModelData;
   progressData: any = {};
@@ -149,25 +151,6 @@ export class ModelCardComponent implements OnInit {
       return parseFloat(value.toFixed(2));
     } else {
       return 0;
-    }
-  }
-
-  formatBytes(bytes: number): string {
-    if (typeof bytes !== 'number' || isNaN(bytes)) {
-      return 'Invalid input';
-    }
-
-    if (bytes < 1024) {
-      return `${bytes} B`; // Bytes
-    } else if (bytes < 1024 * 1024) {
-      const kb = (bytes / 1024).toFixed(2);
-      return `${kb} KB`; // Kilobytes
-    } else if (bytes < 1024 * 1024 * 1024) {
-      const mb = (bytes / (1024 * 1024)).toFixed(2);
-      return `${mb} MB`; // Megabytes
-    } else {
-      const gb = (bytes / (1024 * 1024 * 1024)).toFixed(2);
-      return `${gb} GB`; // Gigabytes
     }
   }
 

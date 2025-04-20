@@ -7,15 +7,15 @@ addEventListener('message', ({ data }) => {
       const filteredList = filterPipeline(pipeline, modelList);
       postMessage(filteredList);
     } else {
-      let filteredList = modelList.filter((item: BkHuggingfaceModelData) => {
+      const filteredPipeList = filterPipeline(pipeline, modelList);
+
+      const filteredList = filteredPipeList.filter((item: BkHuggingfaceModelData) => {
         if (item.modelId?.toLowerCase().includes(searchTerm.toLowerCase())) {
           return true;
         } else {
           return false;
         }
       });
-
-      filteredList = filterPipeline(pipeline, filteredList);
 
       postMessage(filteredList);
     }

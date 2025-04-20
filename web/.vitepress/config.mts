@@ -24,8 +24,15 @@ export default defineConfig({
     logo: "/images/logo.png",
     nav: [
       { text: "Home", link: "/" },
-      { text: "About", link: "/about" },
       { text: "Guide", link: "/guide" },
+      {
+        text: 'About',
+        items: [
+          { text: 'About Berkelium Labs', link: '/about' },
+          { text: 'Privacy Policy', link: '/privacy-policy' },
+          { text: 'Terms and Conditions', link: '/toc' }
+        ]
+      },
       {
         text: "Blog",
         link: "https://www.buddhilive.com/berkelium-labs/",
@@ -52,6 +59,10 @@ export default defineConfig({
       { icon: "linkedin", link: "https://www.linkedin.com/company/berkelium/" },
       { icon: "youtube", link: "https://www.youtube.com/@Buddhilive" }
     ],
+    footer: {
+      message: 'Released under the <a href="https://github.com/BerkeliumLabs/Berkelium-labs/blob/main/LICENSE">MIT License</a>.',
+      copyright: 'Copyright © 2025 - present | <a href="https://www.buddhilive.com/">Buddhi Kavindra</a>'
+    }
   },
   sitemap: {
     hostname: 'https://berkeliumlabs.com'

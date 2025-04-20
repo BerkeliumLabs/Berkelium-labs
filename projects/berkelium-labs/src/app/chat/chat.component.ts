@@ -142,23 +142,12 @@ export class ChatComponent implements OnInit {
   private refineResponse(
     response: BkAIResponse | BkAIResponse[] | string
   ): string {
-    /* const targetWord = 'Assistant:';
-    const startIndex = response.indexOf(targetWord);
-
-    if (startIndex !== -1) {
-      const extractedText = response
-        .substring(startIndex + targetWord.length)
-        .trim();
-      return extractedText;
-    } else {
-      return '';
-    } */
     let message = '';
     if (Array.isArray(response)) {
       response.forEach((item) => {
         if (Array.isArray(item['generated_text'])) {
-          const reply = item['generated_text'][2];
-          message = reply.content;
+          const reply = item['generated_text'].at(-1);
+          message = reply?.content ?? '';
         } else {
           message = item['generated_text'];
         }

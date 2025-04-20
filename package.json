@@ -1,6 +1,6 @@
 {
   "name": "berkelium-labs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,6 +26,7 @@
     "@angular/service-worker": "^19.0.0",
     "@huggingface/transformers": "^3.4.2",
     "@tailwindcss/postcss": "^4.1.4",
+    "chart.js": "^4.4.9",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.4",
     "tslib": "^2.3.0",
@@ -35,6 +36,7 @@
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "^19.0.4",
     "@angular/compiler-cli": "^19.0.0",
+    "@types/chart.js": "^2.9.41",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",

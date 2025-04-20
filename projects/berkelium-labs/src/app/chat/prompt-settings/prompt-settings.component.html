@@ -1,10 +1,17 @@
-<div class="flex flex-col">
-  <h6 class="pb-2 border-b border-gray-400 dark:border-gray-800">
-    Lab Settings
-  </h6>
+<div class="flex flex-col h-dvh">
+  <div class="flex-shrink-0 pb-2 flex justify-between items-center border-b border-gray-400 dark:border-gray-800">
+    <h6>Model Tuning</h6>
+    <a
+      href="https://berkeliumlabs.com"
+      target="_blank"
+      class="flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 rounded-full hover:bg-gray-100 hover:text-primary-700 bg-transparent focus:outline-none dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 cursor-pointer"
+    >
+      <span class="material-icons">help</span>
+    </a>
+  </div>
   <form
     [formGroup]="promptSettingsForm"
-    class="berkelium__grid flex-grow overflow-y-auto mt-4"
+    class="berkelium__grid flex-grow overflow-y-auto mt-4 pb-6"
   >
     <div class="cell-12">
       <label>Model</label>

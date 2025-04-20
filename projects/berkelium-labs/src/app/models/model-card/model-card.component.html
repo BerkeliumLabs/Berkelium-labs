@@ -85,8 +85,8 @@
         ></progress>
         @if(progressData[bar]["status"] == "progress") {
         <p class="text-sm">
-          {{ formatBytes(progressData[bar]["loaded"]) }} /
-          {{ formatBytes(progressData[bar]["total"]) }}
+          {{ _utilityService.formatBytes(progressData[bar]["loaded"]) }} /
+          {{ _utilityService.formatBytes(progressData[bar]["total"]) }}
         </p>
         }
       </div>

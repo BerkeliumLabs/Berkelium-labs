@@ -37,6 +37,4 @@ We are strong believers in the power of open source. Berkelium Labs is released 
 
 **Join us on this journey to democratize AI. [Try Berkelium Labs](https://berkeliumlabs.com/lab/) today and start exploring the exciting world of Large Language Models, simplified for you.**
 
-[Download now!](https://github.com/BerkeliumLabs/Berkelium-labs/releases)
-
 We're excited to see what you create and learn with Berkelium Labs!

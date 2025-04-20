@@ -7,7 +7,7 @@ export class ModelManagerService {
 
   fetchModelData() {
     const params = {
-      filter: ['transformers.js', 'text-generation'],
+      filter: ['transformers.js'],
       sort: 'downloads',
       /* limit: 5 */
     };

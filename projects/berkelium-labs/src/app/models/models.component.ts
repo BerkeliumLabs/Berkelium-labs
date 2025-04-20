@@ -2,7 +2,13 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ModelItemComponent } from './model-item/model-item.component';
 import { ModelManagerService } from '../services/model-manager.service';
-import { debounceTime, distinctUntilChanged, Subject, Subscription, takeUntil } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Subject,
+  Subscription,
+  takeUntil,
+} from 'rxjs';
 import { StateManagerService } from '../services/state-manager.service';
 import { SpinnerComponent } from '../components/spinner/spinner.component';
 
@@ -21,14 +27,16 @@ export class ModelsComponent implements OnInit, OnDestroy {
   private worker!: Worker;
   private destroy$ = new Subject<void>();
   private modelList!: BkHuggingfaceModelData[];
-  
+
   filteredModelList!: BkHuggingfaceModelData[];
   displayModelList!: BkHuggingfaceModelData[];
-  searchTerm$ = new Subject<string>();
+  filter$ = new Subject<string>();
   isInitialized = false;
   pageSize = 20;
   currentPage = 1;
   totalPages = 1;
+  searchTerm = '';
+  pipeline = 'text-generation';
 
   ngOnInit(): void {
     this.initializeModelListFilter();
@@ -41,9 +49,10 @@ export class ModelsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.modelList = data as BkHuggingfaceModelData[];
-          this.filteredModelList = this.modelList;
+          /* this.filteredModelList = this.modelList;
           this.updateDisplayedList();
-          this.isInitialized = true;
+          this.isInitialized = true; */
+          this.triggerFilter();
         },
         error: (err) => {
           this.isInitialized = true;
@@ -51,28 +60,34 @@ export class ModelsComponent implements OnInit, OnDestroy {
         },
       });
 
-    this.searchTerm$
+    this.filter$
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((term) => {
+      .subscribe((action) => {
         if (this.worker) {
-          this.worker.postMessage({
-            searchTerm: term,
-            modelList: this.modelList,
-          });
+          this.triggerFilter();
         }
       });
   }
 
   onSearchInput(evt: Event): void {
     const searchInput = evt.target as HTMLInputElement;
-    this.searchTerm$.next(searchInput.value);
+    this.searchTerm = searchInput.value;
+    this.filter$.next(searchInput.value);
+  }
+
+  onTaskSelected(evt: Event): void {
+    const taskSelect = evt.target as HTMLSelectElement;
+    this.pipeline = taskSelect.value;
+    this.triggerFilter();
+    // console.log(taskSelect.value);
   }
 
   private updateDisplayedList(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.displayModelList = this.filteredModelList.slice(startIndex, endIndex);
-    this.totalPages = Math.ceil(this.filteredModelList.length / this.pageSize) || 1;
+    this.totalPages =
+      Math.ceil(this.filteredModelList.length / this.pageSize) || 1;
   }
 
   goToPreviousPage(): void {
@@ -94,6 +109,16 @@ export class ModelsComponent implements OnInit, OnDestroy {
     this.router.navigate(['models', modelData._id]);
   }
 
+  private triggerFilter(): void {
+    if (this.worker) {
+      this.worker.postMessage({
+        searchTerm: this.searchTerm,
+        modelList: this.modelList,
+        pipeline: this.pipeline,
+      });
+    }
+  }
+
   private initializeModelListFilter() {
     if (typeof Worker !== 'undefined') {
       this.worker = new Worker(
@@ -104,6 +129,7 @@ export class ModelsComponent implements OnInit, OnDestroy {
         this.filteredModelList = data;
         this.currentPage = 1;
         this.updateDisplayedList();
+        this.isInitialized = true;
       };
 
       this.worker.onerror = (error) => {

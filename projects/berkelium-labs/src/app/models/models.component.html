@@ -25,6 +25,22 @@
     </div>
   </div>
 
+  <!-- Filter -->
+  <div class="w-full flex justify-between items-center gap-2 px-4 pb-1 mt-4">
+    @if(isInitialized) {
+    <span class="text-sm">{{ filteredModelList.length }} results</span>
+    }
+    <div class="w-1/5">
+      <select name="Task" (change)="onTaskSelected($event)">
+        <option value="text-generation" selected>Text Generation</option>
+        <option value="summarization">Text Summarization</option>
+        <option value="text2text-generation">Text to Text Generation</option>
+        <option value="translation">Translation</option>
+        <option value="image-to-image">Image to Image</option>
+      </select>
+    </div>
+  </div>
+
   <!-- Body -->
   <div class="flex-grow px-4 pt-6 overflow-y-auto">
     @if (isInitialized) { @for (modelItem of displayModelList; track $index) {

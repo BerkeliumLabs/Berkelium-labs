@@ -8,7 +8,7 @@ import {
 } from '@huggingface/transformers';
 
 addEventListener('message', ({ data }) => {
-  downloadModel(data, progressCallback);
+  downloadModel(data['modelId'], progressCallback, data['pipeline']);
 });
 
 async function downloadModel(
@@ -16,10 +16,12 @@ async function downloadModel(
   progressCallback?: ProgressCallback,
   pipelineType: PipelineType = 'text-generation'
 ): Promise<void> {
+  let dtype = 'auto';
+  if (pipelineType === 'text-generation') dtype = 'q4';
   try {
     await pipeline(pipelineType, modelId, {
       progress_callback: progressCallback,
-      dtype: 'q4',
+      dtype: 'fp16',
     });
     postMessage(true);
   } catch (error) {

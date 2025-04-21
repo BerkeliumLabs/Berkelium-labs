@@ -47,6 +47,10 @@ export class AppComponent implements OnInit {
     this.dbService
       .initializeDB([
         { name: 'models' },
+        { name: 'models-summarization' },
+        { name: 'models-text2text-generation' },
+        { name: 'models-translation' },
+        { name: 'models-image-to-image' },
         { name: 'modelData' },
         { name: 'modelFiles' },
         { name: 'chats' },

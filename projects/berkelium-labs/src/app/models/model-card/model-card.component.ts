@@ -23,6 +23,7 @@ export class ModelCardComponent implements OnInit {
   progressBars: any[] = [];
   isDownloaded = false;
   isDownloading = false;
+  modelStoreName = 'models';
 
   ngOnInit(): void {
     this.modelData = this._stateManager.selectedModel();
@@ -30,6 +31,10 @@ export class ModelCardComponent implements OnInit {
   }
 
   private initModelCard() {
+    if (this.modelData.pipeline_tag !== 'text-generation') {
+      this.modelStoreName = 'models-' + this.modelData.pipeline_tag;
+    }
+
     if (this._stateManager.isDownloading()) {
       this.isDownloading = true;
     }
@@ -39,7 +44,7 @@ export class ModelCardComponent implements OnInit {
       this.progressData = this._stateManager.progressData();
     }
 
-    this._dbService.getAll<string>('models').subscribe((models) => {
+    this._dbService.getAll<string>(this.modelStoreName).subscribe((models) => {
       if (models?.includes(this.modelData.modelId ?? '')) {
         this.isDownloaded = true;
 
@@ -102,7 +107,10 @@ export class ModelCardComponent implements OnInit {
 
         // console.log(data, this.progressData);
       };
-      worker.postMessage(this.modelData.modelId);
+      worker.postMessage({
+        modelId: this.modelData.modelId,
+        pipeline: this.modelData.pipeline_tag,
+      });
     } else {
       this._toastService.error(
         'Error!',
@@ -170,18 +178,20 @@ export class ModelCardComponent implements OnInit {
         error: (error) => console.error(error),
       });
 
-    this._dbService.getByKey('models', this.modelData.modelId ?? '').subscribe({
-      next: (modelData) => {
-        if (!modelData) {
-          this._dbService.add(
-            'models',
-            this.modelData.modelId,
-            this.modelData.modelId ?? ''
-          );
-        }
-      },
-      error: (error) => console.error(error),
-    });
+    this._dbService
+      .getByKey(this.modelStoreName, this.modelData.modelId ?? '')
+      .subscribe({
+        next: (modelData) => {
+          if (!modelData) {
+            this._dbService.add(
+              this.modelStoreName,
+              this.modelData.modelId,
+              this.modelData.modelId ?? ''
+            );
+          }
+        },
+        error: (error) => console.error(error),
+      });
 
     this._dbService
       .getByKey('modelFiles', this.modelData.modelId ?? '')
@@ -215,14 +225,19 @@ export class ModelCardComponent implements OnInit {
         error: (error) => console.error(error),
       });
 
-    this._dbService.getByKey('models', this.modelData.modelId ?? '').subscribe({
-      next: (modelData) => {
-        if (modelData) {
-          this._dbService.delete('models', this.modelData.modelId ?? '');
-        }
-      },
-      error: (error) => console.error(error),
-    });
+    this._dbService
+      .getByKey(this.modelStoreName, this.modelData.modelId ?? '')
+      .subscribe({
+        next: (modelData) => {
+          if (modelData) {
+            this._dbService.delete(
+              this.modelStoreName,
+              this.modelData.modelId ?? ''
+            );
+          }
+        },
+        error: (error) => console.error(error),
+      });
 
     this._dbService
       .getByKey('modelFiles', this.modelData.modelId ?? '')

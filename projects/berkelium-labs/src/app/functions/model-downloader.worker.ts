@@ -16,12 +16,10 @@ async function downloadModel(
   progressCallback?: ProgressCallback,
   pipelineType: PipelineType = 'text-generation'
 ): Promise<void> {
-  let dtype = 'auto';
-  if (pipelineType === 'text-generation') dtype = 'q4';
   try {
     await pipeline(pipelineType, modelId, {
       progress_callback: progressCallback,
-      dtype: 'fp16',
+      ...(pipelineType === 'text-generation' && { dtype: 'q4' }),
     });
     postMessage(true);
   } catch (error) {

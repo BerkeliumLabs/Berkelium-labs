@@ -12,7 +12,37 @@
       </a>
       <h4 class="ml-4">Summarization</h4>
     </div>
+
+    <berkeliumlabs-dropdown
+      class="mr-2 w-1/4"
+      [options]="availableModels"
+      placeholder="Select a model"
+      formControlName="model"
+    ></berkeliumlabs-dropdown>
   </div>
 
-  <div class="flex-grow px-4 pt-6 overflow-y-auto"></div>
+  <div class="flex-grow px-4 pt-6 overflow-y-auto flex flex-col">
+    <div class="flex-grow flex items-center gap-2 overflow-hidden">
+      <div
+        class="p-3 h-full w-full overflow-y-auto border border-gray-400 dark:border-gray-800 rounded-lg focus:outline-none focus:border-primary-500"
+        [contentEditable]="true"
+        (input)="onContentChange($event)"
+      ></div>
+      <div
+        class="p-3 h-full w-full overflow-y-auto border border-gray-400 dark:border-gray-800 rounded-lg focus:outline-none focus:border-primary-500"
+        [innerHTML]="summarizedContent"
+      ></div>
+    </div>
+    <div class="flex items-center justify-center gap-3 py-4">
+      <button
+        class="solias-btn solias-btn--primary solias-btn--md"
+        (click)="summarize()"
+      >
+        Summarize
+      </button>
+      <button class="solias-btn solias-btn--secondary--outlined solias-btn--md">
+        Clear
+      </button>
+    </div>
+  </div>
 </div>

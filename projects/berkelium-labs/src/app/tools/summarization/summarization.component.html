@@ -17,7 +17,7 @@
       class="mr-2 w-1/4"
       [options]="availableModels"
       placeholder="Select a model"
-      formControlName="model"
+      (selectionChange)="onModelChange($event)"
     ></berkeliumlabs-dropdown>
   </div>
 
@@ -37,10 +37,15 @@
       <button
         class="solias-btn solias-btn--primary solias-btn--md"
         (click)="summarize()"
+        [disabled]="content.length === 0"
       >
         Summarize
       </button>
-      <button class="solias-btn solias-btn--secondary--outlined solias-btn--md">
+      <button
+        class="solias-btn solias-btn--secondary--outlined solias-btn--md"
+        (click)="clearContent()"
+        [disabled]="content.length === 0"
+      >
         Clear
       </button>
     </div>

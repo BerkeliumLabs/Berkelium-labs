@@ -1,16 +1,18 @@
-import { Component, inject, model, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, model, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 import { IndexedDBService } from '../../services/indexed-db.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SpinnerComponent } from "../../components/spinner/spinner.component";
 
 @Component({
   selector: 'berkeliumlabs-summarization',
-  imports: [RouterLink, DropdownComponent, ReactiveFormsModule],
+  imports: [RouterLink, DropdownComponent, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './summarization.component.html',
   styleUrl: './summarization.component.scss',
 })
 export class SummarizationComponent implements OnInit {
+  @ViewChild('textInput') textInput!: ElementRef<HTMLDivElement>;
   private _dbService = inject(IndexedDBService);
 
   toolForm!: FormGroup;
@@ -58,7 +60,7 @@ export class SummarizationComponent implements OnInit {
       );
 
       worker.onmessage = ({ data }) => {
-        console.log('Response: ', data);
+        // console.log('Response: ', data);
         this.summarizedContent = data[0].summary_text;
         this.inProgress = false;
       };
@@ -77,5 +79,6 @@ export class SummarizationComponent implements OnInit {
   clearContent() {
     this.content = '';
     this.summarizedContent = '';
+    this.textInput.nativeElement.innerHTML = '';
   }
 }

@@ -60,7 +60,7 @@ export class Text2textGenerationComponent implements OnInit {
       );
 
       worker.onmessage = ({ data }) => {
-        console.log('Response: ', data);
+        // console.log('Response: ', data);
         this.generatedContent = data[0].generated_text;
         this.inProgress = false;
       };

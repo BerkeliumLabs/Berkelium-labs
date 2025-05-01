@@ -15,4 +15,35 @@ export class ModelManagerService {
       params: params,
     });
   }
+
+  downloadModel(modelId: string, pipeline: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (typeof Worker !== 'undefined') {
+        const worker = new Worker(
+          new URL('../functions/model-downloader.worker', import.meta.url)
+        );
+        worker.onmessage = ({ data }) => {
+          if (typeof data === 'boolean') {
+            resolve(data);
+          } else {
+            console.log('Model download progress ===>', data);
+          }
+        };
+        worker.onerror = (error) => {
+          reject(error);
+          console.error('Worker error:', error);
+        };
+        worker.postMessage({
+          modelId,
+          pipeline,
+        });
+      } else {
+        reject(false);
+        console.error(
+          'Error!',
+          `Web workers are not supported in this environment.`
+        );
+      }
+    });
+  }
 }

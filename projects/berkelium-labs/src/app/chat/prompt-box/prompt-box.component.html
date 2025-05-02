@@ -12,10 +12,11 @@
   >
     <button
       class="solias-btn solias-btn--secondary solias-btn--sm flex justify-center items-center"
-      (click)="sendPrompt()"
+      [ngClass]="isRecording() ? 'solias-btn--error animate-pulse' : 'solias-btn--secondary'"
+      (click)="startRecording()"
       title="Use microphone"
     >
-      <span class="material-icons !text-sm">mic</span>
+      <span class="material-icons !text-sm">{{ isRecording() ? 'stop_circle' : 'mic' }}</span>
     </button>
     <button
       class="solias-btn solias-btn--primary solias-btn--sm flex justify-center items-center"

@@ -7,8 +7,12 @@
     <span class="bg-primary-700 text-white rounded-md px-2 py-1 text-sm mr-2">
       {{ model }}
     </span>
-    <span class="material-icons bg-secondary-700 text-white rounded-md px-2 py-1 !text-sm cursor-pointer" title="Speak out loud">
-      volume_up
+    <span
+      class="material-icons bg-secondary-700 text-white rounded-md px-2 py-1 !text-sm cursor-pointer"
+      [title]="isSpeaking() ? 'Stop speaking' : 'Speak out loud'"
+      (click)="speak()"
+    >
+      {{ isSpeaking() ? 'stop_circle' : 'volume_up' }}
     </span>
     }
   </div>

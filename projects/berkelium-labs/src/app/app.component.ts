@@ -4,7 +4,6 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { LayoutService } from './layout/layout.service';
 import { IndexedDBService } from './services/indexed-db.service';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { ModelManagerService } from './services/model-manager.service';
 
 @Component({
   selector: 'berkeliumlabs-root',
@@ -34,12 +33,11 @@ import { ModelManagerService } from './services/model-manager.service';
     </div>
     }`,
   styles: [],
-  providers: [LayoutService, ModelManagerService],
+  providers: [LayoutService],
 })
 export class AppComponent implements OnInit {
   private _layoutService = inject(LayoutService);
   private dbService = inject(IndexedDBService);
-  private modelManagerService = inject(ModelManagerService);
 
   isInitialized = false;
   isMobile = false;
@@ -58,15 +56,6 @@ export class AppComponent implements OnInit {
         { name: 'modelFiles' },
         { name: 'chats' },
       ])
-      .subscribe(async (isInitialized) => {
-        if (isInitialized) {
-          const sttModel = await this.modelManagerService.downloadModel(
-            'Xenova/whisper-tiny.en',
-            'automatic-speech-recognition'
-          );
-          // const ttsModel = await this.modelManagerService.downloadModel('Xenova/whisper-tiny.en');
-          this.isInitialized = sttModel;
-        }
-      });
+      .subscribe((isInitialized) => (this.isInitialized = isInitialized));
   }
 }

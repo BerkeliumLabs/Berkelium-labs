@@ -94,6 +94,7 @@ export class ModelCardComponent implements OnInit {
             );
           } else {
             this.isDownloading = false;
+            this._stateManager.isDownloading.set(false);
             this._toastService.error(
               'Error!',
               `${this.modelData.modelId} model download failed`

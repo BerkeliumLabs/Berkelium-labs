@@ -12,7 +12,7 @@ export class IndexedDBService {
 
   constructor() {
     this.dbName = 'berkeliumLabsDB';
-    this.dbVersion = 2;
+    this.dbVersion = 1;
   }
 
   /**

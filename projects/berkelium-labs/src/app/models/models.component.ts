@@ -75,12 +75,12 @@ export class ModelsComponent implements OnInit, OnDestroy {
     this.filter$.next(searchInput.value);
   }
 
-  onTaskSelected(evt: Event): void {
+  /* onTaskSelected(evt: Event): void {
     const taskSelect = evt.target as HTMLSelectElement;
     this.pipeline = taskSelect.value;
     this.triggerFilter();
     // console.log(taskSelect.value);
-  }
+  } */
 
   private updateDisplayedList(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;

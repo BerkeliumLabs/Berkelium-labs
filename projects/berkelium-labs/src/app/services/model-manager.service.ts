@@ -20,7 +20,7 @@ export class ModelManagerService {
     return new Promise((resolve, reject) => {
       if (typeof Worker !== 'undefined') {
         const worker = new Worker(
-          new URL('../functions/model-downloader.worker', import.meta.url)
+          new URL('../core/model-downloader.worker', import.meta.url)
         );
         worker.onmessage = ({ data }) => {
           if (typeof data === 'boolean') {

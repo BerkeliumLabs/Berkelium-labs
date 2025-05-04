@@ -122,7 +122,7 @@ export class ModelsComponent implements OnInit, OnDestroy {
   private initializeModelListFilter() {
     if (typeof Worker !== 'undefined') {
       this.worker = new Worker(
-        new URL('../functions/model-filter.worker', import.meta.url)
+        new URL('../core/model-filter.worker', import.meta.url)
       );
 
       this.worker.onmessage = ({ data }) => {

@@ -67,7 +67,7 @@ export class ModelCardComponent implements OnInit {
   downloadModel() {
     if (typeof Worker !== 'undefined') {
       const worker = new Worker(
-        new URL('../../functions/model-downloader.worker', import.meta.url)
+        new URL('../../core/model-downloader.worker', import.meta.url)
       );
       worker.onmessage = ({ data }) => {
         this._stateManager.isDownloading.set(true);

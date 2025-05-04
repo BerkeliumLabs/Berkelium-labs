@@ -94,7 +94,7 @@ export class ChatComponent implements OnInit {
       this.messageThread.push({ role: 'you', message: event['prompt'] });
       if (typeof Worker !== 'undefined') {
         const worker = new Worker(
-          new URL('../functions/prompt-handler.worker', import.meta.url)
+          new URL('../core/prompt-handler.worker', import.meta.url)
         );
 
         this.isLoading = true;

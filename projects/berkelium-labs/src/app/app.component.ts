@@ -15,14 +15,15 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
       <router-outlet />
     </main>
     } @placeholder {
-    <div class="h-screen flex items-center justify-center">
-      <h2 class="text-primary-500">
-        Berkelium Labs
-      </h2>
+    <div class="h-screen flex flex-col gap-3 items-center justify-center w-full">
+      <img src="assets/logo.png" alt="Logo" class="w-32 h-32" />
+      <h2 class="text-primary-500">Berkelium Labs</h2>
+      <h4>Initializing...</h4>
     </div>
     } @loading {
     <div class="h-screen flex items-center justify-center">
       <berkeliumlabs-spinner class="mt-4"></berkeliumlabs-spinner>
+      <h2>Initializing...</h2>
     </div>
     } } @else {
     <div class="h-screen flex items-center justify-center p-4">

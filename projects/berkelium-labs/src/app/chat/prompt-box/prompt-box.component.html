@@ -8,14 +8,23 @@
     formControlName="prompt"
   ></textarea>
   <div
-    class="flex justify-end items-center border-t border-gray-400 dark:border-gray-800 p-1"
+    class="flex justify-between items-center border-t border-gray-400 dark:border-gray-800 py-1 px-2"
   >
+    <button
+      class="solias-btn solias-btn--secondary solias-btn--sm flex justify-center items-center"
+      [ngClass]="isRecording() ? 'solias-btn--error animate-pulse' : 'solias-btn--secondary'"
+      (click)="startRecording()"
+      title="Use microphone"
+    >
+      <span class="material-icons !text-sm">{{ isRecording() ? 'stop_circle' : 'mic' }}</span>
+    </button>
     <button
       class="solias-btn solias-btn--primary solias-btn--sm flex justify-center items-center"
       (click)="sendPrompt()"
       [disabled]="promptBoxForm.invalid || isDisabled()"
+      title="Send"
     >
-      <span class="material-icons !text-sm" title="send">send</span>
+      <span class="material-icons !text-sm">send</span>
     </button>
   </div>
 </form>

@@ -1,0 +1,3 @@
+@use "tailwindcss";
+/* Light and Dark Theme */
+@custom-variant dark (&:where(.dark, .dark *));

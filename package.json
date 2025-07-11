@@ -4,9 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build:ng": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "docs:dev": "vitepress dev web",
+    "docs:build": "vitepress build web",
+    "docs:preview": "vitepress preview web",
+    "build": "npm run docs:build && npm run build:ng"
   },
   "prettier": {
     "overrides": [
@@ -26,10 +30,15 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@tailwindcss/postcss": "^4.1.11",
+    "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tailwindcss": "^4.1.11",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular/build": "^20.1.0",
     "@angular/cli": "^20.1.0",
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
@@ -39,6 +48,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "vitepress": "^1.6.3"
   }
 }

@@ -1,3 +1,12 @@
-<button matButton="tonal" >Basic</button>
-Hello, {{ title() }}!
-<router-outlet />
+@if (!isMobile()) {
+<berkeliumlabs-navbar></berkeliumlabs-navbar>
+<main>
+  <router-outlet />
+</main>
+} @else {
+<div class="h-screen flex items-center justify-center p-4">
+  <h2 class="!text-red-700 dark:!text-red-500 text-center">
+    😢<br />Mobile devices are currently unsupported.
+  </h2>
+</div>
+}

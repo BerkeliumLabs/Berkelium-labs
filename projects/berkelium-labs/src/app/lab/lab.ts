@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FilesetResolver, LlmInference } from '@mediapipe/tasks-genai';
+import { GenAi } from '../services/gen-ai';
 @Component({
   selector: 'berkeliumlabs-lab',
   imports: [MatCardModule, MatButtonModule, MatIconModule],
@@ -11,11 +12,14 @@ import { FilesetResolver, LlmInference } from '@mediapipe/tasks-genai';
 })
 export class Lab {
   response = signal('');
+  private _genAiService = inject(GenAi);
+
   async sendPrompt() {
     console.log('sendPrompt called');
     const genai = await FilesetResolver.forGenAiTasks(
       'wasm'
     );
+
     const llmInference = await LlmInference.createFromOptions(genai, {
       baseOptions: {
         modelAssetPath: 'models/gemma2-2b-it-gpu-int8.bin',

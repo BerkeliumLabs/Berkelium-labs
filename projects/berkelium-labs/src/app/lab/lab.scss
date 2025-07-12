@@ -9,4 +9,8 @@
   &__docs {
     width: 300px;
   }
+  &__chatbox {
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 8px;
+  }
 }

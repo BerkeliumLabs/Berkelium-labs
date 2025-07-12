@@ -8,5 +8,27 @@
     <mat-card-header>
       <mat-card-title>Chat</mat-card-title>
     </mat-card-header>
+    <mat-card-content class="flex-grow">
+      <p>chat area</p>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class="bkl__chatbox m-3 p-4 gap-4">
+        <textarea
+          class="flex-grow !bg-transparent resize-none border-none outline-none focus:ring-0 !text-sm w-full"
+          placeholder="Type your prompt..."
+          formControlName="prompt"
+        ></textarea>
+        <div class="bkl__chat-actions flex items-center justify-end">
+          <div class="flex">
+            <button
+              matMiniFab
+              aria-label="Send"
+            >
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-footer>
   </mat-card>
 </div>

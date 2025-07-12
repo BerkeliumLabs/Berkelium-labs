@@ -1,0 +1,12 @@
+.bkl {
+  &__panel {
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  &__chat {
+    flex: 1;
+  }
+  &__docs {
+    width: 300px;
+  }
+}

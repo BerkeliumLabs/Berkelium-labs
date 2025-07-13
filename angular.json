@@ -18,9 +18,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/berkelium-labs/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/berkelium-labs/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -29,9 +27,7 @@
                 "input": "projects/berkelium-labs/public"
               }
             ],
-            "styles": [
-              "projects/berkelium-labs/src/styles.scss"
-            ]
+            "styles": ["projects/berkelium-labs/src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -47,7 +43,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "projects/berkelium-labs/ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -59,6 +56,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.config.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "berkelium-labs:build:production"
@@ -75,10 +75,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/berkelium-labs/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -87,9 +84,7 @@
                 "input": "projects/berkelium-labs/public"
               }
             ],
-            "styles": [
-              "projects/berkelium-labs/src/styles.scss"
-            ]
+            "styles": ["projects/berkelium-labs/src/styles.scss"]
           }
         }
       }

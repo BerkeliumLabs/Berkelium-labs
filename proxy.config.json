@@ -1,0 +1,11 @@
+{
+  "/storage": {
+    "target": "https://www.buddhilive.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/storage": "/storage"
+    },
+    "logLevel": "debug"
+  }
+}

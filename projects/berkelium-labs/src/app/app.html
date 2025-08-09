@@ -1,12 +1,180 @@
-@if (!isMobile()) {
-<berkeliumlabs-navbar></berkeliumlabs-navbar>
-<main>
-  <router-outlet />
-</main>
-} @else {
-<div class="h-screen flex items-center justify-center p-4">
-  <h2 class="!text-red-700 dark:!text-red-500 text-center">
-    😢<br />Mobile devices are currently unsupported.
-  </h2>
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <mat-toolbar class="bg-blue-600 text-white shadow-lg">
+    <mat-icon class="mr-3">chat</mat-icon>
+    <span class="text-xl font-semibold">AI Chat Assistant</span>
+    <span class="flex-grow"></span>
+    <button
+      mat-icon-button
+      (click)="clearChat()"
+      class="text-white hover:bg-blue-700 rounded-full"
+    >
+      <mat-icon>clear_all</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <div class="container mx-auto max-w-4xl p-4 h-screen flex flex-col">
+    <!-- Model Status -->
+    <div class="mb-4">
+      <mat-card class="p-4 shadow-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <mat-icon
+              [class]="modelLoaded ? 'text-green-500' : 'text-red-500'"
+              class="mr-2"
+            >
+              {{ modelLoaded ? "check_circle" : "error" }}
+            </mat-icon>
+            <span class="font-medium">
+              {{ modelLoaded ? "Model Ready" : "Model Loading..." }}
+            </span>
+          </div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="initializeModel()"
+            [disabled]="isInitializing"
+            class="ml-4"
+          >
+            {{ isInitializing ? "Loading..." : "Initialize Model" }}
+          </button>
+        </div>
+        <mat-progress-bar
+          *ngIf="isInitializing"
+          mode="indeterminate"
+          class="mt-2"
+        >
+        </mat-progress-bar>
+      </mat-card>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="flex-1 overflow-hidden mb-4">
+      <div
+        #chatContainer
+        class="h-full overflow-y-auto p-4 bg-white rounded-lg shadow-inner border border-gray-200 space-y-4"
+      >
+        <!-- Welcome Message -->
+        <div *ngIf="messages.length === 0" class="text-center py-8">
+          <mat-icon class="text-gray-400 text-6xl mb-4"
+            >chat_bubble_outline</mat-icon
+          >
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">
+            Welcome to AI Chat
+          </h3>
+          <p class="text-gray-500">
+            Start a conversation by typing a message below
+          </p>
+        </div>
+
+        <!-- Messages -->
+        <div
+          *ngFor="let message of messages"
+          class="flex mb-4"
+          [class.justify-end]="message.isUser"
+        >
+          <div
+            class="flex max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl"
+            [class.flex-row-reverse]="message.isUser"
+          >
+            <!-- Avatar -->
+            <div class="flex-shrink-0 mx-2">
+              <div
+                class="w-8 h-8 rounded-full flex items-center justify-center"
+                [class]="message.isUser ? 'bg-blue-500' : 'bg-gray-500'"
+              >
+                <mat-icon class="text-white text-sm">
+                  {{ message.isUser ? "person" : "smart_toy" }}
+                </mat-icon>
+              </div>
+            </div>
+
+            <!-- Message Content -->
+            <div class="flex-1">
+              <mat-card
+                class="p-3 shadow-sm"
+                [class]="
+                  message.isUser
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                "
+              >
+                <p class="whitespace-pre-wrap break-words">
+                  {{ message.text }}
+                </p>
+                <div class="text-xs mt-2 opacity-75">
+                  {{ message.timestamp | date : "short" }}
+                </div>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div *ngIf="isGenerating" class="flex mb-4">
+          <div class="flex max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl">
+            <div class="flex-shrink-0 mx-2">
+              <div
+                class="w-8 h-8 rounded-full flex items-center justify-center bg-gray-500"
+              >
+                <mat-icon class="text-white text-sm">smart_toy</mat-icon>
+              </div>
+            </div>
+            <div class="flex-1">
+              <mat-card class="p-3 shadow-sm bg-gray-100 text-gray-800">
+                <div class="flex items-center">
+                  <div class="animate-pulse flex space-x-1">
+                    <div
+                      class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                    ></div>
+                    <div
+                      class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style="animation-delay: 0.1s"
+                    ></div>
+                    <div
+                      class="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
+                      style="animation-delay: 0.2s"
+                    ></div>
+                  </div>
+                  <span class="ml-2 text-sm">AI is thinking...</span>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="flex-shrink-0">
+      <mat-card class="p-4 shadow-lg">
+        <div class="flex items-end gap-3">
+          <mat-form-field class="flex-1" appearance="outline">
+            <mat-label>Type your message...</mat-label>
+            <textarea
+              matInput
+              [(ngModel)]="currentMessage"
+              (keydown.enter)="onEnterPress($event)"
+              [disabled]="!modelLoaded || isGenerating"
+              placeholder="Ask me anything..."
+              rows="1"
+              class="resize-none min-h-[40px] max-h-[120px] overflow-y-auto"
+            >
+            </textarea>
+          </mat-form-field>
+
+          <button
+            mat-fab
+            color="primary"
+            (click)="sendMessage()"
+            [disabled]="!currentMessage.trim() || !modelLoaded || isGenerating"
+            class="flex-shrink-0"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
 </div>
-}
